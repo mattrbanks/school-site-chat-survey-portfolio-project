@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `school site chat survey gatsby`,
+    title: `Eagle Elementary School`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
     author: `@gatsbyjs`,
   },
@@ -24,6 +24,10 @@ module.exports = {
     `gatsby-plugin-styled-components`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-source-mongodb`,
+      options: { dbName: `local`, collection: `documents` },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
