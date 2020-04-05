@@ -1,20 +1,33 @@
 import React from "react"
+import axios from "axios"
 //import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const Survey = () => {
-  const [name] = React.useState("")
-  const [email] = React.useState("")
+  const [name, setName] = React.useState("")
+  const [email, setEmail] = React.useState("")
 
-  function changeHandler(e) {
-    this.setState({ [e.target.name]: e.target.value })
+  const survey = {
+    name,
+    email
   }
 
-  function submitHandler(e) {
+
+  const submitHandler = (e) => {
     e.preventDefault()
-    console.log(this.state)
+    console.log(survey)
+    axios.post("http://localhost:3000/", survey)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+    //Do I need to do something here?
+    setEmail("")
+    setName("")
   }
 
   return (
@@ -26,7 +39,7 @@ const Survey = () => {
         <form onSubmit={submitHandler}>
           <div>
             <div>
-              <label>Name (required)</label>
+              <label htmlFor="name">Name (required)</label>
             </div>
             <div>
               <input
@@ -35,13 +48,13 @@ const Survey = () => {
                 placeholder="Enter your name"
                 required
                 value={name}
-                onChange={changeHandler}
+                onChange={e => setName(e.target.value)}
               />
             </div>
           </div>
           <div>
             <div>
-              <label>Email (required)</label>
+              <label htmlFor="email">Email (required)</label>
             </div>
             <div>
               <input
@@ -50,7 +63,7 @@ const Survey = () => {
                 placeholder="Enter your email address"
                 required
                 value={email}
-                onChange={changeHandler}
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
           </div>
