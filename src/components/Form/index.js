@@ -56,6 +56,10 @@ app.post("/", function(req, res) {
   res.send('hello world!')
 })
 
+app.get("/", function(req, res) {
+  res.send('hello from express')
+})
+
 // app.get("/view-feedbacks", function(req, res) {
 //   dbConn.then(function(db) {
 //     db.collection("feedbacks")

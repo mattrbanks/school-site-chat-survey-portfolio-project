@@ -1,5 +1,6 @@
 import React from "react"
 import io from "socket.io-client"
+import axios from "axios"
 import { activeTopic } from "./components/dashboard"
 
 export const context = React.createContext()
@@ -44,12 +45,15 @@ const Store = props => {
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
     socket = io(":3001") //created client connection that connects when the client starts if no sockets are started.
-    const name = prompt(
-      "What is your name?"
-    ) /*prompt is the initial load prompt*/
+    // const name = prompt(
+    //   "What is your name?"
+    // ) /*prompt is the initial load prompt*/
     // appendMessage("You joined");
-    socket.emit("new-user", name) //kick name to server
-    console.log(name)
+    // const name = prompt(
+    //   "What is your name?"
+    // )
+    // socket.emit("new-user", name) //kick name to server
+    // console.log(name)
 
     socket.on("chat message", msg => {
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
