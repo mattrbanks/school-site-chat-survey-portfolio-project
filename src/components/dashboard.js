@@ -19,27 +19,47 @@ const useStyles = makeStyles(theme => ({
   },
   flex: {
     display: "flex",
-    alignItems: "center",
+    alignItems: "left",
   },
   topicsWindow: {
     width: "30%",
     height: "18.75rem",
     borderRight: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
   },
   chatWindow: {
     width: "50%",
     height: "18.75rem",
     padding: "1.25rem",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
   },
   usersWindow: {
     width: "30%",
     height: "18.75rem",
     borderLeft: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
   },
   usersTopicWindow: {
     width: "30%",
     height: "18.75rem",
     borderLeft: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
   },
   chatBox: {
     width: "85%",

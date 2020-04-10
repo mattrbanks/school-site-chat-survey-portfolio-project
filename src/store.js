@@ -1,7 +1,8 @@
 import React from "react"
 import io from "socket.io-client"
-import axios from "axios"
-import { activeTopic } from "./components/dashboard"
+//import { activeTopic } from "./components/dashboard"
+import { userName } from "./pages/chat"
+import { userType } from "./pages/chat"
 
 export const context = React.createContext()
 
@@ -45,15 +46,11 @@ const Store = props => {
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
     socket = io(":3001") //created client connection that connects when the client starts if no sockets are started.
-    // const name = prompt(
-    //   "What is your name?"
-    // ) /*prompt is the initial load prompt*/
-    // appendMessage("You joined");
-    // const name = prompt(
-    //   "What is your name?"
-    // )
-    // socket.emit("new-user", name) //kick name to server
-    // console.log(name)
+    console.log(socket)
+
+    const name = [userName.toString(), "-" + userType.toString()]
+    socket.emit("new-user", name) //kick name to server
+    console.log(name)
 
     socket.on("chat message", msg => {
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
@@ -73,13 +70,14 @@ const Store = props => {
     for (let i = 0; i < users.length; i++) {
       usersListC.push(users[i])
     }
+    console.log(usersListC)
   })
+
   console.log(allChats)
   function appendMessage(value1, value2) {
     //add to allChats object
     allChats.general.push(value1)
     allChats.topic2.push(value2)
-    //socket.emit("send chat message", value)
   }
   console.log(allChats.general)
 

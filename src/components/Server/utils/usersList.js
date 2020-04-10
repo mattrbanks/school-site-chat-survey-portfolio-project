@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: theme.spacing(3, 2),
   },
+  multiline: {
+    display: "flex",
+  },
   button: {
     width: "15%",
     height: "3.5rem",
@@ -20,18 +23,11 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = props => {
   const classes = useStyles()
-  const { usersListC } = React.useContext(context)
-  console.log(props.allChats)
+  const { usersListC, userTypeListC } = React.useContext(context)
 
-  console.log({ usersListC }) //we are not updating here from store!!!
-  console.log(usersListC)
+  //console.log(usersListC) //this is logged before the array is actually filled so that is why it is empty
   const initialUsers = usersListC
   const [allTheUserNames, setUserNames] = React.useState(initialUsers)
-
-  console.log({ initialUsers })
-  console.log({ allTheUserNames })
-
-  console.log({ allTheUserNames })
 
   return (
     <div>
@@ -42,7 +38,11 @@ const UsersList = props => {
             key={name[0]}
             button
           >
-            <ListItemText primary={name[1]} secondary={"parent"} />
+            <ListItemText
+              className={classes.multiline}
+              primary={name[1][0]}
+              secondary={name[1][1] + name[1][2]}
+            />
           </ListItem>
         ))}
       </List>

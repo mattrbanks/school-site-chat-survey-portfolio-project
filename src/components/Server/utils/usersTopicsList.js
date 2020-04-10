@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: theme.spacing(3, 2),
   },
+  multiline: {
+    display: "flex",
+  },
   button: {
     width: "15%",
     height: "3.5rem",
@@ -21,17 +24,9 @@ const useStyles = makeStyles(theme => ({
 const UsersTopicsList = props => {
   const classes = useStyles()
   const { usersListC } = React.useContext(context)
-  console.log(props.allChats)
 
-  console.log({ usersListC }) //we are not updating here from store!!!
-  console.log(usersListC)
   const initialUsers = usersListC
   const [allTheUserNames, setUserNames] = React.useState(initialUsers)
-
-  console.log({ initialUsers })
-  console.log({ allTheUserNames })
-
-  console.log({ allTheUserNames })
 
   return (
     <div>
@@ -42,8 +37,9 @@ const UsersTopicsList = props => {
             key={name[0]}
           >
             <ListItemText
+              className={classes.multiline}
               primary={"active topic"}
-              secondary={"props.activeTopic"}
+              secondary={"-Topic"}
             />
           </ListItem>
         ))}

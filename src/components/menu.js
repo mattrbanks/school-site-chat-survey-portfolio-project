@@ -26,7 +26,7 @@ const Menu = () => (
         <Link to="/contact">Contact</Link>
       </li>
       <li>
-        <Link to="/chatlogin">Chat</Link>
+        <Link to="/chat">Chat</Link>
       </li>
       <li>
         <Link to="/survey">Survey</Link>
