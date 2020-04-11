@@ -1,6 +1,6 @@
 const express = require("express")
 const cors = require("cors")
-const morgan = require('morgan')
+const morgan = require("morgan")
 //const path = require("path")
 //const bodyParser = require("body-parser")
 //const mongodb = require("mongodb")
@@ -15,7 +15,7 @@ const app = express()
 //console.log("hello")
 
 //const urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(express.json());
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 app.use(morgan("dev"))
@@ -34,6 +34,8 @@ app.use(morgan("dev"))
 
 let surveys = []
 console.log(surveys)
+let topics = []
+console.log(topics)
 
 // app.get("/", function(req, res) {
 //   //res.render('index', {})
@@ -44,20 +46,32 @@ console.log(surveys)
 //   console.log("Surveys : ",JSON.stringify(surveys))
 // })
 
-app.post("/", function(req, res) {
+app.post("/survey", function(req, res) {
   //res.render('index', {})
   console.log("we are in")
   const newForm = {
     Name: req.body.name,
-    Email: req.body.email
+    Email: req.body.email,
   }
   surveys.push(newForm)
   console.log(surveys)
-  res.send('hello world!')
+  res.send("hello world!")
 })
 
-app.get("/", function(req, res) {
-  res.send('hello from express')
+app.post("/activeTopic", function(req, res) {
+  //res.send("hello from express")
+  const newTopic = {
+    activeTopic: req.body.activeTopic,
+  }
+  topics.length = 0
+  topics.push(newTopic)
+  console.log(newTopic)
+  console.log(topics)
+  res.send("see req.body console log") //we can send back topics
+})
+
+app.get("/sendActiveTopic", function(req, res) {
+  res.send(topics)
 })
 
 // app.get("/view-feedbacks", function(req, res) {

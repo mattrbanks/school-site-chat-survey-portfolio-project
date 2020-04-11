@@ -11,20 +11,20 @@ const Survey = () => {
 
   const survey = {
     name,
-    email
+    email,
   }
 
-
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault()
     console.log(survey)
-    axios.post("http://localhost:3000/", survey)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    axios
+      .post("http://localhost:3000/survey", survey)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     //Do I need to do something here?
     setEmail("")
     setName("")

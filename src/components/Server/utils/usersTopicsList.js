@@ -5,6 +5,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 //import Button from "@material-ui/core/Button"
 import { context } from "../../../store"
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,22 +24,60 @@ const useStyles = makeStyles(theme => ({
 
 const UsersTopicsList = props => {
   const classes = useStyles()
-  const { usersListC } = React.useContext(context)
+  //const { usersListC } = React.useContext(context)
 
-  const initialUsers = usersListC
-  const [allTheUserNames, setUserNames] = React.useState(initialUsers)
+  const initialTopic = []
+  const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
+
+  React.useEffect(() => {
+    axios
+      .get("http://localhost:3000/sendActiveTopic")
+      .then(response => {
+        console.log(response)
+        console.log(JSON.stringify(response.data))
+        initialTopic.length = 0
+        console.log(response.data)
+        initialTopic.push(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    console.log(initialTopic)
+    //Do I need to do something here?
+    //setEmail("")
+    //setName("")
+  }, [])
+
+  // setInterval(function() {
+  //   axios
+  //     .get("http://localhost:3000/sendActiveTopic")
+  //     .then(response => {
+  //       console.log(response)
+  //       console.log(JSON.stringify(response.data))
+  //       initialTopic.length = 0
+  //       console.log(response.data)
+  //       initialTopic.push(response.data)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     })
+
+  //   console.log(initialTopic)
+  // }, [])
 
   return (
     <div>
       <List>
-        {allTheUserNames.map((name, i) => (
+        {newTopicPicked.map((topic, i) => (
           <ListItem
             //onClick={e => goToDirMessage(e.target.innerText)}
-            key={name[0]}
+            key={i}
           >
             <ListItemText
               className={classes.multiline}
-              primary={"active topic"}
+              primary={"activeTopic"}
+              //primary={topic[0].activeTopic}
               secondary={"-Topic"}
             />
           </ListItem>

@@ -31,7 +31,7 @@ const Chat = props => {
       <div>
         <SEO title="chat" />
         <div>
-          <h1>hello from chat</h1>
+          <h1>hello from Eagle Chat</h1>
           <Store>
             <Dashboard />
           </Store>

@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField"
 import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import UsersTopicsList from "./Server/utils/usersTopicsList"
+import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +33,16 @@ const useStyles = makeStyles(theme => ({
     textAlign: "left",
   },
   chatWindow: {
+    width: "50%",
+    height: "18.75rem",
+    padding: "1.25rem",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+  },
+  joinWindow: {
     width: "50%",
     height: "18.75rem",
     padding: "1.25rem",
@@ -81,8 +92,15 @@ const Dashboard = () => {
   console.log({ topics })
 
   // local state
-  const [activeTopic, changeActiveTopic] = React.useState(topics[0])
+  const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
+
+  const initialTopic = []
+  const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
+
+  const currentActiveTopic = {
+    activeTopic,
+  }
 
   React.useEffect(() => {
     sendChatAction({
@@ -97,9 +115,52 @@ const Dashboard = () => {
     })
   }, [])
 
+  React.useEffect(() => {
+    axios
+      .post("http://localhost:3000/activeTopic", currentActiveTopic)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [activeTopic])
+
+  React.useEffect(() => {
+    axios
+      .get("http://localhost:3000/sendActiveTopic")
+      .then(response => {
+        console.log(response)
+        console.log(JSON.stringify(response.data))
+        initialTopic.length = 0
+        console.log(response.data)
+        initialTopic.push(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    console.log(initialTopic)
+
+    //Do I need to do something here?
+    //setEmail("")
+    //setName("")
+  }, [activeTopic])
+
+  // React.useEffect(() => {
+  //   axios
+  //     .post("http://localhost:3000/activeTopic", currentActiveTopic)
+  //     .then(response => {
+  //       console.log(response)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     })
+  // }, [activeTopic])
+
   return (
     <Paper className={classes.root} elevation={3}>
-      <h2>Chat app</h2>
+      <h2>Eagle Chat</h2>
       <h5>{activeTopic}</h5>
       <div className={classes.flex}>
         <div className={classes.topicsWindow}>
@@ -115,20 +176,49 @@ const Dashboard = () => {
             ))}
           </List>
         </div>
-        <div className={classes.chatWindow}>
-          {allChats[activeTopic].map((chat, i) => (
-            <div className={classes.flex} key={i}>
-              <Chip label={chat.from} className={classes.chip} />
-              <h5>{chat.msg}</h5>
+        {activeTopic ? (
+          <>
+            <div className={classes.chatWindow}>
+              {allChats[activeTopic].map((chat, i) => (
+                <div className={classes.flex} key={i}>
+                  <Chip label={chat.from} className={classes.chip} />
+                  <h5>{chat.msg}</h5>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className={classes.usersWindow}>
-          <UsersList allChats={allChats} />
-        </div>
-        <div className={classes.usersTopicWindow}>
-          <UsersTopicsList allChats={allChats} />
-        </div>
+            <div className={classes.usersWindow}>
+              <UsersList allChats={allChats} />
+            </div>
+            <div>
+              <List>
+                {newTopicPicked.map((topic, i) => (
+                  <ListItem
+                    //onClick={e => goToDirMessage(e.target.innerText)}
+                    key={i}
+                  >
+                    <ListItemText
+                      className={classes.multiline}
+                      primary={topic[0].activeTopic[0]}
+                      secondary={"-Topic"}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={classes.joinWindow}>
+              <div>&larr; Welcome! Choose a topic to start chatting.</div>
+            </div>
+            <div className={classes.usersWindow}>
+              <UsersList allChats={allChats} />
+            </div>
+            <div className={classes.usersTopicWindow}>
+              <UsersTopicsList activeTopic={activeTopic} />
+            </div>
+          </>
+        )}
       </div>
       <form
         className={classes.flex}
@@ -143,6 +233,7 @@ const Dashboard = () => {
           value={textValue}
           onChange={e => changeTextValue(e.target.value)}
           variant="outlined"
+          disabled={!activeTopic}
         />
         <Button
           type="submit"
