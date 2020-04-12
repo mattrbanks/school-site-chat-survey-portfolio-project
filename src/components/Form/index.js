@@ -34,8 +34,8 @@ app.use(morgan("dev"))
 
 let surveys = []
 console.log(surveys)
-let topics = []
-console.log(topics)
+// let topics = []
+// console.log(topics)
 
 // app.get("/", function(req, res) {
 //   //res.render('index', {})
@@ -58,21 +58,21 @@ app.post("/survey", function(req, res) {
   res.send("hello world!")
 })
 
-app.post("/activeTopic", function(req, res) {
-  //res.send("hello from express")
-  const newTopic = {
-    activeTopic: req.body.activeTopic,
-  }
-  topics.length = 0
-  topics.push(newTopic)
-  console.log(newTopic)
-  console.log(topics)
-  res.send("see req.body console log") //we can send back topics
-})
+// app.post("/activeTopic", function(req, res) {
+//   //res.send("hello from express")
+//   const newTopic = {
+//     activeTopic: req.body.activeTopic,
+//   }
+//   topics.length = 0
+//   topics.push(newTopic)
+//   console.log(newTopic)
+//   console.log(topics)
+//   res.send("see req.body console log") //we can send back topics
+// })
 
-app.get("/sendActiveTopic", function(req, res) {
-  res.send(topics)
-})
+// app.get("/sendActiveTopic", function(req, res) {
+//   res.send(topics)
+// })
 
 // app.get("/view-feedbacks", function(req, res) {
 //   dbConn.then(function(db) {

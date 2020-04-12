@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: theme.spacing(3, 2),
   },
+  multiline: {
+    display: "flex",
+  },
   flex: {
     display: "flex",
     alignItems: "left",
@@ -85,7 +88,14 @@ const Dashboard = () => {
   const classes = useStyles()
 
   // context Store
-  const { allChats, sendChatAction } = React.useContext(context)
+  const {
+    allChats,
+    sendChatAction,
+    sendActiveTopicSocket,
+    usersTopicsListC,
+  } = React.useContext(context)
+  console.log(usersTopicsListC)
+  console.log(allChats)
 
   const topics = Object.keys(allChats)
 
@@ -95,12 +105,12 @@ const Dashboard = () => {
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
 
-  const initialTopic = []
-  const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
-
-  const currentActiveTopic = {
-    activeTopic,
-  }
+  //const initialTopic = usersTopicsListC
+  const [newTopicPicked, setNewTopic] = React.useState(usersTopicsListC)
+  console.log(newTopicPicked)
+  // const currentActiveTopic = {
+  //   activeTopic,
+  // }
 
   React.useEffect(() => {
     sendChatAction({
@@ -115,37 +125,53 @@ const Dashboard = () => {
     })
   }, [])
 
-  React.useEffect(() => {
-    axios
-      .post("http://localhost:3000/activeTopic", currentActiveTopic)
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [activeTopic])
+  // React.useEffect(() => {
+  //   axios
+  //     .post("http://localhost:3000/activeTopic", currentActiveTopic)
+  //     .then(response => {
+  //       console.log(response)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     })
+  // }, [activeTopic])
 
   React.useEffect(() => {
-    axios
-      .get("http://localhost:3000/sendActiveTopic")
-      .then(response => {
-        console.log(response)
-        console.log(JSON.stringify(response.data))
-        initialTopic.length = 0
-        console.log(response.data)
-        initialTopic.push(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    // axios
+    //   .post("http://localhost:3001/activeTopic", activeTopic)
+    //   .then(response => {
+    //     console.log(response)
+    //     console.log(JSON.stringify(response.data))
+    //     //       initialTopic.length = 0
+    //     console.log(response.data)
+    //     //       initialTopic.push(response.data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // fire function from context
+    //console.log(activeTopic)
 
-    console.log(initialTopic)
+    console.log("We sent the activeTopic to server 2nd")
+    sendActiveTopicSocket(activeTopic)
 
-    //Do I need to do something here?
-    //setEmail("")
-    //setName("")
+    //setNewTopic(usersTopicsListC)
   }, [activeTopic])
+
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log("render")
+  //     forceUpdateHandler()
+  //   }) //slight delay in timing of setState method after initial render runs
+  // }, [activeTopic])
+
+  function forceUpdateHandler() {
+    setTimeout(() => {
+      console.log("We update state of activeTopic 3rd")
+      setNewTopic(usersTopicsListC) //need re-render here
+      console.log(usersTopicsListC)
+    }, 2000)
+  }
 
   // React.useEffect(() => {
   //   axios
@@ -167,7 +193,12 @@ const Dashboard = () => {
           <List>
             {topics.map(topic => (
               <ListItem
-                onClick={e => changeActiveTopic(e.target.innerText)}
+                onClick={e => {
+                  changeActiveTopic(e.target.innerText)
+
+                  console.log("We clicked the topic we want 1st")
+                  forceUpdateHandler()
+                }}
                 key={topic}
                 button
               >
@@ -189,16 +220,16 @@ const Dashboard = () => {
             <div className={classes.usersWindow}>
               <UsersList allChats={allChats} />
             </div>
-            <div>
+            <div className={classes.usersTopicWindow}>
               <List>
                 {newTopicPicked.map((topic, i) => (
                   <ListItem
                     //onClick={e => goToDirMessage(e.target.innerText)}
-                    key={i}
+                    key={topic[0]}
                   >
                     <ListItemText
                       className={classes.multiline}
-                      primary={topic[0].activeTopic[0]}
+                      primary={topic[1]}
                       secondary={"-Topic"}
                     />
                   </ListItem>

@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = props => {
   const classes = useStyles()
-  const { usersListC, userTypeListC } = React.useContext(context)
+  const { usersListC } = React.useContext(context)
 
   //console.log(usersListC) //this is logged before the array is actually filled so that is why it is empty
   const initialUsers = usersListC

@@ -4,8 +4,8 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 //import Button from "@material-ui/core/Button"
-import { context } from "../../../store"
-import axios from "axios"
+//import { context } from "../../../store"
+//import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,28 +26,28 @@ const UsersTopicsList = props => {
   const classes = useStyles()
   //const { usersListC } = React.useContext(context)
 
-  const initialTopic = []
-  const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
+  //const initialTopic = []
+  //const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
 
-  React.useEffect(() => {
-    axios
-      .get("http://localhost:3000/sendActiveTopic")
-      .then(response => {
-        console.log(response)
-        console.log(JSON.stringify(response.data))
-        initialTopic.length = 0
-        console.log(response.data)
-        initialTopic.push(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  // React.useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3000/sendActiveTopic")
+  //     .then(response => {
+  //       console.log(response)
+  //       console.log(JSON.stringify(response.data))
+  //       initialTopic.length = 0
+  //       console.log(response.data)
+  //       initialTopic.push(response.data)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     })
 
-    console.log(initialTopic)
-    //Do I need to do something here?
-    //setEmail("")
-    //setName("")
-  }, [])
+  //   console.log(initialTopic)
+  //   //Do I need to do something here?
+  //   //setEmail("")
+  //   //setName("")
+  // }, [])
 
   // setInterval(function() {
   //   axios
@@ -69,19 +69,17 @@ const UsersTopicsList = props => {
   return (
     <div>
       <List>
-        {newTopicPicked.map((topic, i) => (
-          <ListItem
-            //onClick={e => goToDirMessage(e.target.innerText)}
-            key={i}
-          >
-            <ListItemText
-              className={classes.multiline}
-              primary={"activeTopic"}
-              //primary={topic[0].activeTopic}
-              secondary={"-Topic"}
-            />
-          </ListItem>
-        ))}
+        <ListItem
+        //onClick={e => goToDirMessage(e.target.innerText)}
+        //key={i}
+        >
+          <ListItemText
+            className={classes.multiline}
+            primary={"activeTopic"}
+            //primary={topic[0].activeTopic}
+            secondary={"-Topic"}
+          />
+        </ListItem>
       </List>
       {/* <Button
         //type="submit"

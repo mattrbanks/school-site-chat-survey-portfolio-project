@@ -39,6 +39,10 @@ function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
 }
 
+function sendActiveTopicSocket(value) {
+  socket.emit("active-topic-socket", value) //we send activeTopic object up to server
+}
+
 const Store = props => {
   const [allChats, dispatch] = React.useReducer(reducer, initState)
   console.log(allChats)
@@ -58,6 +62,8 @@ const Store = props => {
   }
   let usersListC = []
   console.log(usersListC)
+  let usersTopicsListC = []
+  console.log(usersTopicsListC)
 
   socket.on("new-user", users => {
     console.log(users)
@@ -71,6 +77,14 @@ const Store = props => {
       usersListC.push(users[i])
     }
     console.log(usersListC)
+  })
+
+  socket.on("active-topic-socket", topic => {
+    usersTopicsListC.length = 0
+    for (let i = 0; i < topic.length; i++) {
+      usersTopicsListC.push(topic[i])
+    }
+    console.log(usersTopicsListC)
   })
 
   console.log(allChats)
@@ -107,6 +121,8 @@ const Store = props => {
           allChats,
           sendChatAction,
           usersListC,
+          usersTopicsListC,
+          sendActiveTopicSocket,
         }}
       >
         {props.children}
