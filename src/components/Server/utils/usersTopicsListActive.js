@@ -20,27 +20,31 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const UsersList = props => {
+const UsersTopicsListActive = props => {
   const classes = useStyles()
-  const { usersListC } = React.useContext(context)
 
-  const initialUsers = usersListC
-  const [allTheUserNames, setUserNames] = React.useState(initialUsers)
-  console.log(allTheUserNames)
+  const { allTopics } = React.useContext(context)
+
+  console.log(allTopics)
+
+  const userTopics = Object.values(allTopics)
+
+  console.log(userTopics)
 
   return (
-    <div>
+    <div className={classes.usersTopicWindow}>
       <List>
-        {allTheUserNames.map((name, i) => (
+        {userTopics[0].map((topic, i) => (
           <ListItem
             //onClick={e => goToDirMessage(e.target.innerText)}
-            key={name[0]}
-            button
+            key={topic[0]}
+            //key={i}
           >
             <ListItemText
               className={classes.multiline}
-              primary={name[1][0]}
-              secondary={name[1][1] + name[1][2]}
+              primary={topic[1]}
+              //primary={topic}
+              secondary={"-Topic"}
             />
           </ListItem>
         ))}
@@ -48,4 +52,4 @@ const UsersList = props => {
     </div>
   )
 }
-export default UsersList
+export default UsersTopicsListActive

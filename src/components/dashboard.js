@@ -10,7 +10,9 @@ import TextField from "@material-ui/core/TextField"
 import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import UsersTopicsList from "./Server/utils/usersTopicsList"
-import axios from "axios"
+import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
+//import useForceUpdate from "use-force-update"
+//import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,24 +92,33 @@ const Dashboard = () => {
   // context Store
   const {
     allChats,
+    //allTopics,
     sendChatAction,
     sendActiveTopicSocket,
-    usersTopicsListC,
+    //usersTopicsListC,
   } = React.useContext(context)
-  console.log(usersTopicsListC)
+  //console.log(usersTopicsListC)
   console.log(allChats)
+  //console.log(allTopics)
 
   const topics = Object.keys(allChats)
 
   console.log({ topics })
+
+  //const userTopics = Object.values(allTopics)
+  //const userTopics = Object.entries(allTopics)
+
+  //console.log(userTopics)
+
+  //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
 
   //const initialTopic = usersTopicsListC
-  const [newTopicPicked, setNewTopic] = React.useState(usersTopicsListC)
-  console.log(newTopicPicked)
+  //const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
+  //console.log(newTopicPicked)
   // const currentActiveTopic = {
   //   activeTopic,
   // }
@@ -125,64 +136,25 @@ const Dashboard = () => {
     })
   }, [])
 
-  // React.useEffect(() => {
-  //   axios
-  //     .post("http://localhost:3000/activeTopic", currentActiveTopic)
-  //     .then(response => {
-  //       console.log(response)
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     })
-  // }, [activeTopic])
-
   React.useEffect(() => {
-    // axios
-    //   .post("http://localhost:3001/activeTopic", activeTopic)
-    //   .then(response => {
-    //     console.log(response)
-    //     console.log(JSON.stringify(response.data))
-    //     //       initialTopic.length = 0
-    //     console.log(response.data)
-    //     //       initialTopic.push(response.data)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //   })
-    // fire function from context
-    //console.log(activeTopic)
-
-    console.log("We sent the activeTopic to server 2nd")
-    sendActiveTopicSocket(activeTopic)
-
-    //setNewTopic(usersTopicsListC)
+    setTimeout(() => {
+      console.log("We sent the activeTopic to server 2nd")
+      sendActiveTopicSocket(activeTopic)
+    }, 500)
   }, [activeTopic])
 
-  // React.useEffect(() => {
+  // function forceUpdateHandler() {
   //   setTimeout(() => {
-  //     console.log("render")
-  //     forceUpdateHandler()
-  //   }) //slight delay in timing of setState method after initial render runs
-  // }, [activeTopic])
-
-  function forceUpdateHandler() {
-    setTimeout(() => {
-      console.log("We update state of activeTopic 3rd")
-      setNewTopic(usersTopicsListC) //need re-render here
-      console.log(usersTopicsListC)
-    }, 2000)
-  }
+  //     console.log("We update state of activeTopic 3rd")
+  //     forceUpdate()
+  //     //setNewTopic(usersTopicsListC) //need re-render here
+  //     console.log(usersTopicsListC)
+  //   }, 40)
+  // }
 
   // React.useEffect(() => {
-  //   axios
-  //     .post("http://localhost:3000/activeTopic", currentActiveTopic)
-  //     .then(response => {
-  //       console.log(response)
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     })
-  // }, [activeTopic])
+
+  // }, [usersTopicsListC])
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -195,9 +167,8 @@ const Dashboard = () => {
               <ListItem
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
-
                   console.log("We clicked the topic we want 1st")
-                  forceUpdateHandler()
+                  //forceUpdateHandler()
                 }}
                 key={topic}
                 button
@@ -221,21 +192,26 @@ const Dashboard = () => {
               <UsersList allChats={allChats} />
             </div>
             <div className={classes.usersTopicWindow}>
+              <UsersTopicsListActive activeTopic={activeTopic} />
+            </div>
+            {/* <div className={classes.usersTopicWindow}>
               <List>
-                {newTopicPicked.map((topic, i) => (
+                {userTopics[0].map((topic, i) => (
                   <ListItem
                     //onClick={e => goToDirMessage(e.target.innerText)}
                     key={topic[0]}
+                    //key={i}
                   >
                     <ListItemText
                       className={classes.multiline}
                       primary={topic[1]}
+                      //primary={topic}
                       secondary={"-Topic"}
                     />
                   </ListItem>
                 ))}
               </List>
-            </div>
+            </div> */}
           </>
         ) : (
           <>

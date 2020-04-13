@@ -58,6 +58,7 @@ io.on("connection", function(socket) {
     msg.from = usersMsg[socket.id]
     console.log(usersMsg)
     console.log("message: " + JSON.stringify(msg))
+    console.log(msg)
     io.emit("chat message", msg)
   })
 

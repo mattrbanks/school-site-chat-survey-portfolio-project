@@ -24,6 +24,23 @@ function reducer(state, action) {
   }
 }
 
+const initTopic = []
+
+console.log(initTopic)
+
+function reducerTopic(state, action) {
+  const topicPayload = action.payload
+  console.log(initTopic)
+  switch (action.type) {
+    case "RECEIVE_TOPIC":
+      return {
+        topicPayload,
+      }
+    default:
+      return state
+  }
+}
+
 /* to initialize this socket a variable called socket is declared
  outside of the functional component because we don't want this to
   re-render every time the store reloads */
@@ -46,6 +63,9 @@ function sendActiveTopicSocket(value) {
 const Store = props => {
   const [allChats, dispatch] = React.useReducer(reducer, initState)
   console.log(allChats)
+
+  const [allTopics, dispatchTopic] = React.useReducer(reducerTopic, initTopic)
+  console.log(allTopics)
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
@@ -80,11 +100,15 @@ const Store = props => {
   })
 
   socket.on("active-topic-socket", topic => {
-    usersTopicsListC.length = 0
-    for (let i = 0; i < topic.length; i++) {
-      usersTopicsListC.push(topic[i])
-    }
-    console.log(usersTopicsListC)
+    setTimeout(() => {
+      console.log(topic)
+      dispatchTopic({ type: "RECEIVE_TOPIC", payload: topic })
+    }, 500)
+    // usersTopicsListC.length = 0
+    // for (let i = 0; i < topic.length; i++) {
+    //   usersTopicsListC.push(topic[i])
+    // }
+    // console.log(usersTopicsListC)
   })
 
   console.log(allChats)
@@ -119,9 +143,10 @@ const Store = props => {
       <context.Provider
         value={{
           allChats,
+          allTopics,
           sendChatAction,
           usersListC,
-          usersTopicsListC,
+          //usersTopicsListC,
           sendActiveTopicSocket,
         }}
       >
