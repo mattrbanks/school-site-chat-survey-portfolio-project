@@ -25,11 +25,11 @@ const UsersTopicsListActive = props => {
 
   const { allTopics } = React.useContext(context)
 
-  console.log(allTopics)
+  //console.log(allTopics)
 
   const userTopics = Object.values(allTopics)
 
-  console.log(userTopics)
+  //console.log(userTopics)
 
   return (
     <div className={classes.usersTopicWindow}>

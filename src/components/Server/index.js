@@ -2,7 +2,10 @@ const express = require("express")
 const app = express()
 //var app = require("express")()
 const http = require("http").createServer(app)
-const io = require("socket.io")(http)
+const io = require("socket.io")(http, {
+  pingInterval: 25000,
+  pingTimeout: 60000,
+})
 
 const cors = require("cors")
 const morgan = require("morgan")
@@ -25,45 +28,48 @@ app.post("/activeTopic", function(req, res) {
   }
   topicTemp.length = 0
   topicTemp.push(newTopic)
-  console.log(newTopic)
-  console.log(topicTemp)
+  //console.log(newTopic)
+  //console.log(topicTemp)
   res.send(topicTemp) //we can send back topics
 })
 
 io.on("connection", function(socket) {
-  console.log("a user connected")
+  //console.log("a user connected")
 
   socket.on("new-user", name => {
     users[socket.id] = name
     users[socket.id].push("-" + socket.id.substr(0, 5))
     usersMsg[socket.id] = name
     usersDirMsgChats[socket.id] = []
-    topicsAll[socket.id] = ""
+    //topicsAll[socket.id] = ""
 
-    console.log(users)
-    console.log(usersMsg)
-    console.log(usersDirMsgChats)
+    //console.log(users)
+    //console.log(usersMsg)
+    //console.log(usersDirMsgChats)
     io.emit("new-user", Object.entries(users))
-    console.log(Object.entries(users))
+    //console.log(Object.entries(users))
   })
 
   socket.on("active-topic-socket", topic => {
     topicsAll[socket.id] = topic
-    console.log(topicsAll)
-    console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
-    io.emit("active-topic-socket", Object.entries(topicsAll))
+    topic.from = users[socket.id]
+
+    //console.log(topicsAll)
+    //console.log(Object.values(topicsAll))
+    //console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
+    io.emit("active-topic-socket", Object.values(topicsAll))
   })
 
   socket.on("send chat message", msg => {
     msg.from = usersMsg[socket.id]
-    console.log(usersMsg)
-    console.log("message: " + JSON.stringify(msg))
-    console.log(msg)
+    //console.log(usersMsg)
+    //console.log("message: " + JSON.stringify(msg))
+    //console.log(msg)
     io.emit("chat message", msg)
   })
 
   socket.on("disconnect", () => {
-    console.log("a user disconnected: " + JSON.stringify(users[socket.id]))
+    //console.log("a user disconnected: " + JSON.stringify(users[socket.id]))
     socket.broadcast.emit("user-disconnected", users[socket.id])
     delete users[
       socket.id
@@ -73,7 +79,7 @@ io.on("connection", function(socket) {
     delete userType[socket.id]
     delete topicsAll[socket.id]
     io.emit("new-user", Object.entries(users))
-    console.log(Object.entries(users))
+    //console.log(Object.entries(users))
     // socket.removeAllListeners("connection")
     // socket.removeAllListeners("new-user")
     // socket.removeAllListeners("send chat message")
@@ -82,5 +88,5 @@ io.on("connection", function(socket) {
 })
 
 http.listen(3001, function() {
-  console.log("listening on *:3001")
+  //console.log("listening on *:3001")
 })

@@ -22,11 +22,14 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = props => {
   const classes = useStyles()
-  const { usersListC } = React.useContext(context)
+  const { usersListC, usersTopicsListC } = React.useContext(context)
+
+  // console.log({ usersListC })
+  // console.log(usersTopicsListC)
 
   const initialUsers = usersListC
   const [allTheUserNames, setUserNames] = React.useState(initialUsers)
-  console.log(allTheUserNames)
+  //console.log(allTheUserNames)
 
   return (
     <div>

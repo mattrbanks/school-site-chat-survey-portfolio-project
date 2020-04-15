@@ -92,33 +92,35 @@ const Dashboard = () => {
   // context Store
   const {
     allChats,
-    //allTopics,
+    allTopics,
     sendChatAction,
     sendActiveTopicSocket,
-    //usersTopicsListC,
+    usersTopicsListC,
   } = React.useContext(context)
   //console.log(usersTopicsListC)
-  console.log(allChats)
+  //console.log(allChats)
   //console.log(allTopics)
 
   const topics = Object.keys(allChats)
 
-  console.log({ topics })
+  ////console.log({ topics })
 
-  //const userTopics = Object.values(allTopics)
+  //const userTopics = Object.keys(allTopics)
+  const userTopics = Object.values(allTopics) //returns whatever is in the topics array
   //const userTopics = Object.entries(allTopics)
 
-  //console.log(userTopics)
+  //console.log({ userTopics })
 
   //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
+  //console.log(activeTopic)
 
-  //const initialTopic = usersTopicsListC
-  //const [newTopicPicked, setNewTopic] = React.useState(initialTopic)
-  //console.log(newTopicPicked)
+  const initialTopic = usersTopicsListC
+  const [usersInTopic, setNewTopic] = React.useState(initialTopic)
+  //console.log(usersInTopic)
   // const currentActiveTopic = {
   //   activeTopic,
   // }
@@ -137,24 +139,13 @@ const Dashboard = () => {
   }, [])
 
   React.useEffect(() => {
-    setTimeout(() => {
-      console.log("We sent the activeTopic to server 2nd")
-      sendActiveTopicSocket(activeTopic)
-    }, 500)
+    //console.log(activeTopic)
+
+    sendActiveTopicSocket({
+      from: "",
+      topic: activeTopic,
+    })
   }, [activeTopic])
-
-  // function forceUpdateHandler() {
-  //   setTimeout(() => {
-  //     console.log("We update state of activeTopic 3rd")
-  //     forceUpdate()
-  //     //setNewTopic(usersTopicsListC) //need re-render here
-  //     console.log(usersTopicsListC)
-  //   }, 40)
-  // }
-
-  // React.useEffect(() => {
-
-  // }, [usersTopicsListC])
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -167,7 +158,7 @@ const Dashboard = () => {
               <ListItem
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
-                  console.log("We clicked the topic we want 1st")
+                  //console.log("We clicked the topic we want 1st")
                   //forceUpdateHandler()
                 }}
                 key={topic}
@@ -189,29 +180,14 @@ const Dashboard = () => {
               ))}
             </div>
             <div className={classes.usersWindow}>
-              <UsersList allChats={allChats} />
-            </div>
-            <div className={classes.usersTopicWindow}>
-              <UsersTopicsListActive activeTopic={activeTopic} />
-            </div>
-            {/* <div className={classes.usersTopicWindow}>
               <List>
-                {userTopics[0].map((topic, i) => (
-                  <ListItem
-                    //onClick={e => goToDirMessage(e.target.innerText)}
-                    key={topic[0]}
-                    //key={i}
-                  >
-                    <ListItemText
-                      className={classes.multiline}
-                      primary={topic[1]}
-                      //primary={topic}
-                      secondary={"-Topic"}
-                    />
+                {allTopics[activeTopic].map((topic, i) => (
+                  <ListItem key={i} button>
+                    <ListItemText primary={topic.from} />
                   </ListItem>
                 ))}
               </List>
-            </div> */}
+            </div>
           </>
         ) : (
           <>
@@ -220,9 +196,6 @@ const Dashboard = () => {
             </div>
             <div className={classes.usersWindow}>
               <UsersList allChats={allChats} />
-            </div>
-            <div className={classes.usersTopicWindow}>
-              <UsersTopicsList activeTopic={activeTopic} />
             </div>
           </>
         )}
