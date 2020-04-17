@@ -64,16 +64,28 @@ function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
 }
 
+function sendChatConnectAction(value) {
+  socket.emit("connected message", value) //we send message object up to server
+}
+
+let topicHolder = []
+
 function sendActiveTopicSocket(value) {
+  let tempValue = value
+  console.log(value)
+  console.log(tempValue)
+  topicHolder.length = 0
+  topicHolder.push(tempValue)
   socket.emit("active-topic-socket", value) //we send activeTopic object up to server
+  console.log(topicHolder)
 }
 
 const Store = props => {
   const [allChats, dispatch] = React.useReducer(reducer, initState)
-  //console.log(allChats)
+  console.log(allChats)
 
   const [allTopics, dispatchTopic] = React.useReducer(reducerTopic, initTopic)
-  //console.log(allTopics)
+  console.log(allTopics)
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
@@ -83,15 +95,19 @@ const Store = props => {
     socket.emit("new-user", name) //kick name to server
 
     socket.on("chat message", msg => {
-      //console.log(msg)
+      console.log(msg)
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
     })
   }
   let usersListC = []
-  let usersTopicsListC = []
+  let usersTopicsListC = {
+    general: [], //these are the userList for that topic
+    topic2: [],
+  }
+  console.log(usersTopicsListC)
 
   socket.on("new-user", users => {
-    //console.log(users)
+    console.log(users)
 
     usersListC.length = 0
     for (let i = 0; i < users.length; i++) {
@@ -100,26 +116,41 @@ const Store = props => {
   })
 
   socket.on("active-topic-socket", topic => {
-    //console.log(topic)
-    dispatchTopic({
-      type: "RECEIVE_TOPIC_USER_LIST",
-      payload: topic,
-    })
+    console.log(topic)
+    // dispatchTopic({
+    //   type: "RECEIVE_TOPIC_USER_LIST",
+    //   payload: topic,
+    // })
+
+    usersTopicsListC.general.length = 0
+    usersTopicsListC.topic2.length = 0
+    for (let i = 0; i < topic.length; i++) {
+      if (topic[i].topic === "general") {
+        usersTopicsListC.general.push(topic[i])
+      } else if (topic[i].topic === "topic2") {
+        usersTopicsListC.topic2.push(topic[i])
+      }
+    }
 
     // usersTopicsListC.length = 0
     // for (let i = 0; i < topic.length; i++) {
     //   usersTopicsListC.push(topic[i])
     // }
-    ////console.log(usersTopicsListC)
+    //console.log(usersTopicsListC)
   })
 
-  ////console.log(allChats)
+  socket.once("connected message", msg => {
+    console.log(msg)
+    dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
+  })
+
+  //console.log(allChats)
   function appendMessage(value1, value2) {
     //add to allChats object
     allChats.general.push(value1)
     allChats.topic2.push(value2)
   }
-  ////console.log(allChats.general)
+  //console.log(allChats.general)
 
   socket.on("user-disconnected", name => {
     appendMessage(
@@ -146,7 +177,9 @@ const Store = props => {
         value={{
           allChats,
           allTopics,
+          topicHolder,
           sendChatAction,
+          sendChatConnectAction,
           usersListC,
           usersTopicsListC,
           sendActiveTopicSocket,

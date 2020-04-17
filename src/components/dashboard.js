@@ -11,7 +11,7 @@ import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import UsersTopicsList from "./Server/utils/usersTopicsList"
 import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
-//import useForceUpdate from "use-force-update"
+import useForceUpdate from "use-force-update"
 //import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
@@ -97,55 +97,73 @@ const Dashboard = () => {
     sendActiveTopicSocket,
     usersTopicsListC,
   } = React.useContext(context)
-  //console.log(usersTopicsListC)
-  //console.log(allChats)
-  //console.log(allTopics)
+  console.log(usersTopicsListC)
+  console.log(allChats)
+  console.log(allTopics)
 
   const topics = Object.keys(allChats)
 
-  ////console.log({ topics })
+  //console.log({ topics })
 
   //const userTopics = Object.keys(allTopics)
   const userTopics = Object.values(allTopics) //returns whatever is in the topics array
   //const userTopics = Object.entries(allTopics)
 
-  //console.log({ userTopics })
+  console.log({ userTopics })
 
-  //const forceUpdate = useForceUpdate()
+  const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
-  //console.log(activeTopic)
+  console.log(activeTopic)
 
   const initialTopic = usersTopicsListC
   const [usersInTopic, setNewTopic] = React.useState(initialTopic)
-  //console.log(usersInTopic)
-  // const currentActiveTopic = {
-  //   activeTopic,
-  // }
+  console.log(usersInTopic)
+
+  const [dashIsMounted, setDashboardBoolean] = React.useState(false)
 
   React.useEffect(() => {
-    sendChatAction({
-      from: "",
-      msg: "CONNECTED",
-      topic: "general",
-    })
-    sendChatAction({
-      from: "",
-      msg: "CONNECTED",
-      topic: "topic2",
-    })
+    setTimeout(function() {
+      setDashboardBoolean(true)
+      //forceUpdate()
+    }, 500)
+    // sendChatAction({
+    //   from: "",
+    //   msg: "CONNECTED",
+    //   topic: "general",
+    // })
+    //  sendChatAction({
+    //    from: "",
+    //    msg: "CONNECTED",
+    //    topic: "topic2",
+    //  })
   }, [])
 
   React.useEffect(() => {
-    //console.log(activeTopic)
-
+    const abortController = new AbortController()
+    console.log(activeTopic)
     sendActiveTopicSocket({
       from: "",
       topic: activeTopic,
     })
+    return () => {
+      abortController.abort()
+    }
   }, [activeTopic])
+
+  function setNewTopicHandler() {
+    //alert("I will re-render now.")
+    setTimeout(function() {
+      setNewTopic(initialTopic => {
+        // Object.assign would also work
+        return { ...initialTopic, ...usersTopicsListC }
+      })
+      //forceUpdate()
+    }, 500)
+    //forceUpdate()
+  }
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -158,8 +176,9 @@ const Dashboard = () => {
               <ListItem
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
-                  //console.log("We clicked the topic we want 1st")
+                  console.log("We clicked the topic we want 1st")
                   //forceUpdateHandler()
+                  setNewTopicHandler(usersTopicsListC)
                 }}
                 key={topic}
                 button
@@ -181,12 +200,15 @@ const Dashboard = () => {
             </div>
             <div className={classes.usersWindow}>
               <List>
-                {allTopics[activeTopic].map((topic, i) => (
+                {usersInTopic[activeTopic].map((topic, i) => (
                   <ListItem key={i} button>
                     <ListItemText primary={topic.from} />
                   </ListItem>
                 ))}
               </List>
+            </div>
+            <div>
+              <UsersTopicsList />
             </div>
           </>
         ) : (
