@@ -10,8 +10,8 @@ import TextField from "@material-ui/core/TextField"
 import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import UsersTopicsList from "./Server/utils/usersTopicsList"
-import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
-import useForceUpdate from "use-force-update"
+//import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
+//import useForceUpdate from "use-force-update"
 //import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
@@ -95,6 +95,8 @@ const Dashboard = () => {
     allTopics,
     sendChatAction,
     sendActiveTopicSocket,
+    sendChatJoinedAction,
+    sendChatLeftAction, //try this
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
@@ -111,7 +113,7 @@ const Dashboard = () => {
 
   console.log({ userTopics })
 
-  const forceUpdate = useForceUpdate()
+  //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -123,22 +125,13 @@ const Dashboard = () => {
   console.log(usersInTopic)
 
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
+  const [didMount, setDidMount] = React.useState(false)
 
   React.useEffect(() => {
     setTimeout(function() {
       setDashboardBoolean(true)
       //forceUpdate()
     }, 500)
-    // sendChatAction({
-    //   from: "",
-    //   msg: "CONNECTED",
-    //   topic: "general",
-    // })
-    //  sendChatAction({
-    //    from: "",
-    //    msg: "CONNECTED",
-    //    topic: "topic2",
-    //  })
   }, [])
 
   React.useEffect(() => {
@@ -162,8 +155,26 @@ const Dashboard = () => {
       })
       //forceUpdate()
     }, 500)
-    //forceUpdate()
   }
+
+  React.useEffect(() => {
+    const abortController = new AbortController()
+    console.log(activeTopic)
+    if (didMount) {
+      setTimeout(function() {
+        sendChatJoinedAction({
+          from: "",
+          msg: "JOINED",
+          topic: activeTopic,
+        })
+      }, 600)
+      return () => {
+        abortController.abort()
+      }
+    } else {
+      setDidMount(true)
+    }
+  }, [activeTopic])
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -178,7 +189,15 @@ const Dashboard = () => {
                   changeActiveTopic(e.target.innerText)
                   console.log("We clicked the topic we want 1st")
                   //forceUpdateHandler()
-                  setNewTopicHandler(usersTopicsListC)
+                  //setNewTopicHandler(usersTopicsListC)
+                  setNewTopicHandler()
+                  // setTimeout(function() {
+                  //   sendChatAction({
+                  //     from: "",
+                  //     msg: "JOINED",
+                  //     topic: "general",
+                  //   })
+                  // }, 3000)
                 }}
                 key={topic}
                 button

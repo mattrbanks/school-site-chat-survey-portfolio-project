@@ -73,14 +73,22 @@ io.on("connection", function(socket) {
     io.emit("chat message", msg)
   })
 
-  socket.on("connected message", msg => {
+  socket.on("left message", msg => {
+    // msg.from = usersMsg[socket.id]
+    // msg.topic = topicTemp[0].topic
+    // console.log(usersMsg)
+    // console.log(msg.topic)
+    // console.log("message: " + JSON.stringify(msg))
+    // console.log(msg)
+    io.emit("left message", msg)
+  })
+
+  socket.on("joined message", msg => {
     msg.from = usersMsg[socket.id]
-    msg.topic = topicTemp[0].topic
     console.log(usersMsg)
-    console.log(msg.topic)
     console.log("message: " + JSON.stringify(msg))
     console.log(msg)
-    io.emit("connected message", msg)
+    io.emit("joined message", msg)
   })
 
   socket.on("disconnect", () => {

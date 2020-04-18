@@ -64,8 +64,12 @@ function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
 }
 
-function sendChatConnectAction(value) {
+function sendChatLeftAction(value) {
   socket.emit("connected message", value) //we send message object up to server
+}
+
+function sendChatJoinedAction(value) {
+  socket.emit("joined message", value) //we send message object up to server
 }
 
 let topicHolder = []
@@ -117,6 +121,8 @@ const Store = props => {
 
   socket.on("active-topic-socket", topic => {
     console.log(topic)
+    // console.log(topicCopy)
+    // let topicCopy = topic
     // dispatchTopic({
     //   type: "RECEIVE_TOPIC_USER_LIST",
     //   payload: topic,
@@ -132,6 +138,16 @@ const Store = props => {
       }
     }
 
+    // let reverseTopicsArr = topicCopy.reverse()
+    // console.log(reverseTopicsArr)
+    // console.log(reverseTopicsArr[0].from)
+    // console.log(reverseTopicsArr[0].topic)
+    // sendChatAction({
+    //   from: reverseTopicsArr[0].from,
+    //   msg: "JOINED",
+    //   topic: reverseTopicsArr[0].topic,
+    // })
+
     // usersTopicsListC.length = 0
     // for (let i = 0; i < topic.length; i++) {
     //   usersTopicsListC.push(topic[i])
@@ -139,7 +155,12 @@ const Store = props => {
     //console.log(usersTopicsListC)
   })
 
-  socket.once("connected message", msg => {
+  socket.once("left message", msg => {
+    console.log(msg)
+    dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
+  })
+
+  socket.once("joined message", msg => {
     console.log(msg)
     dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
   })
@@ -179,7 +200,8 @@ const Store = props => {
           allTopics,
           topicHolder,
           sendChatAction,
-          sendChatConnectAction,
+          sendChatLeftAction,
+          sendChatJoinedAction,
           usersListC,
           usersTopicsListC,
           sendActiveTopicSocket,
