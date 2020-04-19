@@ -153,26 +153,26 @@ const Dashboard = () => {
 
   function setNewTopicHandler() {
     //alert("I will re-render now.")
-    setTimeout(function() {
-      setNewTopic(initialTopic => {
-        // Object.assign would also work
-        return { ...initialTopic, ...usersTopicsListC }
-      })
-      //forceUpdate()
-    }, 500)
+    //setTimeout(function() {
+    setNewTopic(initialTopic => {
+      // Object.assign would also work
+      return { ...initialTopic, ...usersTopicsListC }
+    })
+    //forceUpdate()
+    //}, 500)
   }
 
   React.useEffect(() => {
     const abortController = new AbortController()
     console.log(activeTopic)
     if (didMount) {
-      setTimeout(function() {
-        sendChatJoinedAction({
-          from: "",
-          msg: "JOINED",
-          topic: activeTopic,
-        })
-      }, 500) //was 600
+      //setTimeout(function() {
+      sendChatAction({
+        from: "",
+        msg: "JOINED",
+        topic: activeTopic,
+      })
+      //}, 500) //was 600
       return () => {
         abortController.abort()
       }

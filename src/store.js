@@ -185,6 +185,7 @@ const Store = props => {
   //let updateOrder = []
 
   socket.once("user-disconnected", nameAndTopic => {
+    //socket.disconnect()
     const abortController = new AbortController()
     console.log(nameAndTopic)
     if (nameAndTopic.topic.length === 0) {
@@ -196,6 +197,7 @@ const Store = props => {
         msg: "DISCONNECTED",
         topic: nameAndTopic.topic,
       })
+      //socket.disconnect()
       return () => {
         abortController.abort()
       }
