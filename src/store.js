@@ -2,6 +2,7 @@ import React from "react"
 import io from "socket.io-client"
 import { userName } from "./pages/chat"
 import { userType } from "./pages/chat"
+import useForceUpdate from "use-force-update"
 
 export const context = React.createContext()
 
@@ -18,6 +19,13 @@ function reducer(state, action) {
         ...state,
         [topic]: [...state[topic], { from, msg }],
       }
+    // case "RECEIVE_DISCONNECT_MESSAGE":
+    //   console.log(action.payload)
+    //   //was going to deal with duplicates here but it may not work
+    //   return {
+    //     ...state,
+    //     [topic]: [...state[topic], { from, msg }],
+    //   }
     default:
       return state
   }
@@ -64,9 +72,9 @@ function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
 }
 
-function sendChatLeftAction(value) {
-  socket.emit("connected message", value) //we send message object up to server
-}
+// function sendChatLeftAction(value) {
+//   socket.emit("left message", value) //we send message object up to server
+// }
 
 function sendChatJoinedAction(value) {
   socket.emit("joined message", value) //we send message object up to server
@@ -90,6 +98,8 @@ const Store = props => {
 
   const [allTopics, dispatchTopic] = React.useReducer(reducerTopic, initTopic)
   console.log(allTopics)
+
+  const forceUpdate = useForceUpdate()
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
@@ -155,10 +165,10 @@ const Store = props => {
     //console.log(usersTopicsListC)
   })
 
-  socket.once("left message", msg => {
-    console.log(msg)
-    dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
-  })
+  // socket.once("left message", msg => {
+  //   console.log(msg)
+  //   dispatch({ type: "RECEIVE_DISCONNECT_MESSAGE", payload: msg })
+  // })
 
   socket.once("joined message", msg => {
     console.log(msg)
@@ -166,26 +176,36 @@ const Store = props => {
   })
 
   //console.log(allChats)
-  function appendMessage(value1, value2) {
+  function appendMessage(value) {
     //add to allChats object
-    allChats.general.push(value1)
-    allChats.topic2.push(value2)
+    allChats[value.topic].push(value)
   }
   //console.log(allChats.general)
 
-  socket.on("user-disconnected", name => {
-    appendMessage(
-      {
-        from: name,
+  //let updateOrder = []
+
+  socket.once("user-disconnected", nameAndTopic => {
+    const abortController = new AbortController()
+    console.log(nameAndTopic)
+    if (nameAndTopic.topic.length === 0) {
+      return
+    } else {
+      //setTimeout(function() {
+      appendMessage({
+        from: nameAndTopic.from,
         msg: "DISCONNECTED",
-        topic: "general",
-      },
-      {
-        from: name,
-        msg: "DISCONNECTED",
-        topic: "topic2",
+        topic: nameAndTopic.topic,
+      })
+      return () => {
+        abortController.abort()
       }
-    )
+      //}, 500)
+      //forceUpdate() //creates duplicates too
+      //how can I signal an update in dashboard after this fires???
+      // updateOrder.length = 0
+      // updateOrder.push("update now")
+      // console.log(updateOrder)
+    }
   })
 
   /*here we are passing in an object with key allChats with the value of our current
@@ -200,7 +220,8 @@ const Store = props => {
           allTopics,
           topicHolder,
           sendChatAction,
-          sendChatLeftAction,
+          //updateOrder,
+          //sendChatLeftAction,
           sendChatJoinedAction,
           usersListC,
           usersTopicsListC,

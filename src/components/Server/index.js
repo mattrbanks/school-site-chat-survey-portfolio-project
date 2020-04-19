@@ -43,7 +43,7 @@ io.on("connection", function(socket) {
     usersDirMsgChats[socket.id] = []
     //topicsAll[socket.id] = ""
 
-    console.log(users)
+    console.log(users[socket.id])
     console.log(usersMsg)
     console.log(usersDirMsgChats)
     io.emit("new-user", Object.entries(users))
@@ -54,7 +54,7 @@ io.on("connection", function(socket) {
     topicsAll[socket.id] = topic
     topic.from = users[socket.id]
 
-    console.log(topic)
+    console.log(topicsAll[socket.id])
     console.log(Object.values(topicsAll))
     console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
     io.emit("active-topic-socket", Object.values(topicsAll))
@@ -73,15 +73,15 @@ io.on("connection", function(socket) {
     io.emit("chat message", msg)
   })
 
-  socket.on("left message", msg => {
-    // msg.from = usersMsg[socket.id]
-    // msg.topic = topicTemp[0].topic
-    // console.log(usersMsg)
-    // console.log(msg.topic)
-    // console.log("message: " + JSON.stringify(msg))
-    // console.log(msg)
-    io.emit("left message", msg)
-  })
+  // socket.on("left message", msg => {
+  //   msg.from = usersMsg[socket.id]
+  //   // msg.topic = topicTemp[0].topic
+  //   // console.log(usersMsg)
+  //   // console.log(msg.topic)
+  //   // console.log("message: " + JSON.stringify(msg))
+  //   // console.log(msg)
+  //   io.emit("left message", msg)
+  // })
 
   socket.on("joined message", msg => {
     msg.from = usersMsg[socket.id]
@@ -93,15 +93,16 @@ io.on("connection", function(socket) {
 
   socket.on("disconnect", () => {
     console.log("a user disconnected: " + JSON.stringify(users[socket.id]))
-    socket.broadcast.emit("user-disconnected", users[socket.id])
+    socket.broadcast.emit("user-disconnected", topicsAll[socket.id])
     delete users[
       socket.id
     ] /*delete the user from the array of objects at the specified key and remove the element from the users array up top*/
     delete usersMsg[socket.id]
     delete usersDirMsgChats[socket.id]
     delete userType[socket.id]
-    delete topicsAll[socket.id]
-    io.emit("new-user", Object.entries(users))
+    delete topicsAll[socket.id] //we will send this out instead of users[socket.id], which is just name
+    //io.emit("new-user", Object.entries(users))
+    io.emit("active-topic-socket", Object.values(topicsAll))
     console.log(Object.entries(users))
     // socket.removeAllListeners("connection")
     // socket.removeAllListeners("new-user")

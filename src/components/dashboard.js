@@ -11,7 +11,7 @@ import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import UsersTopicsList from "./Server/utils/usersTopicsList"
 //import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
-//import useForceUpdate from "use-force-update"
+import useForceUpdate from "use-force-update"
 //import axios from "axios"
 
 const useStyles = makeStyles(theme => ({
@@ -93,15 +93,17 @@ const Dashboard = () => {
   const {
     allChats,
     allTopics,
+    //updateOrder,
     sendChatAction,
     sendActiveTopicSocket,
     sendChatJoinedAction,
-    sendChatLeftAction, //try this
+    //sendChatLeftAction, //try this
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
   console.log(allTopics)
+  //console.log(updateOrder)
 
   const topics = Object.keys(allChats)
 
@@ -113,7 +115,7 @@ const Dashboard = () => {
 
   console.log({ userTopics })
 
-  //const forceUpdate = useForceUpdate()
+  const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -126,6 +128,9 @@ const Dashboard = () => {
 
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
   const [didMount, setDidMount] = React.useState(false)
+
+  // const initialUpdate = updateOrder
+  // const [updateNow, setUpdateNow] = React.useState(initialUpdate)
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -167,7 +172,7 @@ const Dashboard = () => {
           msg: "JOINED",
           topic: activeTopic,
         })
-      }, 600)
+      }, 500) //was 600
       return () => {
         abortController.abort()
       }
@@ -175,6 +180,13 @@ const Dashboard = () => {
       setDidMount(true)
     }
   }, [activeTopic])
+
+  // React.useEffect(() => {
+  //   forceUpdate()
+  //   // setUpdateNow(initialUpdate => {
+  //   //   return { ...initialUpdate, ...updateOrder }
+  //   // })
+  // }, [updateNow])
 
   return (
     <Paper className={classes.root} elevation={3}>
