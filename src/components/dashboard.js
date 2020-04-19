@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Paper from "@material-ui/core/Paper"
 import List from "@material-ui/core/List"
@@ -13,6 +13,7 @@ import UsersTopicsList from "./Server/utils/usersTopicsList"
 //import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
 import useForceUpdate from "use-force-update"
 //import axios from "axios"
+import ScrollableFeed from "react-scrollable-feed"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,9 +40,9 @@ const useStyles = makeStyles(theme => ({
   },
   chatWindow: {
     width: "50%",
-    height: "18.75rem",
+    height: "17.5rem",
     padding: "1.25rem",
-    overflow: "auto",
+    //overflow: "auto",
     overflowWrap: "break-word",
     wordWrap: "break-word", //IE legacy
     hyphens: "auto",
@@ -222,12 +223,14 @@ const Dashboard = () => {
         {activeTopic ? (
           <>
             <div className={classes.chatWindow}>
-              {allChats[activeTopic].map((chat, i) => (
-                <div className={classes.flex} key={i}>
-                  <Chip label={chat.from} className={classes.chip} />
-                  <h5>{chat.msg}</h5>
-                </div>
-              ))}
+              <ScrollableFeed>
+                {allChats[activeTopic].map((chat, i) => (
+                  <div className={classes.flex} key={i}>
+                    <Chip label={chat.from} className={classes.chip} />
+                    <h5>{chat.msg}</h5>
+                  </div>
+                ))}
+              </ScrollableFeed>
             </div>
             <div className={classes.usersWindow}>
               <List>
