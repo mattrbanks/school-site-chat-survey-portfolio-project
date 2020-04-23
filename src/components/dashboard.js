@@ -93,30 +93,18 @@ const Dashboard = () => {
   // context Store
   const {
     allChats,
-    allTopics,
-    //updateOrder,
     sendChatAction,
     sendActiveTopicSocket,
-    sendChatJoinedAction,
-    //sendChatLeftAction, //try this
+    updateChat,
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
-  console.log(allTopics)
-  //console.log(updateOrder)
+  console.log(updateChat)
 
   const topics = Object.keys(allChats)
 
-  //console.log({ topics })
-
-  //const userTopics = Object.keys(allTopics)
-  const userTopics = Object.values(allTopics) //returns whatever is in the topics array
-  //const userTopics = Object.entries(allTopics)
-
-  console.log({ userTopics })
-
-  const forceUpdate = useForceUpdate()
+  //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -129,14 +117,11 @@ const Dashboard = () => {
 
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
   const [didMount, setDidMount] = React.useState(false)
-
-  // const initialUpdate = updateOrder
-  // const [updateNow, setUpdateNow] = React.useState(initialUpdate)
+  const [updateNow, setUpdateNow] = React.useState(false)
 
   React.useEffect(() => {
     setTimeout(function() {
       setDashboardBoolean(true)
-      //forceUpdate()
     }, 500)
   }, [])
 
@@ -152,28 +137,19 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
-  function setNewTopicHandler() {
-    //alert("I will re-render now.")
-    //setTimeout(function() {
-    setNewTopic(initialTopic => {
-      // Object.assign would also work
-      return { ...initialTopic, ...usersTopicsListC }
-    })
-    //forceUpdate()
-    //}, 500)
-  }
-
   React.useEffect(() => {
     const abortController = new AbortController()
     console.log(activeTopic)
     if (didMount) {
-      //setTimeout(function() {
       sendChatAction({
         from: "",
         msg: "JOINED",
         topic: activeTopic,
       })
-      //}, 500) //was 600
+      setNewTopic(usersInTopic => {
+        return { ...usersInTopic, ...usersTopicsListC }
+      })
+
       return () => {
         abortController.abort()
       }
@@ -182,12 +158,17 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
-  // React.useEffect(() => {
-  //   forceUpdate()
-  //   // setUpdateNow(initialUpdate => {
-  //   //   return { ...initialUpdate, ...updateOrder }
-  //   // })
-  // }, [updateNow])
+  React.useEffect(() => {
+    if (updateNow) {
+      setTimeout(function() {
+        setNewTopic(usersInTopic => {
+          return { ...usersInTopic, ...usersTopicsListC }
+        })
+      }, 500)
+    } else {
+      setUpdateNow(true)
+    }
+  }, [updateChat])
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -201,16 +182,6 @@ const Dashboard = () => {
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   console.log("We clicked the topic we want 1st")
-                  //forceUpdateHandler()
-                  //setNewTopicHandler(usersTopicsListC)
-                  setNewTopicHandler()
-                  // setTimeout(function() {
-                  //   sendChatAction({
-                  //     from: "",
-                  //     msg: "JOINED",
-                  //     topic: "general",
-                  //   })
-                  // }, 3000)
                 }}
                 key={topic}
                 button
