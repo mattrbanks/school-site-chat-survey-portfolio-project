@@ -93,18 +93,22 @@ const Dashboard = () => {
   // context Store
   const {
     allChats,
+    privChat,
+    setPrivChat,
     sendChatAction,
     sendActiveTopicSocket,
+    sendPrivateMessage,
     updateChat,
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
   console.log(updateChat)
+  console.log(privChat)
 
   const topics = Object.keys(allChats)
 
-  //const forceUpdate = useForceUpdate()
+  const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -118,6 +122,11 @@ const Dashboard = () => {
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
   const [didMount, setDidMount] = React.useState(false)
   const [updateNow, setUpdateNow] = React.useState(false)
+  const [receiverMount, setReceiverMount] = React.useState(false)
+  const [privChatMount, setPrivChatMount] = React.useState(0) //use for now until something better.
+  //const [privChatMount, setPrivChatMount] = React.useState(false)
+
+  const [receiver, setReceiver] = React.useState("")
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -131,6 +140,7 @@ const Dashboard = () => {
     sendActiveTopicSocket({
       from: "",
       topic: activeTopic,
+      id: "",
     })
     return () => {
       abortController.abort()
@@ -170,6 +180,33 @@ const Dashboard = () => {
     }
   }, [updateChat])
 
+  React.useEffect(() => {
+    const abortController = new AbortController()
+    if (receiverMount) {
+      sendPrivateMessage(receiver)
+      return () => {
+        abortController.abort()
+      }
+    } else {
+      setReceiverMount(true)
+    }
+  }, [receiver])
+
+  // React.useEffect(() => {
+  //   const abortController = new AbortController()
+  //   console.log(activeTopic)
+  //   if (privChatMount) {
+  //     setPrivChat(privChatOld => {
+  //       return { ...privChatOld, ...privChat }
+  //     })
+  //     return () => {
+  //       abortController.abort()
+  //     }
+  //   } else {
+  //     setPrivChatMount(true)
+  //   }
+  // }, [privChat])
+
   return (
     <Paper className={classes.root} elevation={3}>
       <h2>Eagle Chat</h2>
@@ -190,6 +227,21 @@ const Dashboard = () => {
               </ListItem>
             ))}
           </List>
+          <p>Direct Messages</p>
+          <List>
+            {privChat.map((chat, i) => (
+              <ListItem
+                onClick={e => {
+                  //changeActiveTopic(e.target.innerText)
+                  console.log("We clicked the topic we want 1st")
+                }}
+                key={i}
+                button
+              >
+                <ListItemText primary={chat.name} />
+              </ListItem>
+            ))}
+          </List>
         </div>
         {activeTopic ? (
           <>
@@ -206,7 +258,19 @@ const Dashboard = () => {
             <div className={classes.usersWindow}>
               <List>
                 {usersInTopic[activeTopic].map((topic, i) => (
-                  <ListItem key={i} button>
+                  <ListItem
+                    key={topic.id}
+                    button
+                    onClick={e => {
+                      setReceiver(oldState => {
+                        return { ...oldState, ...topic }
+                      })
+                      setTimeout(function() {
+                        //setPrivChat(privChat)
+                        setPrivChatMount(Math.random())
+                      }, 500)
+                    }}
+                  >
                     <ListItemText primary={topic.from} />
                   </ListItem>
                 ))}

@@ -39,6 +39,10 @@ function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
 }
 
+function sendPrivateMessage(receiver) {
+  socket.emit("private message", receiver)
+}
+
 let topicHolder = []
 
 function sendActiveTopicSocket(value) {
@@ -58,6 +62,9 @@ const Store = props => {
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
+  const [privChat, setPrivChat] = React.useState([]) //[{`${receiver}&${sender}`: [{},{}]}, {`${receiver}&${sender}`: [{},{}]}]
+  console.log(privChat)
+
   //const forceUpdate = useForceUpdate()
 
   // this is where socket changes before we even call the function above, when the socket is created.
@@ -70,6 +77,11 @@ const Store = props => {
     socket.on("chat message", msg => {
       console.log(msg)
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
+    })
+    socket.on("private message", newChat => {
+      console.log(newChat)
+      privChat.push(newChat)
+      console.log(privChat)
     })
   }
   let usersListC = []
@@ -108,6 +120,7 @@ const Store = props => {
   // }
 
   socket.on("user-disconnected", nameAndTopic => {
+    //try putting this in the same scope as "chat message" to see if the duplicates go away.
     //const abortController = new AbortController()
     console.log(nameAndTopic)
     if (nameAndTopic.topic.length === 0) {
@@ -134,12 +147,15 @@ const Store = props => {
       <context.Provider
         value={{
           allChats,
+          privChat,
+          setPrivChat,
           topicHolder,
           sendChatAction,
           updateChat,
           usersListC,
           usersTopicsListC,
           sendActiveTopicSocket,
+          sendPrivateMessage,
         }}
       >
         {props.children}

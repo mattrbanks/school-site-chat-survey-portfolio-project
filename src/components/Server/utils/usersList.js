@@ -38,7 +38,7 @@ const UsersList = props => {
           <ListItem
             //onClick={e => goToDirMessage(e.target.innerText)}
             key={name[0]}
-            button
+            //button
           >
             <ListItemText
               className={classes.multiline}

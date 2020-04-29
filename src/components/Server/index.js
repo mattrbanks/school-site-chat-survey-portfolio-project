@@ -21,6 +21,12 @@ const userType = {}
 //const topicTemp = []
 const topicsAll = {}
 
+const createChat = ({ messages = [], name = "", users = [] } = {}) => ({
+  name,
+  messages,
+  users,
+})
+
 app.post("/activeTopic", function(req, res) {
   // //res.send("hello from socket.io")
   // const newTopic = {
@@ -35,6 +41,7 @@ app.post("/activeTopic", function(req, res) {
 
 io.on("connection", function(socket) {
   console.log("a user connected")
+  console.log(socket.id)
 
   socket.on("new-user", name => {
     users[socket.id] = name
@@ -51,11 +58,14 @@ io.on("connection", function(socket) {
 
   socket.on("active-topic-socket", topic => {
     topic.from = users[socket.id]
+    topic.id = socket.id
     topicsAll[socket.id] = topic
 
     console.log(topicsAll)
     console.log(Object.values(topicsAll))
+    console.log(Object.values(topicsAll))
     console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
+    //io.emit("active-topic-socket", Object.values(topicsAll))
     io.emit("active-topic-socket", Object.values(topicsAll))
   })
 
@@ -65,6 +75,21 @@ io.on("connection", function(socket) {
     console.log("message: " + JSON.stringify(msg))
     console.log(msg)
     io.emit("chat message", msg)
+  })
+
+  socket.on("private message", receiver => {
+    console.log("receiver: " + JSON.stringify(receiver))
+    console.log("receiver id: " + JSON.stringify(receiver.id))
+    if (receiver.id in users) {
+      const newChat = createChat({
+        name: `${receiver.from}&${users[socket.id]}`,
+        messages: [],
+        users: [receiver.from, users[socket.id]],
+      })
+      const receiverSocket = receiver.id
+      socket.to(receiverSocket).emit("private message", newChat)
+      socket.emit("private message", newChat)
+    }
   })
 
   socket.on("disconnect", () => {
