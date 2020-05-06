@@ -21,12 +21,6 @@ const userType = {}
 //const topicTemp = []
 const topicsAll = {}
 
-const createChat = ({ messages = [], name = "", users = [] } = {}) => ({
-  name,
-  messages,
-  users,
-})
-
 app.post("/activeTopic", function(req, res) {
   // //res.send("hello from socket.io")
   // const newTopic = {
@@ -77,14 +71,37 @@ io.on("connection", function(socket) {
     io.emit("chat message", msg)
   })
 
+  socket.on("send private chat message", msg => {
+    msg.from = usersMsg[socket.id]
+    console.log(usersMsg)
+    console.log("message: " + JSON.stringify(msg))
+    console.log(msg)
+    //we need socket.to().emit and socket.emit here so that io.emit will not send private messages to everyone and crash the site
+    io.emit("private chat message", msg)
+  })
+
   socket.on("private message", receiver => {
     console.log("receiver: " + JSON.stringify(receiver))
     console.log("receiver id: " + JSON.stringify(receiver.id))
+    const createChat = ({
+      messages = [],
+      name = "",
+      users = [],
+      id = "",
+    } = {}) => ({
+      name,
+      messages,
+      users,
+      id,
+    })
     if (receiver.id in users) {
+      console.log(receiver.id)
       const newChat = createChat({
-        name: `${receiver.from}&${users[socket.id]}`,
+        //name: `${receiver.from}&${users[socket.id]}`,
+        name: receiver.from + "&" + users[socket.id],
         messages: [],
-        users: [receiver.from, users[socket.id]],
+        users: [receiver.from, "&", users[socket.id]],
+        id: receiver.id,
       })
       const receiverSocket = receiver.id
       socket.to(receiverSocket).emit("private message", newChat)

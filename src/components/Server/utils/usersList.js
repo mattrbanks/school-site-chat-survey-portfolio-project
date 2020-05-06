@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 const UsersList = props => {
   const classes = useStyles()
   const { usersListC, usersTopicsListC } = React.useContext(context)
+  console.log(props.allChats)
 
   // console.log({ usersListC })
   // console.log(usersTopicsListC)

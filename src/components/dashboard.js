@@ -9,11 +9,10 @@ import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
-import UsersTopicsList from "./Server/utils/usersTopicsList"
-//import UsersTopicsListActive from "./Server/utils/usersTopicsListActive"
 import useForceUpdate from "use-force-update"
 //import axios from "axios"
 import ScrollableFeed from "react-scrollable-feed"
+import Badge from "@material-ui/core/Badge"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -93,20 +92,26 @@ const Dashboard = () => {
   // context Store
   const {
     allChats,
-    privChat,
-    setPrivChat,
+    privChatList,
+    //setPrivChatList,
     sendChatAction,
+    sendPrivateAction,
     sendActiveTopicSocket,
     sendPrivateMessage,
     updateChat,
+    //setUpdateChat,
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
   console.log(updateChat)
-  console.log(privChat)
+  console.log(privChatList)
 
   const topics = Object.keys(allChats)
+  console.log(topics)
+
+  const privTopics = Object.keys(privChatList)
+  console.log(privTopics)
 
   const forceUpdate = useForceUpdate()
 
@@ -124,7 +129,8 @@ const Dashboard = () => {
   const [updateNow, setUpdateNow] = React.useState(false)
   const [receiverMount, setReceiverMount] = React.useState(false)
   const [privChatMount, setPrivChatMount] = React.useState(0) //use for now until something better.
-  //const [privChatMount, setPrivChatMount] = React.useState(false)
+  const [privChatActive, setPrivChatActive] = React.useState(null)
+  console.log(privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
 
@@ -151,14 +157,19 @@ const Dashboard = () => {
     const abortController = new AbortController()
     console.log(activeTopic)
     if (didMount) {
-      sendChatAction({
-        from: "",
-        msg: "JOINED",
-        topic: activeTopic,
-      })
-      setNewTopic(usersInTopic => {
-        return { ...usersInTopic, ...usersTopicsListC }
-      })
+      if (privChatActive === null) {
+        sendChatAction({
+          from: "",
+          msg: "JOINED",
+          topic: activeTopic,
+        })
+      }
+      setTimeout(function() {
+        setNewTopic(usersInTopic => {
+          return { ...usersInTopic, ...usersTopicsListC }
+        })
+        //setUpdateChat(Math.random())
+      }, 500)
 
       return () => {
         abortController.abort()
@@ -192,25 +203,10 @@ const Dashboard = () => {
     }
   }, [receiver])
 
-  // React.useEffect(() => {
-  //   const abortController = new AbortController()
-  //   console.log(activeTopic)
-  //   if (privChatMount) {
-  //     setPrivChat(privChatOld => {
-  //       return { ...privChatOld, ...privChat }
-  //     })
-  //     return () => {
-  //       abortController.abort()
-  //     }
-  //   } else {
-  //     setPrivChatMount(true)
-  //   }
-  // }, [privChat])
-
   return (
     <Paper className={classes.root} elevation={3}>
       <h2>Eagle Chat</h2>
-      <h5>{activeTopic}</h5>
+      <h5>{activeTopic || privChatActive}</h5>
       <div className={classes.flex}>
         <div className={classes.topicsWindow}>
           <List>
@@ -218,6 +214,7 @@ const Dashboard = () => {
               <ListItem
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
+                  setPrivChatActive(null)
                   console.log("We clicked the topic we want 1st")
                 }}
                 key={topic}
@@ -229,57 +226,70 @@ const Dashboard = () => {
           </List>
           <p>Direct Messages</p>
           <List>
-            {privChat.map((chat, i) => (
+            {privTopics.map(privTopic => (
               <ListItem
                 onClick={e => {
-                  //changeActiveTopic(e.target.innerText)
+                  changeActiveTopic(e.target.innerText)
+                  setPrivChatActive(e.target.innerText)
                   console.log("We clicked the topic we want 1st")
                 }}
-                key={i}
+                key={privTopic}
                 button
               >
-                <ListItemText primary={chat.name} />
+                <ListItemText primary={privTopic} />
               </ListItem>
             ))}
           </List>
         </div>
         {activeTopic ? (
-          <>
-            <div className={classes.chatWindow}>
-              <ScrollableFeed>
-                {allChats[activeTopic].map((chat, i) => (
-                  <div className={classes.flex} key={i}>
-                    <Chip label={chat.from} className={classes.chip} />
-                    <h5>{chat.msg}</h5>
-                  </div>
-                ))}
-              </ScrollableFeed>
-            </div>
-            <div className={classes.usersWindow}>
-              <List>
-                {usersInTopic[activeTopic].map((topic, i) => (
-                  <ListItem
-                    key={topic.id}
-                    button
-                    onClick={e => {
-                      setReceiver(oldState => {
-                        return { ...oldState, ...topic }
-                      })
-                      setTimeout(function() {
-                        //setPrivChat(privChat)
-                        setPrivChatMount(Math.random())
-                      }, 500)
-                    }}
-                  >
-                    <ListItemText primary={topic.from} />
-                  </ListItem>
-                ))}
-              </List>
-            </div>
-            <div>
-              <UsersTopicsList />
-            </div>
-          </>
+          privChatActive !== null ? (
+            <>
+              <div className={classes.chatWindow}>
+                <ScrollableFeed>
+                  {privChatList[activeTopic].map((chat, i) => (
+                    <div className={classes.flex} key={i}>
+                      <Chip label={chat.from} className={classes.chip} />
+                      <h5>{chat.msg}</h5>
+                    </div>
+                  ))}
+                </ScrollableFeed>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={classes.chatWindow}>
+                <ScrollableFeed>
+                  {allChats[activeTopic].map((chat, i) => (
+                    <div className={classes.flex} key={i}>
+                      <Chip label={chat.from} className={classes.chip} />
+                      <h5>{chat.msg}</h5>
+                    </div>
+                  ))}
+                </ScrollableFeed>
+              </div>
+              <div className={classes.usersWindow}>
+                <List>
+                  {usersInTopic[activeTopic].map((topic, i) => (
+                    <ListItem
+                      key={topic.id}
+                      button
+                      onClick={e => {
+                        setReceiver(oldState => {
+                          return { ...oldState, ...topic }
+                        })
+                        setTimeout(function() {
+                          //setPrivChat(privChat)
+                          setPrivChatMount(Math.random())
+                        }, 500)
+                      }}
+                    >
+                      <ListItemText primary={topic.from} />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+            </>
+          )
         ) : (
           <>
             <div className={classes.joinWindow}>
@@ -291,38 +301,73 @@ const Dashboard = () => {
           </>
         )}
       </div>
-      <form
-        className={classes.flex}
-        onSubmit={e => {
-          e.preventDefault()
-        }}
-      >
-        <TextField
-          id="outlined-basic"
-          label="Send a message"
-          className={classes.chatBox}
-          value={textValue}
-          onChange={e => changeTextValue(e.target.value)}
-          variant="outlined"
-          disabled={!activeTopic}
-        />
-        <Button
-          type="submit"
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            sendChatAction({
-              from: "",
-              msg: textValue,
-              topic: activeTopic,
-            })
-            changeTextValue("")
+      {privChatActive !== null ? (
+        <form
+          className={classes.flex}
+          onSubmit={e => {
+            e.preventDefault()
           }}
         >
-          Send
-        </Button>
-      </form>
+          <TextField
+            id="outlined-basic"
+            label="Send a private message"
+            className={classes.chatBox}
+            value={textValue}
+            onChange={e => changeTextValue(e.target.value)}
+            variant="outlined"
+            disabled={!activeTopic}
+          />
+          <Button
+            type="submit"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              sendPrivateAction({
+                from: "",
+                msg: textValue,
+                topic: activeTopic,
+              })
+              changeTextValue("")
+            }}
+          >
+            Send
+          </Button>
+        </form>
+      ) : (
+        <form
+          className={classes.flex}
+          onSubmit={e => {
+            e.preventDefault()
+          }}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Send a message"
+            className={classes.chatBox}
+            value={textValue}
+            onChange={e => changeTextValue(e.target.value)}
+            variant="outlined"
+            disabled={!activeTopic}
+          />
+          <Button
+            type="submit"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              sendChatAction({
+                from: "",
+                msg: textValue,
+                topic: activeTopic,
+              })
+              changeTextValue("")
+            }}
+          >
+            Send
+          </Button>
+        </form>
+      )}
     </Paper>
   )
 }

@@ -24,6 +24,21 @@ function reducer(state, action) {
   }
 }
 
+const PrivInitState = {}
+
+function reducerPriv(state, action) {
+  const { from, msg, topic } = action.payload
+  switch (action.type) {
+    case "RECEIVE_PRIVATE_MESSAGE":
+      return {
+        ...state,
+        [topic]: [...state[topic], { from, msg }],
+      }
+    default:
+      return state
+  }
+}
+
 /* to initialize this socket a variable called socket is declared
  outside of the functional component because we don't want this to
   re-render every time the store reloads */
@@ -37,6 +52,10 @@ let socket //we define socket above the function below
   when they are actually invoked. variables in functions can be captured either way.*/
 function sendChatAction(value) {
   socket.emit("send chat message", value) //we send message object up to server
+}
+
+function sendPrivateAction(privateValue) {
+  socket.emit("send private chat message", privateValue)
 }
 
 function sendPrivateMessage(receiver) {
@@ -59,11 +78,17 @@ const Store = props => {
   const [allChats, dispatch] = React.useReducer(reducer, initState)
   console.log(allChats)
 
+  const [privChatList, dispatchPrivChat] = React.useReducer(
+    reducerPriv,
+    PrivInitState
+  )
+  console.log(privChatList)
+
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
-  const [privChat, setPrivChat] = React.useState([]) //[{`${receiver}&${sender}`: [{},{}]}, {`${receiver}&${sender}`: [{},{}]}]
-  console.log(privChat)
+  // const [privChatList, setPrivChatList] = React.useState([]) //[{`${receiver}&${sender}`: [{},{}]}, {`${receiver}&${sender}`: [{},{}]}]
+  // console.log(privChatList)
 
   //const forceUpdate = useForceUpdate()
 
@@ -78,10 +103,59 @@ const Store = props => {
       console.log(msg)
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
     })
+
+    socket.on("private chat message", msg => {
+      console.log(msg)
+      dispatchPrivChat({ type: "RECEIVE_PRIVATE_MESSAGE", payload: msg })
+    })
+
     socket.on("private message", newChat => {
-      console.log(newChat)
-      privChat.push(newChat)
-      console.log(privChat)
+      // console.log(newChat)
+      // console.log(newChat.users.flat().toString())
+      // console.log(
+      //   newChat.users
+      //     .reverse()
+      //     .flat()
+      //     .toString()
+      // )
+      // console.log(
+      //   newChat.users
+      //     .flat()
+      //     .sort()
+      //     .toString()
+      // )
+      // console.log(
+      //   newChat.users
+      //     .reverse()
+      //     .flat()
+      //     .sort()
+      //     .toString()
+      // )
+      //array work on newChat.users to check privChatList for duplicates, avoid 2 priv msg, and also get rid of commas
+      let newChatFwd = newChat.users.flat().toString()
+      let newChatBwd = newChat.users
+        .reverse()
+        .flat()
+        .toString()
+      // console.log(newChatFwd)
+      // console.log(newChatBwd)
+
+      if (newChatFwd in privChatList) {
+        return console.log("it matches!")
+      } else if (newChatBwd in privChatList) {
+        return console.log("it matches!")
+      } else {
+        privChatList[newChat.users] = []
+      }
+
+      //privChatList[newChat.name] = []
+      //privChatList[newChat.users] = []
+      //privChatList.push(newChat)
+      // console.log(privChatList)
+      // console.log(Object.keys(privChatList))
+      //console.log(Object.keys(privChatList).forEach(chat => console.log(chat)))
+      //allChats[newChat.name] = []
+      //console.log(allChats)
     })
   }
   let usersListC = []
@@ -147,11 +221,13 @@ const Store = props => {
       <context.Provider
         value={{
           allChats,
-          privChat,
-          setPrivChat,
+          privChatList,
+          //setPrivChatList,
           topicHolder,
           sendChatAction,
+          sendPrivateAction,
           updateChat,
+          setUpdateChat,
           usersListC,
           usersTopicsListC,
           sendActiveTopicSocket,

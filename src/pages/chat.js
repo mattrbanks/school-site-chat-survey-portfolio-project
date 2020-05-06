@@ -31,7 +31,20 @@ const Chat = props => {
       <div>
         <SEO title="chat" />
         <div>
-          <h1>hello from Eagle Chat</h1>
+          <h1>Welcome to Eagle Chat.</h1>
+          <p>
+            In the left panel, you have a number of topic rooms you can click on
+            to enter. Just click your child's grade to enter a group discussion
+            involving parents, teachers, and students. Once you click a topic,
+            you will see the messages for that topic in the middle panel. On the
+            right panel, you will see all logged in users before you choose a
+            topic. Once you are in a topic room, the right panel will only show
+            who is also in that room. You can click a user's name to create a
+            private chat. This chat can be found below the main topic room list
+            under "Direct Messages". Just click the newly created chat room that
+            contains your user name and the user you clicked on to enter a
+            private chat space for the two of you to talk.
+          </p>
           <Store>
             <Dashboard />
           </Store>
@@ -45,7 +58,7 @@ const Chat = props => {
     return (
       <div>
         <Layout>
-          <h1>Hello from ChatLogin</h1>
+          <h1>Login to Eagle Chat</h1>
           <form onSubmit={nameHandler}>
             <div>
               <div>
