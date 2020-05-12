@@ -2,7 +2,7 @@ import React from "react"
 import io from "socket.io-client"
 import { userName } from "./pages/chat"
 import { userType } from "./pages/chat"
-//import useForceUpdate from "use-force-update"
+import useForceUpdate from "use-force-update"
 
 export const context = React.createContext()
 
@@ -24,11 +24,14 @@ function reducer(state, action) {
   }
 }
 
-const PrivInitState = {}
+const privInitState = {}
 
 function reducerPriv(state, action) {
+  console.log(state)
   const { from, msg, topic } = action.payload
   switch (action.type) {
+    case "SET_PRIVATE_MESSAGE_STATE":
+      return { ...state, [action.payload.users]: [] }
     case "RECEIVE_PRIVATE_MESSAGE":
       return {
         ...state,
@@ -80,17 +83,14 @@ const Store = props => {
 
   const [privChatList, dispatchPrivChat] = React.useReducer(
     reducerPriv,
-    PrivInitState
+    privInitState
   )
   console.log(privChatList)
 
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
-  // const [privChatList, setPrivChatList] = React.useState([]) //[{`${receiver}&${sender}`: [{},{}]}, {`${receiver}&${sender}`: [{},{}]}]
-  // console.log(privChatList)
-
-  //const forceUpdate = useForceUpdate()
+  const forceUpdate = useForceUpdate()
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
@@ -110,52 +110,27 @@ const Store = props => {
     })
 
     socket.on("private message", newChat => {
-      // console.log(newChat)
-      // console.log(newChat.users.flat().toString())
-      // console.log(
-      //   newChat.users
-      //     .reverse()
-      //     .flat()
-      //     .toString()
-      // )
-      // console.log(
-      //   newChat.users
-      //     .flat()
-      //     .sort()
-      //     .toString()
-      // )
-      // console.log(
-      //   newChat.users
-      //     .reverse()
-      //     .flat()
-      //     .sort()
-      //     .toString()
-      // )
+      console.log(newChat)
       //array work on newChat.users to check privChatList for duplicates, avoid 2 priv msg, and also get rid of commas
       let newChatFwd = newChat.users.flat().toString()
       let newChatBwd = newChat.users
         .reverse()
         .flat()
         .toString()
-      // console.log(newChatFwd)
-      // console.log(newChatBwd)
+      console.log(newChatFwd)
+      console.log(newChatBwd)
 
       if (newChatFwd in privChatList) {
-        return console.log("it matches!")
+        return console.log("it matches Fwd!")
       } else if (newChatBwd in privChatList) {
-        return console.log("it matches!")
+        return console.log("it matches Bwd!")
       } else {
-        privChatList[newChat.users] = []
+        dispatchPrivChat({
+          type: "SET_PRIVATE_MESSAGE_STATE",
+          payload: newChat,
+        })
       }
-
-      //privChatList[newChat.name] = []
-      //privChatList[newChat.users] = []
-      //privChatList.push(newChat)
-      // console.log(privChatList)
-      // console.log(Object.keys(privChatList))
-      //console.log(Object.keys(privChatList).forEach(chat => console.log(chat)))
-      //allChats[newChat.name] = []
-      //console.log(allChats)
+      console.log(privChatList)
     })
   }
   let usersListC = []
@@ -222,7 +197,6 @@ const Store = props => {
         value={{
           allChats,
           privChatList,
-          //setPrivChatList,
           topicHolder,
           sendChatAction,
           sendPrivateAction,

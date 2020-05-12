@@ -93,13 +93,11 @@ const Dashboard = () => {
   const {
     allChats,
     privChatList,
-    //setPrivChatList,
     sendChatAction,
     sendPrivateAction,
     sendActiveTopicSocket,
     sendPrivateMessage,
     updateChat,
-    //setUpdateChat,
     usersTopicsListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
@@ -168,7 +166,6 @@ const Dashboard = () => {
         setNewTopic(usersInTopic => {
           return { ...usersInTopic, ...usersTopicsListC }
         })
-        //setUpdateChat(Math.random())
       }, 500)
 
       return () => {
@@ -192,6 +189,7 @@ const Dashboard = () => {
   }, [updateChat])
 
   React.useEffect(() => {
+    console.log(receiver)
     const abortController = new AbortController()
     if (receiverMount) {
       sendPrivateMessage(receiver)
@@ -278,7 +276,6 @@ const Dashboard = () => {
                           return { ...oldState, ...topic }
                         })
                         setTimeout(function() {
-                          //setPrivChat(privChat)
                           setPrivChatMount(Math.random())
                         }, 500)
                       }}

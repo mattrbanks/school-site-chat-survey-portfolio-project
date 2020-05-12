@@ -19,6 +19,8 @@ const usersMsg = {}
 const usersDirMsgChats = {}
 const userType = {}
 //const topicTemp = []
+const allPrivTopicsRec = {}
+const allPrivTopicsSen = {}
 const topicsAll = {}
 
 app.post("/activeTopic", function(req, res) {
@@ -59,7 +61,6 @@ io.on("connection", function(socket) {
     console.log(Object.values(topicsAll))
     console.log(Object.values(topicsAll))
     console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
-    //io.emit("active-topic-socket", Object.values(topicsAll))
     io.emit("active-topic-socket", Object.values(topicsAll))
   })
 
@@ -76,8 +77,38 @@ io.on("connection", function(socket) {
     console.log(usersMsg)
     console.log("message: " + JSON.stringify(msg))
     console.log(msg)
-    //we need socket.to().emit and socket.emit here so that io.emit will not send private messages to everyone and crash the site
-    io.emit("private chat message", msg)
+
+    let receiverSocket
+    if (
+      socket.id in allPrivTopicsRec &&
+      msg.topic === allPrivTopicsRec[socket.id][0]
+    ) {
+      if (socket.id === allPrivTopicsRec[socket.id][2]) {
+        receiverSocket = allPrivTopicsRec[socket.id][1]
+      } else if (socket.id === allPrivTopicsRec[socket.id][1]) {
+        receiverSocket = allPrivTopicsRec[socket.id][2]
+      }
+
+      console.log(allPrivTopicsRec[socket.id][0])
+      console.log(msg.topic)
+      console.log(msg.topic === allPrivTopicsRec[socket.id][0])
+      console.log(receiverSocket)
+    } else if (
+      socket.id in allPrivTopicsSen &&
+      msg.topic === allPrivTopicsSen[socket.id][0]
+    ) {
+      if (socket.id === allPrivTopicsSen[socket.id][2]) {
+        receiverSocket = allPrivTopicsSen[socket.id][1]
+      } else if (socket.id === allPrivTopicsSen[socket.id][1]) {
+        receiverSocket = allPrivTopicsSen[socket.id][2]
+      }
+      console.log(allPrivTopicsSen[socket.id][0])
+      console.log(msg.topic)
+      console.log(msg.topic === allPrivTopicsSen[socket.id][0])
+      console.log(receiverSocket)
+    }
+    socket.to(receiverSocket).emit("private chat message", msg)
+    socket.emit("private chat message", msg)
   })
 
   socket.on("private message", receiver => {
@@ -97,12 +128,23 @@ io.on("connection", function(socket) {
     if (receiver.id in users) {
       console.log(receiver.id)
       const newChat = createChat({
-        //name: `${receiver.from}&${users[socket.id]}`,
         name: receiver.from + "&" + users[socket.id],
-        messages: [],
+        senderId: socket.id,
         users: [receiver.from, "&", users[socket.id]],
         id: receiver.id,
       })
+      allPrivTopicsRec[receiver.id] = [
+        newChat.users[2] + "," + newChat.users[1] + "," + newChat.users[0],
+        receiver.id,
+        socket.id,
+      ]
+      allPrivTopicsSen[socket.id] = [
+        newChat.users[2] + "," + newChat.users[1] + "," + newChat.users[0],
+        receiver.id,
+        socket.id,
+      ]
+      console.log(allPrivTopicsRec)
+      console.log(allPrivTopicsSen)
       const receiverSocket = receiver.id
       socket.to(receiverSocket).emit("private message", newChat)
       socket.emit("private message", newChat)
@@ -116,6 +158,8 @@ io.on("connection", function(socket) {
       socket.id
     ] /*delete the user from the array of objects at the specified key and remove the element from the users array up top*/
     delete usersMsg[socket.id]
+    delete allPrivTopicsRec[socket.id]
+    delete allPrivTopicsSen[socket.id]
     delete usersDirMsgChats[socket.id]
     delete userType[socket.id]
     delete topicsAll[socket.id] //we will send this out instead of users[socket.id], which is just name
