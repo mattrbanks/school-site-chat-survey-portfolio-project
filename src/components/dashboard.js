@@ -13,6 +13,8 @@ import useForceUpdate from "use-force-update"
 //import axios from "axios"
 import ScrollableFeed from "react-scrollable-feed"
 import Badge from "@material-ui/core/Badge"
+//import Switch from "@material-ui/core/Switch"
+//import FormControlLabel from "@material-ui/core/FormControlLabel"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -84,10 +86,31 @@ const useStyles = makeStyles(theme => ({
     width: "15%",
     height: "3.5rem",
   },
+  badgeStyles: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    textAlign: "left",
+    "& > *": {
+      marginBottom: theme.spacing(2),
+    },
+    "& .MuiBadge-root": {
+      marginRight: theme.spacing(4),
+    },
+  },
 }))
 
 const Dashboard = () => {
   const classes = useStyles()
+
+  const [invisible, setInvisible] = React.useState(true)
+
+  const handleBadgeVisibility = () => {
+    // setInvisible(!invisible)
+    setInvisible(false)
+  }
 
   // context Store
   const {
@@ -128,6 +151,7 @@ const Dashboard = () => {
   const [receiverMount, setReceiverMount] = React.useState(false)
   const [privChatMount, setPrivChatMount] = React.useState(0) //use for now until something better.
   const [privChatActive, setPrivChatActive] = React.useState(null)
+  const [privNotifyOn, setPrivNotifyOn] = React.useState(false)
   console.log(privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
@@ -201,6 +225,21 @@ const Dashboard = () => {
     }
   }, [receiver])
 
+  React.useEffect(() => {
+    //if (!privChatActive && privNotifyOn) {
+    if (!privChatActive && privNotifyOn) {
+      handleBadgeVisibility()
+    } else {
+      setPrivNotifyOn(true)
+    }
+  }, [privChatList])
+
+  React.useEffect(() => {
+    if (privChatActive === activeTopic) {
+      console.log(privChatList[activeTopic].length)
+    }
+  }, [activeTopic])
+
   return (
     <Paper className={classes.root} elevation={3}>
       <h2>Eagle Chat</h2>
@@ -222,13 +261,22 @@ const Dashboard = () => {
               </ListItem>
             ))}
           </List>
-          <p>Direct Messages</p>
-          <List>
-            {privTopics.map(privTopic => (
+          <Badge
+            color="secondary"
+            variant="dot"
+            invisible={invisible}
+            //className={classes.badgeStyles}
+          >
+            <p>Direct Messages</p>
+          </Badge>
+          <List className={classes.badgeStyles}>
+            {privTopics.map((privTopic, i) => (
+              //<Badge color="secondary" variant="dot" invisible={invisible}>
               <ListItem
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(e.target.innerText)
+                  setInvisible(true)
                   console.log("We clicked the topic we want 1st")
                 }}
                 key={privTopic}
@@ -236,8 +284,19 @@ const Dashboard = () => {
               >
                 <ListItemText primary={privTopic} />
               </ListItem>
+              //</Badge>
             ))}
           </List>
+          {/* <FormControlLabel
+            control={
+              <Switch
+                color="primary"
+                checked={!invisible}
+                onChange={handleBadgeVisibility}
+              />
+            }
+            label="Show Badge"
+          /> */}
         </div>
         {activeTopic ? (
           privChatActive !== null ? (

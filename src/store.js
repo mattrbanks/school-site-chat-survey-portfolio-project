@@ -85,12 +85,18 @@ const Store = props => {
     reducerPriv,
     privInitState
   )
-  console.log(privChatList)
+
+  const privChatListCopy = React.useRef(privInitState)
+  console.log(privChatListCopy)
 
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
   const forceUpdate = useForceUpdate()
+
+  React.useEffect(() => {
+    privChatListCopy.current = privChatList
+  }, [privChatList])
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
@@ -110,27 +116,67 @@ const Store = props => {
     })
 
     socket.on("private message", newChat => {
+      console.log(privChatListCopy)
+      console.log(privChatList)
       console.log(newChat)
+      console.log(typeof newChat)
       //array work on newChat.users to check privChatList for duplicates, avoid 2 priv msg, and also get rid of commas
-      let newChatFwd = newChat.users.flat().toString()
+      console.log(newChat.users)
+      console.log(typeof newChat.users)
+      console.log(newChat.name)
+      console.log(typeof newChat.name)
+
+      let newChatFwd = newChat.users
+        .slice()
+        .flat()
+        .toString()
+
       let newChatBwd = newChat.users
+        .slice()
         .reverse()
         .flat()
         .toString()
-      console.log(newChatFwd)
-      console.log(newChatBwd)
 
-      if (newChatFwd in privChatList) {
-        return console.log("it matches Fwd!")
-      } else if (newChatBwd in privChatList) {
-        return console.log("it matches Bwd!")
-      } else {
+      console.log(newChatFwd)
+      console.log(typeof newChatFwd)
+      console.log(newChatBwd)
+      console.log(typeof newChatBwd)
+      console.log(newChatFwd in privChatList)
+      console.log(newChatBwd in privChatList)
+
+      console.log(privChatListCopy.current)
+      console.log(privChatList)
+      console.log(Object.values(privChatListCopy.current))
+      let privKeys = Object.keys(privChatListCopy.current)
+      console.log(privKeys)
+      for (const key of privKeys) {
+        console.log(key)
+        console.log(typeof key)
+      }
+      console.log(privKeys)
+      if (privKeys.length === 0) {
         dispatchPrivChat({
           type: "SET_PRIVATE_MESSAGE_STATE",
           payload: newChat,
         })
+      } else if (privKeys.length > 0) {
+        for (const key of privKeys) {
+          console.log(privKeys)
+          console.log(key)
+          if (key === newChatFwd) {
+            return console.log("it matches Fwd!")
+          } else if (key === newChatBwd) {
+            return console.log("it matches Bwd!")
+          } else {
+            dispatchPrivChat({
+              type: "SET_PRIVATE_MESSAGE_STATE",
+              payload: newChat,
+            })
+          }
+        }
       }
-      console.log(privChatList)
+      console.log(privChatListCopy.current)
+      console.log(Object.keys(privChatListCopy.current))
     })
   }
   let usersListC = []

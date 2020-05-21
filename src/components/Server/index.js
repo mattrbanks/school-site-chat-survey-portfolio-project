@@ -16,11 +16,7 @@ app.use(express.urlencoded({ extended: false }))
 
 const users = {} //this is the name next to the sent message saying who it is from
 const usersMsg = {}
-const usersDirMsgChats = {}
-const userType = {}
 //const topicTemp = []
-const allPrivTopicsRec = {}
-const allPrivTopicsSen = {}
 const topicsAll = {}
 
 app.post("/activeTopic", function(req, res) {
@@ -43,11 +39,9 @@ io.on("connection", function(socket) {
     users[socket.id] = name
     users[socket.id].push("-" + socket.id.substr(0, 5))
     usersMsg[socket.id] = name
-    usersDirMsgChats[socket.id] = []
 
     console.log(users[socket.id])
     console.log(usersMsg)
-    console.log(usersDirMsgChats)
     io.emit("new-user", Object.entries(users))
     console.log(Object.entries(users))
   })
@@ -79,34 +73,34 @@ io.on("connection", function(socket) {
     console.log(msg)
 
     let receiverSocket
-    if (
-      socket.id in allPrivTopicsRec &&
-      msg.topic === allPrivTopicsRec[socket.id][0]
-    ) {
-      if (socket.id === allPrivTopicsRec[socket.id][2]) {
-        receiverSocket = allPrivTopicsRec[socket.id][1]
-      } else if (socket.id === allPrivTopicsRec[socket.id][1]) {
-        receiverSocket = allPrivTopicsRec[socket.id][2]
+    let tempRecNameArr = msg.topic.split(",")
+    console.log(tempRecNameArr)
+    let userOne = tempRecNameArr.slice(0, 3)
+    console.log(userOne)
+    let userTwo = tempRecNameArr.slice(4)
+    console.log(userTwo)
+    console.log(socket.id)
+    const entries = Object.entries(usersMsg)
+    console.log(entries)
+    for (const [id, name] of entries) {
+      //console.log(`${name} has an id of ${id}`)
+      if (
+        JSON.stringify(name) === JSON.stringify(userOne) &&
+        id !== socket.id
+      ) {
+        console.log(`${name} has an id of ${id}`)
+        receiverSocket = id
+      } else if (
+        JSON.stringify(name) === JSON.stringify(userTwo) &&
+        id !== socket.id
+      ) {
+        console.log(`${name} has an id of ${id}`)
+        receiverSocket = id
       }
-
-      console.log(allPrivTopicsRec[socket.id][0])
-      console.log(msg.topic)
-      console.log(msg.topic === allPrivTopicsRec[socket.id][0])
-      console.log(receiverSocket)
-    } else if (
-      socket.id in allPrivTopicsSen &&
-      msg.topic === allPrivTopicsSen[socket.id][0]
-    ) {
-      if (socket.id === allPrivTopicsSen[socket.id][2]) {
-        receiverSocket = allPrivTopicsSen[socket.id][1]
-      } else if (socket.id === allPrivTopicsSen[socket.id][1]) {
-        receiverSocket = allPrivTopicsSen[socket.id][2]
-      }
-      console.log(allPrivTopicsSen[socket.id][0])
-      console.log(msg.topic)
-      console.log(msg.topic === allPrivTopicsSen[socket.id][0])
-      console.log(receiverSocket)
     }
+
+    console.log(receiverSocket)
+
     socket.to(receiverSocket).emit("private chat message", msg)
     socket.emit("private chat message", msg)
   })
@@ -115,13 +109,13 @@ io.on("connection", function(socket) {
     console.log("receiver: " + JSON.stringify(receiver))
     console.log("receiver id: " + JSON.stringify(receiver.id))
     const createChat = ({
-      messages = [],
+      senderId = "",
       name = "",
       users = [],
       id = "",
     } = {}) => ({
       name,
-      messages,
+      senderId,
       users,
       id,
     })
@@ -133,18 +127,6 @@ io.on("connection", function(socket) {
         users: [receiver.from, "&", users[socket.id]],
         id: receiver.id,
       })
-      allPrivTopicsRec[receiver.id] = [
-        newChat.users[2] + "," + newChat.users[1] + "," + newChat.users[0],
-        receiver.id,
-        socket.id,
-      ]
-      allPrivTopicsSen[socket.id] = [
-        newChat.users[2] + "," + newChat.users[1] + "," + newChat.users[0],
-        receiver.id,
-        socket.id,
-      ]
-      console.log(allPrivTopicsRec)
-      console.log(allPrivTopicsSen)
       const receiverSocket = receiver.id
       socket.to(receiverSocket).emit("private message", newChat)
       socket.emit("private message", newChat)
@@ -158,10 +140,6 @@ io.on("connection", function(socket) {
       socket.id
     ] /*delete the user from the array of objects at the specified key and remove the element from the users array up top*/
     delete usersMsg[socket.id]
-    delete allPrivTopicsRec[socket.id]
-    delete allPrivTopicsSen[socket.id]
-    delete usersDirMsgChats[socket.id]
-    delete userType[socket.id]
     delete topicsAll[socket.id] //we will send this out instead of users[socket.id], which is just name
     io.emit("active-topic-socket", Object.values(topicsAll))
     console.log(Object.values(topicsAll))
