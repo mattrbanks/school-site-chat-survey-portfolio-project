@@ -122,6 +122,7 @@ const Dashboard = () => {
     sendPrivateMessage,
     updateChat,
     usersTopicsListC,
+    usersListC,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
@@ -145,14 +146,21 @@ const Dashboard = () => {
   const [usersInTopic, setNewTopic] = React.useState(initialTopic)
   console.log(usersInTopic)
 
+  const initialUsers = usersListC
+  const [allTheUserNames, setUserNames] = React.useState(initialUsers)
+  console.log(allTheUserNames)
+
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
   const [didMount, setDidMount] = React.useState(false)
   const [updateNow, setUpdateNow] = React.useState(false)
   const [receiverMount, setReceiverMount] = React.useState(false)
   const [privChatMount, setPrivChatMount] = React.useState(0) //use for now until something better.
   const [privChatActive, setPrivChatActive] = React.useState(null)
+  const [privChatActiveNoComma, setPrivChatActiveNoComma] = React.useState(null)
   const [privNotifyOn, setPrivNotifyOn] = React.useState(false)
+  const [userListSwitch, setUserListSwitch] = React.useState(false)
   console.log(privChatActive)
+  console.log(typeof privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
 
@@ -236,14 +244,22 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     if (privChatActive === activeTopic) {
+      setPrivChatActiveNoComma(privChatActive.replace(/,/g, ""))
       console.log(privChatList[activeTopic].length)
+      console.log(privChatActive.replace(/,/g, ""))
     }
   }, [activeTopic])
+
+  React.useEffect(() => {
+    forceUpdate()
+    console.log(userListSwitch)
+  }, [userListSwitch])
 
   return (
     <Paper className={classes.root} elevation={3}>
       <h2>Eagle Chat</h2>
-      <h5>{activeTopic || privChatActive}</h5>
+      <h5>{privChatActive !== null ? privChatActiveNoComma : activeTopic}</h5>
+
       <div className={classes.flex}>
         <div className={classes.topicsWindow}>
           <List>
@@ -324,26 +340,65 @@ const Dashboard = () => {
                   ))}
                 </ScrollableFeed>
               </div>
-              <div className={classes.usersWindow}>
-                <List>
-                  {usersInTopic[activeTopic].map((topic, i) => (
-                    <ListItem
-                      key={topic.id}
-                      button
-                      onClick={e => {
-                        setReceiver(oldState => {
-                          return { ...oldState, ...topic }
-                        })
-                        setTimeout(function() {
-                          setPrivChatMount(Math.random())
-                        }, 500)
-                      }}
-                    >
-                      <ListItemText primary={topic.from} />
-                    </ListItem>
-                  ))}
-                </List>
-              </div>
+              <button
+                onClick={() => {
+                  setUserListSwitch(!userListSwitch)
+                }}
+              >
+                Toggle UserList
+              </button>
+              {userListSwitch ? (
+                // <p className={classes.usersWindow}>why</p>
+                // <div className={classes.usersWindow}>
+                //   <UsersList userListSwitch={userListSwitch} />
+                // </div>
+                <div>
+                  <List>
+                    {allTheUserNames.map((name, i) => (
+                      <ListItem
+                        //onClick={e => goToDirMessage(e.target.innerText)}
+                        key={name[0]}
+                        button
+                        onClick={() => {
+                          setReceiver(oldState => {
+                            return { ...oldState, from: name[1], id: name[0] }
+                          })
+                          setTimeout(function() {
+                            setPrivChatMount(Math.random())
+                          }, 500)
+                        }}
+                      >
+                        <ListItemText
+                          className={classes.multiline}
+                          primary={name[1][0]}
+                          secondary={name[1][1] + name[1][2]}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                </div>
+              ) : (
+                <div className={classes.usersWindow}>
+                  <List>
+                    {usersInTopic[activeTopic].map((topic, i) => (
+                      <ListItem
+                        key={topic.id}
+                        button
+                        onClick={() => {
+                          setReceiver(oldState => {
+                            return { ...oldState, ...topic }
+                          })
+                          setTimeout(function() {
+                            setPrivChatMount(Math.random())
+                          }, 500)
+                        }}
+                      >
+                        <ListItemText primary={topic.from} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </div>
+              )}
             </>
           )
         ) : (

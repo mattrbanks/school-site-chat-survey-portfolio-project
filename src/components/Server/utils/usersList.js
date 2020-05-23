@@ -22,11 +22,10 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = props => {
   const classes = useStyles()
-  const { usersListC, usersTopicsListC } = React.useContext(context)
+  const { usersListC } = React.useContext(context)
   console.log(props.allChats)
 
   // console.log({ usersListC })
-  // console.log(usersTopicsListC)
 
   const initialUsers = usersListC
   const [allTheUserNames, setUserNames] = React.useState(initialUsers)
@@ -36,11 +35,7 @@ const UsersList = props => {
     <div>
       <List>
         {allTheUserNames.map((name, i) => (
-          <ListItem
-            //onClick={e => goToDirMessage(e.target.innerText)}
-            key={name[0]}
-            //button
-          >
+          <ListItem key={name[0]}>
             <ListItemText
               className={classes.multiline}
               primary={name[1][0]}
