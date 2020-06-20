@@ -58,8 +58,8 @@ const Chat = props => {
     return (
       <div>
         <Layout>
-          <h1>Login to Eagle Chat</h1>
-          <form onSubmit={nameHandler}>
+          <h1 style={{ margin: "1rem" }}>Login to Eagle Chat</h1>
+          <form style={{ margin: "1rem" }} onSubmit={nameHandler}>
             <div>
               <div>
                 <label htmlFor="name">Name (required)</label>

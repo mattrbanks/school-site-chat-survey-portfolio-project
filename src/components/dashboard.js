@@ -13,6 +13,7 @@ import useForceUpdate from "use-force-update"
 //import axios from "axios"
 import ScrollableFeed from "react-scrollable-feed"
 import Badge from "@material-ui/core/Badge"
+import styled from "styled-components"
 //import Switch from "@material-ui/core/Switch"
 //import FormControlLabel from "@material-ui/core/FormControlLabel"
 
@@ -60,17 +61,19 @@ const useStyles = makeStyles(theme => ({
     textAlign: "left",
   },
   usersWindow: {
-    width: "30%",
-    height: "18.75rem",
+    //width: "30%",
+    height: "17rem",
     borderLeft: "0.0625rem solid grey",
     overflow: "auto",
     overflowWrap: "break-word",
     wordWrap: "break-word", //IE legacy
     hyphens: "auto",
     textAlign: "left",
+    display: "flex",
+    alignItems: "left",
   },
-  usersTopicWindow: {
-    width: "30%",
+  usersWindowPreTopic: {
+    //width: "30%",
     height: "18.75rem",
     borderLeft: "0.0625rem solid grey",
     overflow: "auto",
@@ -78,6 +81,8 @@ const useStyles = makeStyles(theme => ({
     wordWrap: "break-word", //IE legacy
     hyphens: "auto",
     textAlign: "left",
+    display: "flex",
+    alignItems: "left",
   },
   chatBox: {
     width: "85%",
@@ -100,10 +105,15 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(4),
     },
   },
+  textColorMsg: {
+    color: "red",
+  },
 }))
 
 const Dashboard = () => {
   const classes = useStyles()
+
+  const textColorMsgClass = classes.textColorMsg
 
   const [invisible, setInvisible] = React.useState(true)
 
@@ -123,17 +133,37 @@ const Dashboard = () => {
     updateChat,
     usersTopicsListC,
     usersListC,
+    msgTopic,
   } = React.useContext(context)
   console.log(usersTopicsListC)
   console.log(allChats)
   console.log(updateChat)
   console.log(privChatList)
+  console.log(msgTopic)
 
   const topics = Object.keys(allChats)
   console.log(topics)
 
   const privTopics = Object.keys(privChatList)
   console.log(privTopics)
+
+  const privTopicsBool = { ...privChatList }
+  console.log(privTopicsBool)
+
+  const createPrivTopicSwitch = function(obj) {
+    Object.keys(obj).forEach(function(key) {
+      obj[key] = false
+    })
+    return obj
+  }
+
+  const [privTopicsEntriesState, setPrivTopicsEntriesState] = React.useState(
+    Object.entries(privChatList) //new!
+  )
+  console.log(privTopicsEntriesState)
+
+  let privTopicsEntries = Object.entries(privChatList)
+  console.log(privTopicsEntries)
 
   const forceUpdate = useForceUpdate()
 
@@ -163,6 +193,8 @@ const Dashboard = () => {
   console.log(typeof privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
+
+  const [privChatColor, setPrivChatColor] = React.useState("red")
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -250,10 +282,59 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
+  function privTopicClick() {
+    //for(let i = 0; )
+    setPrivChatColor("black")
+  }
+
+  // function userWasClickedForPrivMsg() {
+  //   privTopicsBool = Object.keys(privChatList).forEach(function(key) {
+  //     privChatList[key] = false
+  //   })
+
+  //   // for (let i = 0; i < privTopics.length; i++) {
+  //   //   privTopicsBool.push([])
+  //   // }
+  //   // for (let i = 0; i < privTopics.length; i++) {
+  //   //   privTopicsBool[0].push(privTopics[i])
+  //   // }
+  // }
+
+  //&& subarray.indexOf(privTopic) + 1 === 1
+
   React.useEffect(() => {
-    forceUpdate()
-    console.log(userListSwitch)
-  }, [userListSwitch])
+    createPrivTopicSwitch(privTopicsBool)
+    console.log(privTopicsBool)
+    console.log(privChatList)
+    console.log(msgTopic)
+    privTopicsEntries = Object.entries(privTopicsBool)
+    console.log(privTopicsEntries)
+    privTopicsEntries.map(function(subarray) {
+      return subarray.map(function(privTopic) {
+        return msgTopic === privTopic && privTopic === privTopicsEntries[0][0]
+          ? (privTopicsEntries[0][1] = true)
+          : ""
+      })
+    })
+    setPrivTopicsEntriesState(oldState => {
+      return { ...oldState, ...privTopicsEntries }
+    })
+    console.log(privTopicsEntries)
+    // setTimeout(function() {
+    //   console.log(privTopicsBool)
+    // }, 1000)
+  }, [privChatList]) //this works but I need update. Not turning red.
+
+  React.useEffect(() => {
+    console.log(privTopicsEntries)
+  }, [msgTopic])
+
+  // React.useEffect(() => {
+  //   setPrivChatColor("red")
+  // //   for (let i = 0; i < privTopics.length; i++) {
+  // //     privTopicsBool.push(privTopics[i])
+  // //   }
+  // }, [privChatList])
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -268,6 +349,7 @@ const Dashboard = () => {
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(null)
+                  privTopicClick()
                   console.log("We clicked the topic we want 1st")
                 }}
                 key={topic}
@@ -286,20 +368,31 @@ const Dashboard = () => {
             <p>Direct Messages</p>
           </Badge>
           <List className={classes.badgeStyles}>
-            {privTopics.map((privTopic, i) => (
+            {privTopicsEntries.map((privTopic, i) => (
               //<Badge color="secondary" variant="dot" invisible={invisible}>
+
               <ListItem
+                //className={msgTopic === privTopic ? "text-color" : ""}
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(e.target.innerText)
                   setInvisible(true)
-                  console.log("We clicked the topic we want 1st")
+                  privTopicClick()
+                  console.log("Here it is! " + privTopicsEntries)
                 }}
-                key={privTopic}
+                key={privTopic[0]}
                 button
               >
-                <ListItemText primary={privTopic} />
+                <PrivTextBold>
+                  <ListItemText
+                    //style={{ color: "red" }}
+                    //className={textColorMsgClass}
+                    className={privTopic[1] == true ? textColorMsgClass : ""}
+                    primary={privTopic[0]}
+                  />
+                </PrivTextBold>
               </ListItem>
+
               //</Badge>
             ))}
           </List>
@@ -340,65 +433,67 @@ const Dashboard = () => {
                   ))}
                 </ScrollableFeed>
               </div>
-              <button
-                onClick={() => {
-                  setUserListSwitch(!userListSwitch)
-                }}
-              >
-                Toggle UserList
-              </button>
-              {userListSwitch ? (
-                // <p className={classes.usersWindow}>why</p>
-                // <div className={classes.usersWindow}>
-                //   <UsersList userListSwitch={userListSwitch} />
-                // </div>
-                <div>
-                  <List>
-                    {allTheUserNames.map((name, i) => (
-                      <ListItem
-                        //onClick={e => goToDirMessage(e.target.innerText)}
-                        key={name[0]}
-                        button
-                        onClick={() => {
-                          setReceiver(oldState => {
-                            return { ...oldState, from: name[1], id: name[0] }
-                          })
-                          setTimeout(function() {
-                            setPrivChatMount(Math.random())
-                          }, 500)
-                        }}
-                      >
-                        <ListItemText
-                          className={classes.multiline}
-                          primary={name[1][0]}
-                          secondary={name[1][1] + name[1][2]}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </div>
-              ) : (
-                <div className={classes.usersWindow}>
-                  <List>
-                    {usersInTopic[activeTopic].map((topic, i) => (
-                      <ListItem
-                        key={topic.id}
-                        button
-                        onClick={() => {
-                          setReceiver(oldState => {
-                            return { ...oldState, ...topic }
-                          })
-                          setTimeout(function() {
-                            setPrivChatMount(Math.random())
-                          }, 500)
-                        }}
-                      >
-                        <ListItemText primary={topic.from} />
-                      </ListItem>
-                    ))}
-                  </List>
-                </div>
-              )}
+              <div>
+                <button
+                  onClick={() => {
+                    setUserListSwitch(!userListSwitch)
+                  }}
+                >
+                  Toggle UserList
+                </button>
+                {userListSwitch ? (
+                  // <p className={classes.usersWindow}>why</p>
+                  // <div className={classes.usersWindow}>
+                  //   <UsersList userListSwitch={userListSwitch} />
+                  // </div>
+                  <div className={classes.usersWindow}>
+                    <List>
+                      {allTheUserNames.map((name, i) => (
+                        <ListItem
+                          //onClick={e => goToDirMessage(e.target.innerText)}
+                          key={name[0]}
+                          button
+                          onClick={() => {
+                            setReceiver({ from: name[1], id: name[0] })
+                            setTimeout(function() {
+                              setPrivChatMount(Math.random())
+                            }, 500)
+                            //userWasClickedForPrivMsg()
+                          }}
+                        >
+                          <ListItemText
+                            className={classes.multiline}
+                            primary={name[1][0]}
+                            secondary={name[1][1] + name[1][2]}
+                          />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </div>
+                ) : (
+                  <div className={classes.usersWindow}>
+                    <List>
+                      {usersInTopic[activeTopic].map((topic, i) => (
+                        <ListItem
+                          key={topic.id}
+                          button
+                          onClick={() => {
+                            setReceiver(oldState => {
+                              return { ...oldState, ...topic }
+                            })
+                            setTimeout(function() {
+                              setPrivChatMount(Math.random())
+                            }, 500)
+                            //userWasClickedForPrivMsg()
+                          }}
+                        >
+                          <ListItemText primary={topic.from} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  </div>
+                )}
+              </div>
             </>
           )
         ) : (
@@ -406,7 +501,7 @@ const Dashboard = () => {
             <div className={classes.joinWindow}>
               <div>&larr; Welcome! Choose a topic to start chatting.</div>
             </div>
-            <div className={classes.usersWindow}>
+            <div className={classes.usersWindowPreTopic}>
               <UsersList allChats={allChats} />
             </div>
           </>
@@ -439,6 +534,7 @@ const Dashboard = () => {
                 msg: textValue,
                 topic: activeTopic,
               })
+              //setPrivChatColor("red")
               changeTextValue("")
             }}
           >
@@ -484,3 +580,15 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+
+const PrivTextBold = styled.div`
+  .text-color-R {
+    color: ${prop => (prop.notify ? "red" : "black")};
+  }
+  .text-color-B {
+    color: black;
+  }
+  .text-color {
+    color: red;
+  }
+`

@@ -33,8 +33,8 @@ const Survey = () => {
   return (
     <Layout>
       <SEO title="survey" />
-      <div>
-        <h1>hello from Child Education Satisfaction Survey Form</h1>
+      <div style={{ margin: "1.5rem" }}>
+        <h1>Child Education Satisfaction Survey Form</h1>
         <p>Are you satisfied with your child's education?</p>
         <form onSubmit={submitHandler}>
           <div>

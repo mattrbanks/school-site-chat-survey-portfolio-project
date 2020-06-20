@@ -7,8 +7,10 @@ import useForceUpdate from "use-force-update"
 export const context = React.createContext()
 
 const initState = {
-  general: [], //these are allChats
-  topic2: [],
+  Kindergarten: [], //these are allChats
+  First: [],
+  Second: [],
+  Third: [],
 }
 
 function reducer(state, action) {
@@ -92,6 +94,8 @@ const Store = props => {
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
+  const [msgTopic, setMsgTopic] = React.useState("")
+
   const forceUpdate = useForceUpdate()
 
   React.useEffect(() => {
@@ -113,6 +117,8 @@ const Store = props => {
     socket.on("private chat message", msg => {
       console.log(msg)
       dispatchPrivChat({ type: "RECEIVE_PRIVATE_MESSAGE", payload: msg })
+      setMsgTopic(msg.topic)
+      console.log(msgTopic)
     })
 
     socket.on("private message", newChat => {
@@ -181,8 +187,10 @@ const Store = props => {
   }
   let usersListC = []
   let usersTopicsListC = {
-    general: [], //these are the userList for that topic
-    topic2: [],
+    Kindergarten: [], //these are the userList for that topic
+    First: [],
+    Second: [],
+    Third: [],
   }
   console.log(usersTopicsListC)
 
@@ -198,13 +206,19 @@ const Store = props => {
   socket.on("active-topic-socket", topic => {
     console.log(topic)
 
-    usersTopicsListC.general.length = 0
-    usersTopicsListC.topic2.length = 0
+    usersTopicsListC.Kindergarten.length = 0
+    usersTopicsListC.First.length = 0
+    usersTopicsListC.Second.length = 0
+    usersTopicsListC.Third.length = 0
     for (let i = 0; i < topic.length; i++) {
-      if (topic[i].topic === "general") {
-        usersTopicsListC.general.push(topic[i])
-      } else if (topic[i].topic === "topic2") {
-        usersTopicsListC.topic2.push(topic[i])
+      if (topic[i].topic === "Kindergarten") {
+        usersTopicsListC.Kindergarten.push(topic[i])
+      } else if (topic[i].topic === "First") {
+        usersTopicsListC.First.push(topic[i])
+      } else if (topic[i].topic === "Second") {
+        usersTopicsListC.Second.push(topic[i])
+      } else if (topic[i].topic === "Third") {
+        usersTopicsListC.Third.push(topic[i])
       }
     }
   })
@@ -252,6 +266,7 @@ const Store = props => {
           usersTopicsListC,
           sendActiveTopicSocket,
           sendPrivateMessage,
+          msgTopic,
         }}
       >
         {props.children}

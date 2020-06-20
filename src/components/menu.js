@@ -14,6 +14,7 @@ const Menu = () => (
         listStyle: "none",
         display: "flex",
         justifyContent: "space-evenly",
+        fontSize: "1.25rem",
       }}
     >
       <li>
