@@ -57,6 +57,7 @@ const Chat = props => {
   } else {
     return (
       <div>
+        <SEO title="chat" />
         <Layout>
           <h1 style={{ margin: "1rem" }}>Login to Eagle Chat</h1>
           <form style={{ margin: "1rem" }} onSubmit={nameHandler}>

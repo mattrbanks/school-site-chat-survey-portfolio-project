@@ -1,10 +1,12 @@
 import React from "react"
 import Layout from "../components/layout"
 import ImageReusable from "../components/ImageReusable"
+import SEO from "../components/seo"
 
 const PrincipalsMessage = () => {
   return (
     <Layout>
+      <SEO title="principal's message" />
       <div style={{ margin: "3.5rem" }}>
         <h1>PRINCIPAL'S MESSAGE</h1>
         <p>

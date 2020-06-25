@@ -3,6 +3,7 @@ import { Link, graphql, useStaticQuery } from "gatsby"
 //import { useTheme, useMediaQuery } from "@material-ui/core"
 import Layout from "../components/layout"
 import { makeStyles } from "@material-ui/core/styles"
+import SEO from "../components/seo"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,16 +47,14 @@ const Events = () => {
 
   const data = useStaticQuery(graphql`
     query {
-      allMarkdownRemark {
+      allContentfulMonthlyEventPost(
+        sort: { fields: publishedDate, order: DESC }
+      ) {
         edges {
           node {
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              date
-            }
+            title
+            slug
+            publishedDate(formatString: "MMMM Do, YYYY")
           }
         }
       }
@@ -68,15 +67,16 @@ const Events = () => {
 
   return (
     <Layout>
+      <SEO title="events" />
       <div className={rootCSS}>
         <h1 style={{ color: "black" }}>Events</h1>
         <ol className={listCSS}>
-          {data.allMarkdownRemark.edges.map(edge => {
+          {data.allContentfulMonthlyEventPost.edges.map(edge => {
             return (
-              <li className={listItemCSS} key={edge.node.frontmatter.date}>
-                <Link to={`/events/${edge.node.fields.slug}`}>
-                  <h2>{edge.node.frontmatter.title}</h2>
-                  <p>{edge.node.frontmatter.date}</p>
+              <li className={listItemCSS} key={edge.node.publishedDate}>
+                <Link to={`/events/${edge.node.slug}`}>
+                  <h2>{edge.node.title}</h2>
+                  <p>{edge.node.publishedDate}</p>
                 </Link>
               </li>
             )

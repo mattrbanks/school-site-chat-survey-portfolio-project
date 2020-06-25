@@ -1,10 +1,12 @@
 import React from "react"
 import Layout from "../components/layout"
 import ImageReusable from "../components/ImageReusable"
+import SEO from "../components/seo"
 
 const Curriculum = () => {
   return (
     <Layout>
+      <SEO title="curriculum" />
       <div style={{ margin: "3.5rem" }}>
         <h1>Our Modern Curriculum</h1>
         <div style={{ maxWidth: `50%`, marginBottom: "1rem" }}>
