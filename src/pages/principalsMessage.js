@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "../components/layout"
-import ImageReusable from "../components/ImageReusable"
+import ImageReusable from "../components/imageReusable"
 import SEO from "../components/seo"
 
 const PrincipalsMessage = () => {
