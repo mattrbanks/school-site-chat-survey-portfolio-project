@@ -14,7 +14,7 @@
     "bootstrap": "^4.4.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "gatsby": "^2.20.10",
+    "gatsby": "^2.23.11",
     "gatsby-image": "^2.3.1",
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-material-ui": "^2.1.6",
