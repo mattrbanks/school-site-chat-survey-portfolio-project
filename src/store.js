@@ -104,9 +104,7 @@ const Store = props => {
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
-    socket = io(
-      "https://school-site-chat-survey-server.herokuapp.com/ || :3001"
-    ) //created client connection that connects when the client starts if no sockets are started. Added a heroku server.
+    socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
 
     const name = [userName.toString(), "-" + userType.toString()]
     socket.emit("new-user", name) //kick name to server
@@ -118,7 +116,10 @@ const Store = props => {
 
     socket.on("private chat message", msg => {
       console.log(msg)
-      dispatchPrivChat({ type: "RECEIVE_PRIVATE_MESSAGE", payload: msg })
+      dispatchPrivChat({
+        type: "RECEIVE_PRIVATE_MESSAGE",
+        payload: msg,
+      })
       setMsgTopic(msg.topic)
       console.log(msgTopic)
     })
