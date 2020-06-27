@@ -104,7 +104,9 @@ const Store = props => {
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
-    socket = io(":3001") //created client connection that connects when the client starts if no sockets are started.
+    socket = io(
+      "https://school-site-chat-survey-server.herokuapp.com/ || :3001"
+    ) //created client connection that connects when the client starts if no sockets are started. Added a heroku server.
 
     const name = [userName.toString(), "-" + userType.toString()]
     socket.emit("new-user", name) //kick name to server
