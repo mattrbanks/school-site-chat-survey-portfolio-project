@@ -52,7 +52,7 @@ const Survey = () => {
     e.preventDefault() //disable this when survey is done to show submission by refresh.
     console.log(survey)
     axios
-      .post("http://localhost:3000/survey", survey)
+      .post("https://school-site-chat-survey-form.herokuapp.com/survey", survey)
       .then(response => {
         console.log(response)
       })
