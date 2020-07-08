@@ -208,7 +208,7 @@ const FourGridButtons = () => {
             : ""
         }
       >
-        <Link to="/principalsMessage">
+        <Link to="/principals-message">
           <div style={{ display: "flex" }}>
             <div className={buttonsRightLeftCSS}>
               <span className={linksCSS}>Principal's Message</span>
