@@ -16,6 +16,8 @@ import Badge from "@material-ui/core/Badge"
 import styled from "styled-components"
 //import Switch from "@material-ui/core/Switch"
 //import FormControlLabel from "@material-ui/core/FormControlLabel"
+import "emoji-mart/css/emoji-mart.css"
+import { Picker } from "emoji-mart"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -574,6 +576,9 @@ const Dashboard = () => {
             Send
           </Button>
         </form>
+        <span style={{position: "absolute"}}>
+          <Picker onSelect={addEmoji} />
+        </span>
       )}
     </Paper>
   )
