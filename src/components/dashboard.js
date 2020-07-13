@@ -110,12 +110,27 @@ const useStyles = makeStyles(theme => ({
   textColorMsg: {
     color: "red",
   },
+  getEmojiButton: {
+    cssFloat: "right",
+    border: "none",
+    margin: 0,
+    cursor: "pointer",
+  },
+  emojiPicker: {
+    position: "absolute",
+    bottom: 10,
+    right: 0,
+    cssFloat: "right",
+    marginLeft: "200px",
+  },
 }))
 
 const Dashboard = () => {
   const classes = useStyles()
 
   const textColorMsgClass = classes.textColorMsg
+  const getEmojiButtonClass = classes.getEmojiButton
+  let emojiPickerClass = classes.emojiPicker
 
   const [invisible, setInvisible] = React.useState(true)
 
@@ -173,6 +188,8 @@ const Dashboard = () => {
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
   console.log(activeTopic)
+
+  const [showEmojis, setShowEmojis] = React.useState(false)
 
   const initialTopic = usersTopicsListC
   const [usersInTopic, setNewTopic] = React.useState(initialTopic)
@@ -337,6 +354,10 @@ const Dashboard = () => {
   // //     privTopicsBool.push(privTopics[i])
   // //   }
   // }, [privChatList])
+
+  function openEmojisMenu() {
+    setShowEmojis(!showEmojis)
+  }
 
   return (
     <Paper className={classes.root} elevation={3}>
@@ -576,10 +597,45 @@ const Dashboard = () => {
             Send
           </Button>
         </form>
-        <span style={{position: "absolute"}}>
-          <Picker onSelect={addEmoji} />
-        </span>
       )}
+      <div>
+        {showEmojis ? (
+          <React.Fragment>
+            <span
+              className={emojiPickerClass}
+              ref={el => (emojiPickerClass = el)}
+            >
+              <Picker
+                onSelect={emoji => {
+                  console.log(emoji)
+                  changeTextValue(textValue + emoji.native)
+                }}
+                emojiTooltip={true}
+                title="Pick an emoji"
+                emoji="point_up"
+                set="google"
+              />
+            </span>
+            <p
+              className={getEmojiButtonClass}
+              onClick={() => {
+                openEmojisMenu()
+              }}
+            >
+              {String.fromCodePoint(0x1f60a)}
+            </p>
+          </React.Fragment>
+        ) : (
+          <p
+            className={getEmojiButtonClass}
+            onClick={() => {
+              openEmojisMenu()
+            }}
+          >
+            {String.fromCodePoint(0x1f60a)}
+          </p>
+        )}
+      </div>
     </Paper>
   )
 }
