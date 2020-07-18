@@ -18,6 +18,7 @@ import styled from "styled-components"
 //import FormControlLabel from "@material-ui/core/FormControlLabel"
 import "emoji-mart/css/emoji-mart.css"
 import { Picker } from "emoji-mart"
+import ReactEmoji from "react-emoji"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -110,6 +111,9 @@ const useStyles = makeStyles(theme => ({
   textColorMsg: {
     color: "red",
   },
+  textColorMsgTwo: {
+    color: "black",
+  },
   getEmojiButton: {
     cssFloat: "right",
     border: "none",
@@ -129,6 +133,7 @@ const Dashboard = () => {
   const classes = useStyles()
 
   const textColorMsgClass = classes.textColorMsg
+  const textColorMsgTwoClass = classes.textColorMsgTwo
   const getEmojiButtonClass = classes.getEmojiButton
   let emojiPickerClass = classes.emojiPicker
 
@@ -157,6 +162,7 @@ const Dashboard = () => {
   console.log(updateChat)
   console.log(privChatList)
   console.log(msgTopic)
+  console.log(typeof msgTopic)
 
   const topics = Object.keys(allChats)
   console.log(topics)
@@ -213,7 +219,9 @@ const Dashboard = () => {
 
   const [receiver, setReceiver] = React.useState("")
 
-  const [privChatColor, setPrivChatColor] = React.useState("red")
+  //const [privChatColor, setPrivChatColor] = React.useState("red")
+
+  const [newPrivMsgSwitch, setNewPrivMsgSwitch] = React.useState(false)
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -301,11 +309,6 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
-  function privTopicClick() {
-    //for(let i = 0; )
-    setPrivChatColor("black")
-  }
-
   // function userWasClickedForPrivMsg() {
   //   privTopicsBool = Object.keys(privChatList).forEach(function(key) {
   //     privChatList[key] = false
@@ -322,31 +325,99 @@ const Dashboard = () => {
   //&& subarray.indexOf(privTopic) + 1 === 1
 
   React.useEffect(() => {
-    createPrivTopicSwitch(privTopicsBool)
-    console.log(privTopicsBool)
-    console.log(privChatList)
-    console.log(msgTopic)
-    privTopicsEntries = Object.entries(privTopicsBool)
-    console.log(privTopicsEntries)
-    privTopicsEntries.map(function(subarray) {
-      return subarray.map(function(privTopic) {
-        return msgTopic === privTopic && privTopic === privTopicsEntries[0][0]
-          ? (privTopicsEntries[0][1] = true)
-          : ""
-      })
-    })
-    setPrivTopicsEntriesState(oldState => {
-      return { ...oldState, ...privTopicsEntries }
-    })
-    console.log(privTopicsEntries)
+    console.log("this is privChatList" + privChatList)
+    //updatePrivNotifications()
     // setTimeout(function() {
     //   console.log(privTopicsBool)
     // }, 1000)
   }, [privChatList]) //this works but I need update. Not turning red.
 
   React.useEffect(() => {
-    console.log(privTopicsEntries)
+    updatePrivNotifications()
   }, [msgTopic])
+
+  React.useEffect(() => {
+    if (newPrivMsgSwitch) {
+      console.log("hellos from privTopicsEntriesState")
+    } else {
+      setNewPrivMsgSwitch(true)
+    }
+  }, [privTopicsEntriesState])
+
+  // React.useEffect(() => {
+  //   setPrivTopicsEntriesState(oldState => {
+  //     return { ...oldState, ...privTopicsEntries }
+  //   })
+  //   console.log(privTopicsEntries)
+  //   console.log(privTopicsEntriesState)
+  // }, [newPrivMsgSwitch])
+
+  function updatePrivNotifications() {
+    console.log(msgTopic)
+    //console.log(privChatList)
+    createPrivTopicSwitch(privTopicsBool)
+    console.log(privTopicsBool)
+
+    privTopicsEntries = Object.entries(privTopicsBool)
+    console.log(privTopicsEntries)
+
+    // setPrivTopicsEntriesState(oldState => {
+    //   return { ...oldState, ...privTopicsEntries }
+    // })
+
+    // privTopicsEntries.map(function(subarray) {
+    //   return subarray.map(function(privTopic) {
+    //     return msgTopic === privTopic && privTopic === privTopicsEntries[0][0]
+    //       ? (privTopicsEntries[0][1] = true)
+    //       : ""
+    //   })
+    // })
+
+    privTopicsEntries.map(function(subarray) {
+      return subarray.map(function(privTopic) {
+        console.log(privTopic)
+        return msgTopic === privTopic &&
+          privTopic === privTopicsEntries[0][0] &&
+          privTopicsEntries[0][0] !== activeTopic
+          ? (privTopicsEntries[0][1] = true)
+          : ""
+      })
+    })
+
+    setPrivTopicsEntriesState(privTopicsEntries)
+    console.log(privTopicsEntriesState)
+
+    //forceUpdate()
+
+    //setPrivTopicsEntriesState(privTopicsEntries)
+    console.log(privTopicsEntries)
+    //setNewPrivMsgSwitch(!newPrivMsgSwitch)
+    //console.log(newPrivMsgSwitch)
+    //console.log(privTopicsEntries)
+    console.log(privTopicsEntriesState)
+  }
+
+  function privTopicClick(targetText) {
+    console.log(targetText)
+    console.log(privTopicsEntries)
+    console.log(privTopicsEntriesState)
+
+    privTopicsEntries.map(function(subarray) {
+      return subarray.map(function(privTopic) {
+        return targetText === privTopic && privTopic === privTopicsEntries[0][0]
+          ? (privTopicsEntries[0][1] = false)
+          : ""
+      })
+    })
+
+    console.log(privTopicsEntries)
+    console.log(privTopicsEntriesState)
+
+    //forceUpdate()
+
+    //for(let i = 0; )
+    //setPrivChatColor("black")
+  }
 
   // React.useEffect(() => {
   //   setPrivChatColor("red")
@@ -372,7 +443,7 @@ const Dashboard = () => {
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(null)
-                  privTopicClick()
+                  //privTopicClick()
                   console.log("We clicked the topic we want 1st")
                 }}
                 key={topic}
@@ -393,29 +464,41 @@ const Dashboard = () => {
           <List className={classes.badgeStyles}>
             {privTopicsEntries.map((privTopic, i) => (
               //<Badge color="secondary" variant="dot" invisible={invisible}>
-
+              // <Badge
+              //   color="secondary"
+              //   variant="dot"
+              //   invisible={privTopic[1] == false ? true : false}
+              //   //className={classes.badgeStyles}
+              // >
               <ListItem
                 //className={msgTopic === privTopic ? "text-color" : ""}
+                //className={}
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(e.target.innerText)
                   setInvisible(true)
-                  privTopicClick()
+                  //privTopicClick(e.target.innerText)
                   console.log("Here it is! " + privTopicsEntries)
+                  // setTimeout(function() {
+                  //   setPrivChatMount(Math.random())
+                  // }, 500)
+                  // console.log(privChatMount)
                 }}
                 key={privTopic[0]}
                 button
               >
-                <PrivTextBold>
-                  <ListItemText
-                    //style={{ color: "red" }}
-                    //className={textColorMsgClass}
-                    className={privTopic[1] == true ? textColorMsgClass : ""}
-                    primary={privTopic[0]}
-                  />
-                </PrivTextBold>
-              </ListItem>
+                {/* <PrivTextBold> */}
 
+                <ListItemText
+                  //style={{ color: "red" }}
+                  //className={textColorMsgClass}
+                  //className={privTopic[1] == false ? "" : textColorMsgClass}
+                  primary={privTopic[0]}
+                />
+
+                {/* </PrivTextBold> */}
+              </ListItem>
+              //</Badge>
               //</Badge>
             ))}
           </List>
@@ -438,7 +521,7 @@ const Dashboard = () => {
                   {privChatList[activeTopic].map((chat, i) => (
                     <div className={classes.flex} key={i}>
                       <Chip label={chat.from} className={classes.chip} />
-                      <h5>{chat.msg}</h5>
+                      <h5>{ReactEmoji.emojify(chat.msg)}</h5>
                     </div>
                   ))}
                 </ScrollableFeed>
@@ -451,7 +534,7 @@ const Dashboard = () => {
                   {allChats[activeTopic].map((chat, i) => (
                     <div className={classes.flex} key={i}>
                       <Chip label={chat.from} className={classes.chip} />
-                      <h5>{chat.msg}</h5>
+                      <h5>{ReactEmoji.emojify(chat.msg)}</h5>
                     </div>
                   ))}
                 </ScrollableFeed>
@@ -599,23 +682,34 @@ const Dashboard = () => {
         </form>
       )}
       <div>
-        {showEmojis ? (
-          <React.Fragment>
-            <span
-              className={emojiPickerClass}
-              ref={el => (emojiPickerClass = el)}
-            >
-              <Picker
-                onSelect={emoji => {
-                  console.log(emoji)
-                  changeTextValue(textValue + emoji.native)
+        {activeTopic ? (
+          showEmojis ? (
+            <React.Fragment>
+              <span
+                className={emojiPickerClass}
+                ref={el => (emojiPickerClass = el)}
+              >
+                <Picker
+                  onSelect={emoji => {
+                    console.log(emoji)
+                    changeTextValue(textValue + emoji.native)
+                  }}
+                  emojiTooltip={true}
+                  title="Pick an emoji"
+                  emoji="point_up"
+                  set="google"
+                />
+              </span>
+              <p
+                className={getEmojiButtonClass}
+                onClick={() => {
+                  openEmojisMenu()
                 }}
-                emojiTooltip={true}
-                title="Pick an emoji"
-                emoji="point_up"
-                set="google"
-              />
-            </span>
+              >
+                {String.fromCodePoint(0x1f60a)}
+              </p>
+            </React.Fragment>
+          ) : (
             <p
               className={getEmojiButtonClass}
               onClick={() => {
@@ -624,16 +718,9 @@ const Dashboard = () => {
             >
               {String.fromCodePoint(0x1f60a)}
             </p>
-          </React.Fragment>
+          )
         ) : (
-          <p
-            className={getEmojiButtonClass}
-            onClick={() => {
-              openEmojisMenu()
-            }}
-          >
-            {String.fromCodePoint(0x1f60a)}
-          </p>
+          ""
         )}
       </div>
     </Paper>

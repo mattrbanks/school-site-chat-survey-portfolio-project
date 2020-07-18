@@ -31,8 +31,8 @@ const Chat = props => {
       <div>
         <SEO title="chat" />
         <div>
-          <h1>Welcome to Eagle Chat.</h1>
-          <p>
+          <h1 style={{ margin: "1rem" }}>Welcome to Eagle Chat.</h1>
+          <p style={{ margin: "1rem" }}>
             In the left panel, you have a number of topic rooms you can click on
             to enter. Just click your child's grade to enter a group discussion
             involving parents, teachers, and students. Once you click a topic,
@@ -48,7 +48,11 @@ const Chat = props => {
           <Store>
             <Dashboard />
           </Store>
-          <Link to="/" onClick="window.location.reload()">
+          <Link
+            to="/"
+            onClick="window.location.reload()"
+            style={{ margin: "1rem" }}
+          >
             BACK TO HOMEPAGE AND DISCONNECT
           </Link>
         </div>

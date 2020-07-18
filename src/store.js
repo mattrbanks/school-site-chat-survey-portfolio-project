@@ -44,6 +44,24 @@ function reducerPriv(state, action) {
   }
 }
 
+// const topicInitState = {}
+
+// function reducerTopic(state, action) {
+//   console.log(state)
+//   const { topic } = action.payload
+//   console.log(action.payload.topic)
+//   console.log(typeof topic)
+//   switch (action.type) {
+//     case "RECEIVE_MESSAGE_TOPIC":
+//       return {
+//         ...state,
+//         [action.payload.topic]: [],
+//       }
+//     default:
+//       return state
+//   }
+// }
+
 /* to initialize this socket a variable called socket is declared
  outside of the functional component because we don't want this to
   re-render every time the store reloads */
@@ -95,6 +113,11 @@ const Store = props => {
   console.log(updateChat)
 
   const [msgTopic, setMsgTopic] = React.useState("")
+  // const [msgTopic, dispatchMsgTopic] = React.useReducer(
+  //   reducerTopic,
+  //   topicInitState
+  // )
+  console.log(msgTopic)
 
   const forceUpdate = useForceUpdate()
 
@@ -104,7 +127,8 @@ const Store = props => {
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
-    socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
+    //socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
+    socket = io(":3001") //just used for push notification tests
 
     const name = [userName.toString(), "-" + userType.toString()]
     socket.emit("new-user", name) //kick name to server
@@ -121,6 +145,10 @@ const Store = props => {
         payload: msg,
       })
       setMsgTopic(msg.topic)
+      // dispatchMsgTopic({
+      //   type: "RECEIVE_MESSAGE_TOPIC",
+      //   payload: msg,
+      // })
       console.log(msgTopic)
     })
 
