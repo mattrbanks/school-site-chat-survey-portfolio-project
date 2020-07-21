@@ -7,6 +7,10 @@ const io = require("socket.io")(http, {
   pingTimeout: 60000,
 })
 
+const webpush = require("web-push")
+const path = require("path")
+app.use(express.static(path.join(__dirname, "../src"))) //this needs to be confirmed
+
 const cors = require("cors")
 const morgan = require("morgan")
 app.use(cors())
@@ -16,19 +20,47 @@ app.use(express.urlencoded({ extended: false }))
 
 const users = {} //this is the name next to the sent message saying who it is from
 const usersMsg = {}
-//const topicTemp = []
+const topicTemp = []
 const topicsAll = {}
 
+const publicVapidKey =
+  "BEdWGWTqlfYdkrTRCH6nzdJ_UAyT_4I479qAmG-59mJnaX84GC-0Sh0RdwMr2CFjZdGvLTtOlwX67CRZqwPCx-M"
+const privateVapidKey = "4pU8aRItRS6BvZlgiVsfI6tR1b3ISGzxPVUVA271g-M"
+
+webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey)
+
+// Subscribe Route
+app.post("/subscribe", (req, res) => {
+  console.log("we are in")
+  console.log(req.body)
+  console.log(topicTemp)
+  console.log(JSON.stringify(topicTemp[0].activeTopic.message.from))
+  // Get pushSubscription object
+  const subscription = req.body
+
+  // Send 201 - resource created
+  res.status(201).json({})
+
+  // Create payload
+  const payload = JSON.stringify({
+    title: "New Private Message",
+    body: JSON.stringify(topicTemp[0].activeTopic.message.from),
+  })
+
+  // Pass object into sendNotification
+  webpush.sendNotification(subscription, payload).catch(err => console.log(err))
+})
+
 app.post("/activeTopic", function(req, res) {
-  // //res.send("hello from socket.io")
-  // const newTopic = {
-  //   activeTopic: req.body,
-  // }
-  // topicTemp.length = 0
-  // topicTemp.push(newTopic)
-  // console.log(newTopic)
-  // console.log(topicTemp)
-  // res.send(topicTemp) //we can send back topics
+  //res.send("hello from socket.io")
+  const newTopic = {
+    activeTopic: req.body,
+  }
+  topicTemp.length = 0
+  topicTemp.push(newTopic)
+  console.log(newTopic)
+  console.log(topicTemp)
+  res.send(topicTemp) //we can send back topics
 })
 
 io.on("connection", function(socket) {
@@ -103,6 +135,7 @@ io.on("connection", function(socket) {
 
     socket.to(receiverSocket).emit("private chat message", msg)
     socket.emit("private chat message", msg)
+    socket.to(receiverSocket).emit("private web push notification", msg)
   })
 
   socket.on("private message", receiver => {

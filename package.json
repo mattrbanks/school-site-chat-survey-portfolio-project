@@ -44,7 +44,8 @@
     "sharp": "^0.25.2",
     "socket.io": "^2.3.0",
     "styled-components": "^5.0.1",
-    "use-force-update": "^1.0.7"
+    "use-force-update": "^1.0.7",
+    "web-push": "^3.4.4"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
