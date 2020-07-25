@@ -6,6 +6,6 @@ self.addEventListener("push", e => {
   self.registration.showNotification(data.title, {
     body: "From: " + data.body,
     icon:
-      "https://raw.githubusercontent.com/mattrbanks/school-site-chat-survey-portfolio-project/master/src/images/cuteEagleCartoonSchool2.webp",
+      "https://raw.githubusercontent.com/mattrbanks/school-site-chat-survey-portfolio-project/master/src/images/cuteEagleCartoonSchool3InvertedNotification.webp",
   })
 })

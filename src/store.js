@@ -2,8 +2,7 @@ import React from "react"
 import io from "socket.io-client"
 import { userName } from "./pages/chat"
 import { userType } from "./pages/chat"
-import useForceUpdate from "use-force-update"
-import axios from "axios"
+//import useForceUpdate from "use-force-update"
 
 export const context = React.createContext()
 
@@ -30,7 +29,6 @@ function reducer(state, action) {
 const privInitState = {}
 
 function reducerPriv(state, action) {
-  console.log(state)
   const { from, msg, topic } = action.payload
   switch (action.type) {
     case "SET_PRIVATE_MESSAGE_STATE":
@@ -44,24 +42,6 @@ function reducerPriv(state, action) {
       return state
   }
 }
-
-// const topicInitState = {}
-
-// function reducerTopic(state, action) {
-//   console.log(state)
-//   const { topic } = action.payload
-//   console.log(action.payload.topic)
-//   console.log(typeof topic)
-//   switch (action.type) {
-//     case "RECEIVE_MESSAGE_TOPIC":
-//       return {
-//         ...state,
-//         [action.payload.topic]: [],
-//       }
-//     default:
-//       return state
-//   }
-// }
 
 /* to initialize this socket a variable called socket is declared
  outside of the functional component because we don't want this to
@@ -106,6 +86,7 @@ const Store = props => {
     reducerPriv,
     privInitState
   )
+  console.log(privChatList)
 
   const privChatListCopy = React.useRef(privInitState)
   console.log(privChatListCopy)
@@ -114,13 +95,9 @@ const Store = props => {
   console.log(updateChat)
 
   const [msgTopic, setMsgTopic] = React.useState("")
-  // const [msgTopic, dispatchMsgTopic] = React.useReducer(
-  //   reducerTopic,
-  //   topicInitState
-  // )
   console.log(msgTopic)
 
-  const forceUpdate = useForceUpdate()
+  //const forceUpdate = useForceUpdate()
 
   React.useEffect(() => {
     privChatListCopy.current = privChatList
@@ -128,8 +105,8 @@ const Store = props => {
 
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
-    //socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
-    socket = io(":3001") //just used for push notification tests
+    socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
+    //socket = io(":3001") //just used for push notification tests
 
     const name = [userName.toString(), "-" + userType.toString()]
     socket.emit("new-user", name) //kick name to server
@@ -146,15 +123,15 @@ const Store = props => {
         payload: msg,
       })
       setMsgTopic(msg.topic)
-      // dispatchMsgTopic({
-      //   type: "RECEIVE_MESSAGE_TOPIC",
-      //   payload: msg,
-      // })
       console.log(msgTopic)
     })
 
     socket.on("private web push notification", msg => {
       console.log(msg)
+      console.log(topicHolder)
+      console.log(typeof topicHolder[0].topic)
+      console.log(typeof msg.topic)
+
       fetch("http://localhost:3001/activeTopic", {
         method: "POST",
         headers: {
@@ -164,7 +141,7 @@ const Store = props => {
           message: msg,
         }),
       })
-      //alert("Hello from web push!!!")
+
       const publicVapidKey =
         "BEdWGWTqlfYdkrTRCH6nzdJ_UAyT_4I479qAmG-59mJnaX84GC-0Sh0RdwMr2CFjZdGvLTtOlwX67CRZqwPCx-M"
 
@@ -195,14 +172,16 @@ const Store = props => {
 
         // Send Push Notification
         console.log("Sending Push...")
-        await fetch("http://localhost:3001/subscribe", {
-          method: "POST",
-          body: JSON.stringify(subscription),
-          headers: {
-            "content-type": "application/json",
-          },
-        })
-        console.log("Push Sent...")
+        topicHolder[0].topic === msg.topic
+          ? console.log("Push Not Sent While Receiver Is In Room...")
+          : await fetch("http://localhost:3001/subscribe", {
+              method: "POST",
+              body: JSON.stringify(subscription),
+              headers: {
+                "content-type": "application/json",
+              },
+            })
+        console.log("Push Sent...") //disregard if receiver is in room
       }
 
       function urlBase64ToUint8Array(base64String) {
@@ -222,15 +201,7 @@ const Store = props => {
     })
 
     socket.on("private message", newChat => {
-      console.log(privChatListCopy)
-      console.log(privChatList)
-      console.log(newChat)
-      console.log(typeof newChat)
       //array work on newChat.users to check privChatList for duplicates, avoid 2 priv msg, and also get rid of commas
-      console.log(newChat.users)
-      console.log(typeof newChat.users)
-      console.log(newChat.name)
-      console.log(typeof newChat.name)
 
       let newChatFwd = newChat.users
         .slice()
@@ -243,23 +214,12 @@ const Store = props => {
         .flat()
         .toString()
 
-      console.log(newChatFwd)
-      console.log(typeof newChatFwd)
-      console.log(newChatBwd)
-      console.log(typeof newChatBwd)
-      console.log(newChatFwd in privChatList)
-      console.log(newChatBwd in privChatList)
-
-      console.log(privChatListCopy.current)
-      console.log(privChatList)
-      console.log(Object.values(privChatListCopy.current))
       let privKeys = Object.keys(privChatListCopy.current)
-      console.log(privKeys)
+
       for (const key of privKeys) {
         console.log(key)
-        console.log(typeof key)
       }
-      console.log(privKeys)
+
       if (privKeys.length === 0) {
         dispatchPrivChat({
           type: "SET_PRIVATE_MESSAGE_STATE",
@@ -267,8 +227,6 @@ const Store = props => {
         })
       } else if (privKeys.length > 0) {
         for (const key of privKeys) {
-          console.log(privKeys)
-          console.log(key)
           if (key === newChatFwd) {
             return console.log("it matches Fwd!")
           } else if (key === newChatBwd) {
@@ -281,8 +239,6 @@ const Store = props => {
           }
         }
       }
-      console.log(privChatListCopy.current)
-      console.log(Object.keys(privChatListCopy.current))
     })
   }
   let usersListC = []
@@ -323,27 +279,13 @@ const Store = props => {
     }
   })
 
-  // function appendMessage(value) {
-  //   //add to allChats object
-  //   allChats[value.topic].push(value)
-  // }
-
   socket.on("user-disconnected", nameAndTopic => {
     //try putting this in the same scope as "chat message" to see if the duplicates go away.
-    //const abortController = new AbortController()
     console.log(nameAndTopic)
     if (nameAndTopic.topic.length === 0) {
       return
     } else {
-      // appendMessage({
-      //   from: nameAndTopic.from,
-      //   msg: "DISCONNECTED",
-      //   topic: nameAndTopic.topic,
-      // })
       setUpdateChat(Math.random())
-      // return () => {
-      //   abortController.abort()
-      // }
     }
   })
 

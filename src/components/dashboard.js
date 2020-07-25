@@ -9,16 +9,13 @@ import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
-import useForceUpdate from "use-force-update"
-//import axios from "axios"
 import ScrollableFeed from "react-scrollable-feed"
 import Badge from "@material-ui/core/Badge"
 import styled from "styled-components"
-//import Switch from "@material-ui/core/Switch"
-//import FormControlLabel from "@material-ui/core/FormControlLabel"
 import "emoji-mart/css/emoji-mart.css"
 import { Picker } from "emoji-mart"
 import ReactEmoji from "react-emoji"
+//import useForceUpdate from "use-force-update"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -108,12 +105,6 @@ const useStyles = makeStyles(theme => ({
       marginRight: theme.spacing(4),
     },
   },
-  textColorMsg: {
-    color: "red",
-  },
-  textColorMsgTwo: {
-    color: "black",
-  },
   getEmojiButton: {
     cssFloat: "right",
     border: "none",
@@ -132,15 +123,12 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = () => {
   const classes = useStyles()
 
-  const textColorMsgClass = classes.textColorMsg
-  const textColorMsgTwoClass = classes.textColorMsgTwo
   const getEmojiButtonClass = classes.getEmojiButton
   let emojiPickerClass = classes.emojiPicker
 
   const [invisible, setInvisible] = React.useState(true)
 
   const handleBadgeVisibility = () => {
-    // setInvisible(!invisible)
     setInvisible(false)
   }
 
@@ -170,25 +158,10 @@ const Dashboard = () => {
   const privTopics = Object.keys(privChatList)
   console.log(privTopics)
 
-  const privTopicsBool = { ...privChatList }
-  console.log(privTopicsBool)
-
-  const createPrivTopicSwitch = function(obj) {
-    Object.keys(obj).forEach(function(key) {
-      obj[key] = false
-    })
-    return obj
-  }
-
-  const [privTopicsEntriesState, setPrivTopicsEntriesState] = React.useState(
-    Object.entries(privChatList) //new!
-  )
-  console.log(privTopicsEntriesState)
-
   let privTopicsEntries = Object.entries(privChatList)
   console.log(privTopicsEntries)
 
-  const forceUpdate = useForceUpdate()
+  //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -218,10 +191,6 @@ const Dashboard = () => {
   console.log(typeof privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
-
-  //const [privChatColor, setPrivChatColor] = React.useState("red")
-
-  const [newPrivMsgSwitch, setNewPrivMsgSwitch] = React.useState(false)
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -293,7 +262,6 @@ const Dashboard = () => {
   }, [receiver])
 
   React.useEffect(() => {
-    //if (!privChatActive && privNotifyOn) {
     if (!privChatActive && privNotifyOn) {
       handleBadgeVisibility()
     } else {
@@ -309,122 +277,9 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
-  // function userWasClickedForPrivMsg() {
-  //   privTopicsBool = Object.keys(privChatList).forEach(function(key) {
-  //     privChatList[key] = false
-  //   })
-
-  //   // for (let i = 0; i < privTopics.length; i++) {
-  //   //   privTopicsBool.push([])
-  //   // }
-  //   // for (let i = 0; i < privTopics.length; i++) {
-  //   //   privTopicsBool[0].push(privTopics[i])
-  //   // }
-  // }
-
-  //&& subarray.indexOf(privTopic) + 1 === 1
-
   React.useEffect(() => {
     console.log("this is privChatList" + privChatList)
-    //updatePrivNotifications()
-    // setTimeout(function() {
-    //   console.log(privTopicsBool)
-    // }, 1000)
   }, [privChatList]) //this works but I need update. Not turning red.
-
-  React.useEffect(() => {
-    updatePrivNotifications()
-  }, [msgTopic])
-
-  React.useEffect(() => {
-    if (newPrivMsgSwitch) {
-      console.log("hellos from privTopicsEntriesState")
-    } else {
-      setNewPrivMsgSwitch(true)
-    }
-  }, [privTopicsEntriesState])
-
-  // React.useEffect(() => {
-  //   setPrivTopicsEntriesState(oldState => {
-  //     return { ...oldState, ...privTopicsEntries }
-  //   })
-  //   console.log(privTopicsEntries)
-  //   console.log(privTopicsEntriesState)
-  // }, [newPrivMsgSwitch])
-
-  function updatePrivNotifications() {
-    console.log(msgTopic)
-    //console.log(privChatList)
-    createPrivTopicSwitch(privTopicsBool)
-    console.log(privTopicsBool)
-
-    privTopicsEntries = Object.entries(privTopicsBool)
-    console.log(privTopicsEntries)
-
-    // setPrivTopicsEntriesState(oldState => {
-    //   return { ...oldState, ...privTopicsEntries }
-    // })
-
-    // privTopicsEntries.map(function(subarray) {
-    //   return subarray.map(function(privTopic) {
-    //     return msgTopic === privTopic && privTopic === privTopicsEntries[0][0]
-    //       ? (privTopicsEntries[0][1] = true)
-    //       : ""
-    //   })
-    // })
-
-    privTopicsEntries.map(function(subarray) {
-      return subarray.map(function(privTopic) {
-        console.log(privTopic)
-        return msgTopic === privTopic &&
-          privTopic === privTopicsEntries[0][0] &&
-          privTopicsEntries[0][0] !== activeTopic
-          ? (privTopicsEntries[0][1] = true)
-          : ""
-      })
-    })
-
-    setPrivTopicsEntriesState(privTopicsEntries)
-    console.log(privTopicsEntriesState)
-
-    //forceUpdate()
-
-    //setPrivTopicsEntriesState(privTopicsEntries)
-    console.log(privTopicsEntries)
-    //setNewPrivMsgSwitch(!newPrivMsgSwitch)
-    //console.log(newPrivMsgSwitch)
-    //console.log(privTopicsEntries)
-    console.log(privTopicsEntriesState)
-  }
-
-  function privTopicClick(targetText) {
-    console.log(targetText)
-    console.log(privTopicsEntries)
-    console.log(privTopicsEntriesState)
-
-    privTopicsEntries.map(function(subarray) {
-      return subarray.map(function(privTopic) {
-        return targetText === privTopic && privTopic === privTopicsEntries[0][0]
-          ? (privTopicsEntries[0][1] = false)
-          : ""
-      })
-    })
-
-    console.log(privTopicsEntries)
-    console.log(privTopicsEntriesState)
-
-    //forceUpdate()
-
-    //for(let i = 0; )
-    //setPrivChatColor("black")
-  }
-
-  // React.useEffect(() => {
-  //   setPrivChatColor("red")
-  // //   for (let i = 0; i < privTopics.length; i++) {
-  // //     privTopicsBool.push(privTopics[i])
-  // //   }
-  // }, [privChatList])
 
   function openEmojisMenu() {
     setShowEmojis(!showEmojis)
@@ -443,7 +298,7 @@ const Dashboard = () => {
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(null)
-                  //privTopicClick()
+
                   console.log("We clicked the topic we want 1st")
                 }}
                 key={topic}
@@ -453,65 +308,27 @@ const Dashboard = () => {
               </ListItem>
             ))}
           </List>
-          <Badge
-            color="secondary"
-            variant="dot"
-            invisible={invisible}
-            //className={classes.badgeStyles}
-          >
+          <Badge color="secondary" variant="dot" invisible={invisible}>
             <p>Direct Messages</p>
           </Badge>
           <List className={classes.badgeStyles}>
             {privTopicsEntries.map((privTopic, i) => (
-              //<Badge color="secondary" variant="dot" invisible={invisible}>
-              // <Badge
-              //   color="secondary"
-              //   variant="dot"
-              //   invisible={privTopic[1] == false ? true : false}
-              //   //className={classes.badgeStyles}
-              // >
               <ListItem
-                //className={msgTopic === privTopic ? "text-color" : ""}
-                //className={}
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(e.target.innerText)
                   setInvisible(true)
-                  //privTopicClick(e.target.innerText)
+
                   console.log("Here it is! " + privTopicsEntries)
-                  // setTimeout(function() {
-                  //   setPrivChatMount(Math.random())
-                  // }, 500)
-                  // console.log(privChatMount)
+                  console.log(privTopic)
                 }}
                 key={privTopic[0]}
                 button
               >
-                {/* <PrivTextBold> */}
-
-                <ListItemText
-                  //style={{ color: "red" }}
-                  //className={textColorMsgClass}
-                  //className={privTopic[1] == false ? "" : textColorMsgClass}
-                  primary={privTopic[0]}
-                />
-
-                {/* </PrivTextBold> */}
+                <ListItemText primary={privTopic[0]} />
               </ListItem>
-              //</Badge>
-              //</Badge>
             ))}
           </List>
-          {/* <FormControlLabel
-            control={
-              <Switch
-                color="primary"
-                checked={!invisible}
-                onChange={handleBadgeVisibility}
-              />
-            }
-            label="Show Badge"
-          /> */}
         </div>
         {activeTopic ? (
           privChatActive !== null ? (
@@ -548,15 +365,10 @@ const Dashboard = () => {
                   Toggle UserList
                 </button>
                 {userListSwitch ? (
-                  // <p className={classes.usersWindow}>why</p>
-                  // <div className={classes.usersWindow}>
-                  //   <UsersList userListSwitch={userListSwitch} />
-                  // </div>
                   <div className={classes.usersWindow}>
                     <List>
                       {allTheUserNames.map((name, i) => (
                         <ListItem
-                          //onClick={e => goToDirMessage(e.target.innerText)}
                           key={name[0]}
                           button
                           onClick={() => {
@@ -564,7 +376,6 @@ const Dashboard = () => {
                             setTimeout(function() {
                               setPrivChatMount(Math.random())
                             }, 500)
-                            //userWasClickedForPrivMsg()
                           }}
                         >
                           <ListItemText
@@ -590,7 +401,6 @@ const Dashboard = () => {
                             setTimeout(function() {
                               setPrivChatMount(Math.random())
                             }, 500)
-                            //userWasClickedForPrivMsg()
                           }}
                         >
                           <ListItemText primary={topic.from} />
@@ -640,7 +450,7 @@ const Dashboard = () => {
                 msg: textValue,
                 topic: activeTopic,
               })
-              //setPrivChatColor("red")
+
               changeTextValue("")
             }}
           >
@@ -728,15 +538,3 @@ const Dashboard = () => {
 }
 
 export default Dashboard
-
-const PrivTextBold = styled.div`
-  .text-color-R {
-    color: ${prop => (prop.notify ? "red" : "black")};
-  }
-  .text-color-B {
-    color: black;
-  }
-  .text-color {
-    color: red;
-  }
-`

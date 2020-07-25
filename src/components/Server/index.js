@@ -1,6 +1,5 @@
 const express = require("express")
 const app = express()
-//var app = require("express")()
 const http = require("http").createServer(app)
 const io = require("socket.io")(http, {
   pingInterval: 25000,
@@ -32,9 +31,7 @@ webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey)
 // Subscribe Route
 app.post("/subscribe", (req, res) => {
   console.log("we are in")
-  console.log(req.body)
-  console.log(topicTemp)
-  console.log(JSON.stringify(topicTemp[0].activeTopic.message.from))
+
   // Get pushSubscription object
   const subscription = req.body
 
@@ -44,7 +41,11 @@ app.post("/subscribe", (req, res) => {
   // Create payload
   const payload = JSON.stringify({
     title: "New Private Message",
-    body: JSON.stringify(topicTemp[0].activeTopic.message.from),
+    body: JSON.stringify(
+      topicTemp[0].activeTopic.message.from[0] +
+        topicTemp[0].activeTopic.message.from[1] +
+        topicTemp[0].activeTopic.message.from[2]
+    ),
   })
 
   // Pass object into sendNotification
@@ -52,14 +53,11 @@ app.post("/subscribe", (req, res) => {
 })
 
 app.post("/activeTopic", function(req, res) {
-  //res.send("hello from socket.io")
   const newTopic = {
     activeTopic: req.body,
   }
   topicTemp.length = 0
   topicTemp.push(newTopic)
-  console.log(newTopic)
-  console.log(topicTemp)
   res.send(topicTemp) //we can send back topics
 })
 
@@ -72,10 +70,7 @@ io.on("connection", function(socket) {
     users[socket.id].push("-" + socket.id.substr(0, 5))
     usersMsg[socket.id] = name
 
-    console.log(users[socket.id])
-    console.log(usersMsg)
     io.emit("new-user", Object.entries(users))
-    console.log(Object.entries(users))
   })
 
   socket.on("active-topic-socket", topic => {
@@ -83,10 +78,6 @@ io.on("connection", function(socket) {
     topic.id = socket.id
     topicsAll[socket.id] = topic
 
-    console.log(topicsAll)
-    console.log(Object.values(topicsAll))
-    console.log(Object.values(topicsAll))
-    console.log("activeTopic: " + JSON.stringify(topic + "-->" + socket.id))
     io.emit("active-topic-socket", Object.values(topicsAll))
   })
 
@@ -94,7 +85,7 @@ io.on("connection", function(socket) {
     msg.from = usersMsg[socket.id]
     console.log(usersMsg)
     console.log("message: " + JSON.stringify(msg))
-    console.log(msg)
+
     io.emit("chat message", msg)
   })
 
@@ -102,7 +93,6 @@ io.on("connection", function(socket) {
     msg.from = usersMsg[socket.id]
     console.log(usersMsg)
     console.log("message: " + JSON.stringify(msg))
-    console.log(msg)
 
     let receiverSocket
     let tempRecNameArr = msg.topic.split(",")
@@ -153,7 +143,6 @@ io.on("connection", function(socket) {
       id,
     })
     if (receiver.id in users) {
-      console.log(receiver.id)
       const newChat = createChat({
         name: receiver.from + "&" + users[socket.id],
         senderId: socket.id,
