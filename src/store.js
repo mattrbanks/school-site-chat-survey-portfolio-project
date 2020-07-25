@@ -132,15 +132,18 @@ const Store = props => {
       console.log(typeof topicHolder[0].topic)
       console.log(typeof msg.topic)
 
-      fetch("http://localhost:3001/activeTopic", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: msg,
-        }),
-      })
+      fetch(
+        "https://school-site-chat-survey-server.herokuapp.com/activeTopic",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: msg,
+          }),
+        }
+      )
 
       const publicVapidKey =
         "BEdWGWTqlfYdkrTRCH6nzdJ_UAyT_4I479qAmG-59mJnaX84GC-0Sh0RdwMr2CFjZdGvLTtOlwX67CRZqwPCx-M"
@@ -174,13 +177,16 @@ const Store = props => {
         console.log("Sending Push...")
         topicHolder[0].topic === msg.topic
           ? console.log("Push Not Sent While Receiver Is In Room...")
-          : await fetch("http://localhost:3001/subscribe", {
-              method: "POST",
-              body: JSON.stringify(subscription),
-              headers: {
-                "content-type": "application/json",
-              },
-            })
+          : await fetch(
+              "https://school-site-chat-survey-server.herokuapp.com/subscribe",
+              {
+                method: "POST",
+                body: JSON.stringify(subscription),
+                headers: {
+                  "content-type": "application/json",
+                },
+              }
+            )
         console.log("Push Sent...") //disregard if receiver is in room
       }
 
