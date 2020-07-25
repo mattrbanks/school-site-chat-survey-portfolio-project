@@ -45,13 +45,16 @@ export const registerServiceWorker = () => {
 
       // Send Push Notification
       console.log("Sending Push...")
-      await fetch("http://localhost:3001/subscribe", {
-        method: "POST",
-        body: JSON.stringify(subscription),
-        headers: {
-          "content-type": "application/json",
-        },
-      })
+      await fetch(
+        "https://school-site-chat-survey-server.herokuapp.com/subscribe",
+        {
+          method: "POST",
+          body: JSON.stringify(subscription),
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
       console.log("Push Sent...")
     }
 
