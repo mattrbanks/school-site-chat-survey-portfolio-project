@@ -146,7 +146,7 @@ const Store = props => {
       )
 
       const publicVapidKey =
-        "BEdWGWTqlfYdkrTRCH6nzdJ_UAyT_4I479qAmG-59mJnaX84GC-0Sh0RdwMr2CFjZdGvLTtOlwX67CRZqwPCx-M"
+        "BOBgli7IFwPg3i3nvW4aDscd1J0Ro7IdpYCOtp9AGQSCzzITlDk3svksQKzlgAlvTLIJifKCBOIfbPRlqDE3gLM"
 
       // Check for service worker
       if ("serviceWorker" in navigator) {
@@ -158,9 +158,9 @@ const Store = props => {
         // Register Service Worker
         console.log("Registering service worker...")
         const register = await navigator.serviceWorker.register(
-          "/service-worker.js",
+          "../service-worker.js",
           {
-            scope: "/chat",
+            scope: "/",
           }
         )
         console.log("Service Worker Registered...")

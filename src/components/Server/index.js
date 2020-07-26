@@ -23,8 +23,8 @@ const topicTemp = []
 const topicsAll = {}
 
 const publicVapidKey =
-  "BEdWGWTqlfYdkrTRCH6nzdJ_UAyT_4I479qAmG-59mJnaX84GC-0Sh0RdwMr2CFjZdGvLTtOlwX67CRZqwPCx-M"
-const privateVapidKey = "4pU8aRItRS6BvZlgiVsfI6tR1b3ISGzxPVUVA271g-M"
+  "BOBgli7IFwPg3i3nvW4aDscd1J0Ro7IdpYCOtp9AGQSCzzITlDk3svksQKzlgAlvTLIJifKCBOIfbPRlqDE3gLM"
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY
 
 webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey)
 
