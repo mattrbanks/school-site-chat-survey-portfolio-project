@@ -167,10 +167,13 @@ const Store = props => {
 
         // Register Push
         console.log("Registering Push...")
-        const subscription = await register.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-        })
+        const subscription = await navigator.serviceWorker.ready.then(
+          register =>
+            register.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+            })
+        )
         console.log("Push Registered...")
 
         // Send Push Notification

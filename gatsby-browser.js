@@ -30,7 +30,7 @@
 //       const register = await navigator.serviceWorker.register(
 //         "/service-worker.js",
 //         {
-//           scope: "/chat",
+//           scope: "/",
 //         }
 //       )
 //       console.log("Service Worker Registered...")
