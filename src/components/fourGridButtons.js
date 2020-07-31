@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
   },
   buttonsRightLeft: {
     width: "50%",
-    height: "16rem",
+    height: "100%",
     borderRight: "0.0625rem solid grey",
     borderLeft: "0.0625rem solid grey",
   },
   buttonsRight: {
     width: "50%",
-    height: "16rem",
+    height: "100%",
     borderRight: "0.0625rem solid grey",
   },
   links: {
@@ -39,102 +39,195 @@ const useStyles = makeStyles(theme => ({
       fontSize: "1.5rem",
     },
   },
+  galaxyFoldStylesP: {
+    //margin: "2rem auto",
+    width: "100%",
+    height: "6rem",
+  },
+  xxSmallScreensStylesP: {
+    //margin: "2rem auto",
+    width: "100%",
+    height: "7rem",
+  },
   xSmallScreensStylesP: {
     //margin: "2rem auto",
     width: "100%",
     height: "8rem",
   },
-  xSmallScreensStylesL: {
-    //margin: "2rem auto",
-    width: "100%",
-    height: "8rem",
-    color: "red",
-  },
   smallScreensStylesP: {
     //margin: "2rem auto",
     width: "100%",
-    height: "8rem",
+    height: "9rem",
   },
-  smallScreensStylesL: {
+  smallerTabletStylesP: {
     //margin: "2rem auto",
     width: "100%",
-    height: "12.5rem",
+    height: "9.5rem",
+  },
+  smallTabletStylesP: {
+    //margin: "2rem auto",
+    width: "100%",
+    height: "11.5rem",
+  },
+  xxSmallScreensStylesL: {
+    //margin: "2rem auto",
+    width: "100%",
+    height: "11rem",
     color: "red",
   },
-  mediumScreensStyles: {
+  xSmallScreensStylesL: {
     //margin: "2rem auto",
     width: "100%",
-    height: "9rem",
+    height: "12.75rem",
+    color: "red",
   },
-  largeScreensStyles: {
-    //margin: "2rem auto",
-    width: "100%",
-    height: "9rem",
-  },
-  xLargeScreensUpStyles: {
-    //margin: "2rem auto",
-    width: "100%",
-    height: "9rem",
-  },
+  // smallScreensStylesL: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "14rem",
+  //   color: "red",
+  // },
+  // mediumScreensStylesP: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "15rem",
+  // },
+  // mediumScreensStylesL: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "16rem",
+  // },
+  // mediumBiggerScreensStyles: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "20rem",
+  // },
+  // largeScreensStyles: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "30rem",
+  // },
+  // xLargeScreensUpStyles: {
+  //   //margin: "2rem auto",
+  //   width: "100%",
+  //   height: "35rem",
+  // },
 }))
 
 const FourGridButtons = () => {
   const classes = useStyles()
   const theme = useTheme()
-  const xSmallScreensP = useMediaQuery(
-    `${theme.breakpoints.between("0", "599")} and (orientation: portrait)`
+  const galaxyFoldP = useMediaQuery(
+    `${theme.breakpoints.between("0", "317")} and (orientation: portrait)`
   )
-  const xSmallScreensL = useMediaQuery(
-    `${theme.breakpoints.between("0", "599")} and (orientation: landscape)`
+  const xxSmallScreensP = useMediaQuery(
+    `${theme.breakpoints.between("318", "338")} and (orientation: portrait)`
+  )
+  const xSmallScreensP = useMediaQuery(
+    `${theme.breakpoints.between("339", "401")} and (orientation: portrait)`
   )
   const smallScreensP = useMediaQuery(
-    `${theme.breakpoints.between("600", "959")} and (orientation: portrait)`
+    `${theme.breakpoints.between("402", "475")} and (orientation: portrait)`
   )
-  const smallScreensL = useMediaQuery(
-    `${theme.breakpoints.between("600", "959")} and (orientation: landscape)`
+  const smallerTabletP = useMediaQuery(
+    `${theme.breakpoints.between("476", "585")} and (orientation: portrait)`
   )
-  const mediumScreens = useMediaQuery(theme.breakpoints.between("960", "1279"))
-  const largeScreens = useMediaQuery(theme.breakpoints.between("1280", "1920"))
-  const xLargeScreensUp = useMediaQuery(theme.breakpoints.up("1921"))
-  console.log(xSmallScreensP)
-  console.log(xSmallScreensL)
-  console.log(smallScreensP)
-  console.log(smallScreensL)
+  const smallTabletP = useMediaQuery(
+    `${theme.breakpoints.between("586", "650")} and (orientation: portrait)`
+  )
+  const xxSmallScreensL = useMediaQuery(
+    `${theme.breakpoints.between("568", "624")} and (orientation: landscape)`
+  )
+  const xSmallScreensL = useMediaQuery(
+    `${theme.breakpoints.between("625", "701")} and (orientation: landscape)`
+  )
+  // const mediumScreensP = useMediaQuery(
+  //   `${theme.breakpoints.between("749", "861")} and (orientation: portrait)`
+  // )
+  // const smallScreensL = useMediaQuery(
+  //   `${theme.breakpoints.between("702", "748")} and (orientation: landscape)`
+  // )
+  // const mediumScreensL = useMediaQuery(
+  //   `${theme.breakpoints.between("749", "861")} and (orientation: landscape)`
+  // )
+  // const mediumBiggerScreens = useMediaQuery(
+  //   theme.breakpoints.between("862", "1366")
+  // )
+  // const largeScreens = useMediaQuery(theme.breakpoints.between("1367", "1920"))
+  // const xLargeScreensUp = useMediaQuery(theme.breakpoints.up("1921"))
+  // console.log(xSmallScreensP)
+  // console.log(xSmallScreensL)
+  // console.log(smallScreensP)
+  // console.log(smallScreensL)
 
   const rootCSS = classes.root
   const buttonsRightLeftCSS = classes.buttonsRightLeft
   const buttonsRightCSS = classes.buttonsRight
   const linksCSS = classes.links
 
+  const galaxyFoldCSSp = classes.galaxyFoldStylesP
+  const xxSmallScreensCSSp = classes.xxSmallScreensStylesP
   const xSmallScreensCSSp = classes.xSmallScreensStylesP
+  const xxSmallScreensCSSl = classes.xxSmallScreensStylesL
   const xSmallScreensCSSl = classes.xSmallScreensStylesL
   const smallScreensCSSp = classes.smallScreensStylesP
-  const smallScreensCSSl = classes.smallScreensStylesL
-  const mediumScreensCSS = classes.mediumScreensStyles
-  const largeScreensCSS = classes.largeScreensStyles
-  const xLargeScreensUpCSS = classes.xLargeScreensUpStyles
+  const smallerTabletCSSp = classes.smallerTabletStylesP
+  const smallTabletCSSp = classes.smallTabletStylesP
+  // const smallScreensCSSl = classes.smallScreensStylesL
+  // const mediumScreensCSSp = classes.mediumScreensStylesP
+  // const mediumScreensCSSl = classes.mediumScreensStylesL
+  // const mediumBiggerScreensCSS = classes.mediumBiggerScreensStyles
+  // const largeScreensCSS = classes.largeScreensStyles
+  // const xLargeScreensUpCSS = classes.xLargeScreensUpStyles
 
   return (
     <div className={rootCSS}>
       <Card
         raised
         className={
-          xSmallScreensP
+          galaxyFoldP
+            ? galaxyFoldCSSp
+            : xxSmallScreensP
+            ? xxSmallScreensCSSp
+            : xSmallScreensP
             ? xSmallScreensCSSp
+            : xxSmallScreensL
+            ? xxSmallScreensCSSl
             : xSmallScreensL
             ? xSmallScreensCSSl
             : smallScreensP
             ? smallScreensCSSp
-            : smallScreensL
-            ? smallScreensCSSl
-            : mediumScreens
-            ? mediumScreensCSS
-            : largeScreens
-            ? largeScreensCSS
-            : xLargeScreensUp
-            ? xLargeScreensUpCSS
+            : smallerTabletP
+            ? smallerTabletCSSp
+            : smallTabletP
+            ? smallTabletCSSp
             : ""
         }
+        // className={
+        //   xxSmallScreensP
+        //     ? xxSmallScreensCSSp
+        //     : xSmallScreensP
+        //     ? xSmallScreensCSSp
+        //     : xxSmallScreensL
+        //     ? xxSmallScreensCSSl
+        //     : xSmallScreensL
+        //     ? xSmallScreensCSSl
+        //     : smallScreensP
+        //     ? smallScreensCSSp
+        //     : smallScreensL
+        //     ? smallScreensCSSl
+        //     : mediumScreensP
+        //     ? mediumScreensCSSp
+        //     : mediumScreensL
+        //     ? mediumScreensCSSl
+        //     : mediumBiggerScreens
+        //     ? mediumBiggerScreensCSS
+        //     : largeScreens
+        //     ? largeScreensCSS
+        //     : xLargeScreensUp
+        //     ? xLargeScreensUpCSS
+        //     : ""
+        // }
       >
         <Link to="/curriculum">
           <div style={{ display: "flex" }}>
@@ -155,22 +248,49 @@ const FourGridButtons = () => {
       <Card
         raised
         className={
-          xSmallScreensP
+          galaxyFoldP
+            ? galaxyFoldCSSp
+            : xxSmallScreensP
+            ? xxSmallScreensCSSp
+            : xSmallScreensP
             ? xSmallScreensCSSp
+            : xxSmallScreensL
+            ? xxSmallScreensCSSl
             : xSmallScreensL
             ? xSmallScreensCSSl
             : smallScreensP
             ? smallScreensCSSp
-            : smallScreensL
-            ? smallScreensCSSl
-            : mediumScreens
-            ? mediumScreensCSS
-            : largeScreens
-            ? largeScreensCSS
-            : xLargeScreensUp
-            ? xLargeScreensUpCSS
+            : smallerTabletP
+            ? smallerTabletCSSp
+            : smallTabletP
+            ? smallTabletCSSp
             : ""
         }
+        // className={
+        //   xxSmallScreensP
+        //     ? xxSmallScreensCSSp
+        //     : xSmallScreensP
+        //     ? xSmallScreensCSSp
+        //     : xxSmallScreensL
+        //     ? xxSmallScreensCSSl
+        //     : xSmallScreensL
+        //     ? xSmallScreensCSSl
+        //     : smallScreensP
+        //     ? smallScreensCSSp
+        //     : smallScreensL
+        //     ? smallScreensCSSl
+        //     : mediumScreensP
+        //     ? mediumScreensCSSp
+        //     : mediumScreensL
+        //     ? mediumScreensCSSl
+        //     : mediumBiggerScreens
+        //     ? mediumBiggerScreensCSS
+        //     : largeScreens
+        //     ? largeScreensCSS
+        //     : xLargeScreensUp
+        //     ? xLargeScreensUpCSS
+        //     : ""
+        // }
       >
         <Link to="/events">
           <div style={{ display: "flex" }}>
@@ -191,22 +311,49 @@ const FourGridButtons = () => {
       <Card
         raised
         className={
-          xSmallScreensP
+          galaxyFoldP
+            ? galaxyFoldCSSp
+            : xxSmallScreensP
+            ? xxSmallScreensCSSp
+            : xSmallScreensP
             ? xSmallScreensCSSp
+            : xxSmallScreensL
+            ? xxSmallScreensCSSl
             : xSmallScreensL
             ? xSmallScreensCSSl
             : smallScreensP
             ? smallScreensCSSp
-            : smallScreensL
-            ? smallScreensCSSl
-            : mediumScreens
-            ? mediumScreensCSS
-            : largeScreens
-            ? largeScreensCSS
-            : xLargeScreensUp
-            ? xLargeScreensUpCSS
+            : smallerTabletP
+            ? smallerTabletCSSp
+            : smallTabletP
+            ? smallTabletCSSp
             : ""
         }
+        // className={
+        //   xxSmallScreensP
+        //     ? xxSmallScreensCSSp
+        //     : xSmallScreensP
+        //     ? xSmallScreensCSSp
+        //     : xxSmallScreensL
+        //     ? xxSmallScreensCSSl
+        //     : xSmallScreensL
+        //     ? xSmallScreensCSSl
+        //     : smallScreensP
+        //     ? smallScreensCSSp
+        //     : smallScreensL
+        //     ? smallScreensCSSl
+        //     : mediumScreensP
+        //     ? mediumScreensCSSp
+        //     : mediumScreensL
+        //     ? mediumScreensCSSl
+        //     : mediumBiggerScreens
+        //     ? mediumBiggerScreensCSS
+        //     : largeScreens
+        //     ? largeScreensCSS
+        //     : xLargeScreensUp
+        //     ? xLargeScreensUpCSS
+        //     : ""
+        // }
       >
         <Link to="/principals-message">
           <div style={{ display: "flex" }}>
