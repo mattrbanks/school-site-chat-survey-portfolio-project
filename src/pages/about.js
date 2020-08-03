@@ -3,6 +3,7 @@ import React from "react"
 import ImageReusable from "../components/imageReusable"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import styled from "styled-components"
 
 const About = () => (
   <Layout>
@@ -21,11 +22,12 @@ const About = () => (
         hope to be the support and inspiration that your child needs to be
         productive and successful.
       </p>
-      <div style={{ display: "flex" }}>
+      <ImagesMobile>
         <div
           style={{
             width: `100%`,
-            margin: `1.7rem 0.5rem auto`,
+            margin: "0.5rem 1rem 0.5rem 0rem",
+            //margin: `1.7rem 0.5rem auto`,
             maxWidth: `750px`,
           }}
         >
@@ -37,7 +39,8 @@ const About = () => (
         <div
           style={{
             width: `100%`,
-            margin: `1.7rem 0.5rem auto`,
+            margin: "0.5rem 0.5rem 0.5rem 0rem",
+            //margin: `1.7rem 0.5rem auto`,
             maxWidth: `750px`,
           }}
         >
@@ -46,9 +49,17 @@ const About = () => (
             filename="readingKids.jpg"
           />
         </div>
-      </div>
+      </ImagesMobile>
     </div>
   </Layout>
 )
 
 export default About
+
+const ImagesMobile = styled.div`
+  display: flex;
+  margin: 1rem;
+  @media only screen and (max-width: 750px) and (orientation: portrait) {
+    display: block;
+  }
+`
