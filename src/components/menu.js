@@ -26,20 +26,71 @@ const useStyles = makeStyles(theme => ({
     display: "none",
   },
   mobileMenuStylesP: {
-    //display: "block",
     background: "#f4f4f4",
-    paddingTop: "1rem",
+    padding: "0.5rem",
     display: "flex",
     justifyContent: "space-evenly",
     fontSize: "1.25rem",
+    position: "relative",
+    zIndex: "10",
   },
   mobileMenuStylesL: {
-    //display: "block",
     background: "#f4f4f4",
-    paddingTop: "1rem",
+    padding: "0.5rem",
     display: "flex",
     justifyContent: "space-evenly",
     fontSize: "1.25rem",
+    position: "relative",
+    zIndex: "10",
+  },
+  mobileMenuIcon: {
+    display: "inline-block",
+    cursor: "pointer",
+  },
+  barTop: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+  },
+  barMiddle: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+  },
+  barBottom: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+  },
+  changeBarTop: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+    transform: "rotate(-45deg) translate(-9px, 6px)",
+  },
+  changeBarMiddle: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+    opacity: "0",
+  },
+  changeBarBottom: {
+    width: "35px",
+    height: "5px",
+    backgroundColor: "#333",
+    margin: "6px 0",
+    transition: "0.4s",
+    transform: "rotate(45deg) translate(-8px, -8px)",
   },
 }))
 
@@ -92,6 +143,13 @@ const Menu = () => {
   const noMobileMenuStylesCSS = classes.noMobileMenuStyles
   const noBigScreenMenuStylesCSS = classes.noBigScreenMenuStyles
 
+  const barTopCSS = classes.barTop
+  const barMiddleCSS = classes.barMiddle
+  const barBottomCSS = classes.barBottom
+  const changeBarTopCSS = classes.changeBarTop
+  const changeBarMiddleCSS = classes.changeBarMiddle
+  const changeBarBottomCSS = classes.changeBarBottom
+
   return (
     <React.Fragment>
       <div
@@ -143,7 +201,15 @@ const Menu = () => {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          Menu
+          <div className={classes.mobileMenuIcon}>
+            <div className={open === false ? barTopCSS : changeBarTopCSS}></div>
+            <div
+              className={open === false ? barMiddleCSS : changeBarMiddleCSS}
+            ></div>
+            <div
+              className={open === false ? barBottomCSS : changeBarBottomCSS}
+            ></div>
+          </div>
         </Button>
         <Popper
           open={open}
@@ -167,15 +233,31 @@ const Menu = () => {
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
                   >
-                    <div style={{ display: "block" }}>
+                    <div style={{ display: "block", margin: "1rem" }}>
                       <div>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <Link to="/">Home</Link>
+                        </MenuItem>
                       </div>
                       <div>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <Link to="/about">About</Link>
+                        </MenuItem>
                       </div>
                       <div>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <Link to="/contact">Contact</Link>
+                        </MenuItem>
+                      </div>
+                      <div>
+                        <MenuItem onClick={handleClose}>
+                          <Link to="/chat">Chat</Link>
+                        </MenuItem>
+                      </div>
+                      <div>
+                        <MenuItem onClick={handleClose}>
+                          <Link to="/survey">Survey</Link>
+                        </MenuItem>
                       </div>
                     </div>
                   </MenuList>

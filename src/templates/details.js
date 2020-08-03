@@ -77,5 +77,6 @@ const PostsImageStyleWrapper = styled.div`
     margin: auto;
     padding: 1rem;
     max-width: 750px;
+    width: 95%;
   }
 `
