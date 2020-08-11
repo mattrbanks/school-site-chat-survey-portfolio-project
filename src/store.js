@@ -2,7 +2,6 @@ import React from "react"
 import io from "socket.io-client"
 import { userName } from "./pages/chat"
 import { userType } from "./pages/chat"
-//import useForceUpdate from "use-force-update"
 
 export const context = React.createContext()
 
@@ -94,11 +93,6 @@ const Store = props => {
   const [updateChat, setUpdateChat] = React.useState(0)
   console.log(updateChat)
 
-  const [msgTopic, setMsgTopic] = React.useState("")
-  console.log(msgTopic)
-
-  //const forceUpdate = useForceUpdate()
-
   React.useEffect(() => {
     privChatListCopy.current = privChatList
   }, [privChatList])
@@ -122,8 +116,6 @@ const Store = props => {
         type: "RECEIVE_PRIVATE_MESSAGE",
         payload: msg,
       })
-      setMsgTopic(msg.topic)
-      console.log(msgTopic)
     })
 
     socket.on("private web push notification", msg => {
@@ -308,16 +300,13 @@ const Store = props => {
         value={{
           allChats,
           privChatList,
-          topicHolder,
           sendChatAction,
           sendPrivateAction,
           updateChat,
-          setUpdateChat,
           usersListC,
           usersTopicsListC,
           sendActiveTopicSocket,
           sendPrivateMessage,
-          msgTopic,
         }}
       >
         {props.children}

@@ -79,6 +79,7 @@ io.on("connection", function(socket) {
     topicsAll[socket.id] = topic
 
     io.emit("active-topic-socket", Object.values(topicsAll))
+    io.emit("new-user", Object.entries(users))
   })
 
   socket.on("send chat message", msg => {
@@ -165,6 +166,7 @@ io.on("connection", function(socket) {
     delete topicsAll[socket.id] //we will send this out instead of users[socket.id], which is just name
     io.emit("active-topic-socket", Object.values(topicsAll))
     console.log(Object.values(topicsAll))
+    io.emit("new-user", Object.entries(users))
   })
 })
 

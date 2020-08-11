@@ -66,8 +66,13 @@ const Chat = props => {
           <h1 style={{ margin: "1rem" }}>Login to Eagle Chat</h1>
           <form style={{ margin: "1rem" }} onSubmit={nameHandler}>
             <div>
-              <div>
-                <label htmlFor="name">Name (required)</label>
+              <div style={{ display: "block" }}>
+                <div style={{ marginBottom: "1rem" }}>
+                  <span>*All items are required for login</span>
+                </div>
+                <div>
+                  <label htmlFor="name">Name</label>
+                </div>
               </div>
               <div>
                 <input
@@ -80,45 +85,37 @@ const Chat = props => {
                 />
               </div>
             </div>
-            <div>
-              <label>Are you a parent, a student, or a teacher?</label>
-              <label>
-                <input
-                  required
-                  value="parent"
-                  checked={type === "parent"}
-                  onChange={e => setType(e.target.value)}
-                  type="radio"
-                  name="type"
-                />
-                Parent
-              </label>
+            <div style={{ display: "block" }}>
+              <div style={{ marginTop: "1rem" }}>
+                <label>Are you a parent or a teacher?</label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    required
+                    value="parent"
+                    checked={type === "parent"}
+                    onChange={e => setType(e.target.value)}
+                    type="radio"
+                    name="type"
+                  />
+                  Parent
+                </label>
 
-              <label>
-                <input
-                  required
-                  value="teacher"
-                  checked={type === "teacher"}
-                  onChange={e => setType(e.target.value)}
-                  type="radio"
-                  name="type"
-                />
-                Teacher
-              </label>
-
-              <label>
-                <input
-                  required
-                  value="student"
-                  checked={type === "student"}
-                  onChange={e => setType(e.target.value)}
-                  type="radio"
-                  name="type"
-                />
-                Student
-              </label>
+                <label style={{ marginLeft: "1rem" }}>
+                  <input
+                    required
+                    value="teacher"
+                    checked={type === "teacher"}
+                    onChange={e => setType(e.target.value)}
+                    type="radio"
+                    name="type"
+                  />
+                  Teacher
+                </label>
+              </div>
             </div>
-            <button type="submit" value="Submit">
+            <button type="submit" value="Submit" style={{ marginTop: "1rem" }}>
               Submit Username
             </button>
           </form>

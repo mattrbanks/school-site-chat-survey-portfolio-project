@@ -1,5 +1,6 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
+import { useTheme, useMediaQuery } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -11,20 +12,15 @@ import { context } from "../store"
 import UsersList from "./Server/utils/usersList"
 import ScrollableFeed from "react-scrollable-feed"
 import Badge from "@material-ui/core/Badge"
-import styled from "styled-components"
 import "emoji-mart/css/emoji-mart.css"
 import { Picker } from "emoji-mart"
 import ReactEmoji from "react-emoji"
-//import useForceUpdate from "use-force-update"
 
 const useStyles = makeStyles(theme => ({
   root: {
     margin: "1rem",
     textAlign: "center",
     padding: theme.spacing(3, 2),
-  },
-  multiline: {
-    display: "flex",
   },
   flex: {
     display: "flex",
@@ -84,6 +80,104 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "left",
   },
+  topicsWindowMobile: {
+    width: "50%",
+    height: "18.75rem",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+  },
+  topicsWindowPrivMobile: {
+    width: "100%",
+    height: "18.75rem",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+  },
+  chatWindowMobile: {
+    width: "100%",
+    height: "17.5rem",
+    marginTop: "1rem",
+    marginBottom: "1rem",
+    //padding: "1.25rem",
+    //overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+  },
+  joinWindowMobile: {
+    width: "100%",
+    height: "18.75rem",
+    marginTop: "1rem",
+    marginBottom: "1rem",
+    //padding: "1.25rem",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+  },
+  usersWindowMobileP: {
+    width: "100%",
+    height: "16.9rem",
+    borderLeft: "0.0625rem solid grey",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+    display: "flex",
+    alignItems: "left",
+  },
+  usersWindowMobileL: {
+    width: "100%",
+    marginRight: "6rem",
+    height: "17rem",
+    borderLeft: "0.0625rem solid grey",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+    display: "flex",
+    alignItems: "left",
+  },
+  usersWindowPreTopicMobileP: {
+    width: "100%",
+    height: "18.75rem",
+    borderLeft: "0.0625rem solid grey",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+    display: "flex",
+    alignItems: "left",
+  },
+  usersWindowPreTopicMobileL: {
+    width: "100%",
+    marginRight: "6rem",
+    height: "18.75rem",
+    borderLeft: "0.0625rem solid grey",
+    borderBottom: "0.0625rem solid grey",
+    overflow: "auto",
+    overflowWrap: "break-word",
+    wordWrap: "break-word", //IE legacy
+    hyphens: "auto",
+    textAlign: "left",
+    display: "flex",
+    alignItems: "left",
+  },
   chatBox: {
     width: "85%",
   },
@@ -118,10 +212,26 @@ const useStyles = makeStyles(theme => ({
     cssFloat: "right",
     marginLeft: "200px",
   },
+  noBigScreenChatStyles: {
+    display: "none",
+  },
+  noMobileChatStyles: {
+    display: "none",
+  },
+  dashboardMobileStylesP: {
+    display: "block",
+  },
+  dashboardMobileStylesL: {
+    display: "block",
+  },
+  userListToggleStyles: {
+    display: "none",
+  },
 }))
 
 const Dashboard = () => {
   const classes = useStyles()
+  const theme = useTheme()
 
   const getEmojiButtonClass = classes.getEmojiButton
   let emojiPickerClass = classes.emojiPicker
@@ -143,14 +253,12 @@ const Dashboard = () => {
     updateChat,
     usersTopicsListC,
     usersListC,
-    msgTopic,
   } = React.useContext(context)
   console.log(usersTopicsListC)
+  console.log(usersListC)
   console.log(allChats)
   console.log(updateChat)
   console.log(privChatList)
-  console.log(msgTopic)
-  console.log(typeof msgTopic)
 
   const topics = Object.keys(allChats)
   console.log(topics)
@@ -160,8 +268,6 @@ const Dashboard = () => {
 
   let privTopicsEntries = Object.entries(privChatList)
   console.log(privTopicsEntries)
-
-  //const forceUpdate = useForceUpdate()
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
@@ -187,10 +293,37 @@ const Dashboard = () => {
   const [privChatActiveNoComma, setPrivChatActiveNoComma] = React.useState(null)
   const [privNotifyOn, setPrivNotifyOn] = React.useState(false)
   const [userListSwitch, setUserListSwitch] = React.useState(false)
+  console.log(userListSwitch)
   console.log(privChatActive)
   console.log(typeof privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
+
+  const mobileChatP = useMediaQuery(
+    `${theme.breakpoints.between("0", "500")} and (orientation: portrait)`
+  )
+
+  const mobileChatL = useMediaQuery(
+    `${theme.breakpoints.between("0", "900")} and (orientation: landscape)`
+  )
+
+  //big screens
+  const flexCSS = classes.flex
+  const dashboardMobileCSSp = classes.dashboardMobileStylesP
+  const dashboardMobileCSSl = classes.dashboardMobileStylesL
+
+  //mobile
+  const noMobileChatStylesCSS = classes.noMobileChatStyles
+  const noBigScreenChatStylesCSS = classes.noBigScreenChatStyles
+  const topicsWindowPrivMobileCSS = classes.topicsWindowPrivMobile
+  const topicsWindowMobileCSS = classes.topicsWindowMobile
+  const usersWindowMobileCSSl = classes.usersWindowMobileL
+  const usersWindowMobileCSSp = classes.usersWindowMobileP
+  const usersWindowPreTopicMobileCSSl = classes.usersWindowPreTopicMobileL
+  const usersWindowPreTopicMobileCSSp = classes.usersWindowPreTopicMobileP
+
+  //all screens
+  const userListToggleStylesCSS = classes.userListToggleStyles
 
   React.useEffect(() => {
     setTimeout(function() {
@@ -277,10 +410,6 @@ const Dashboard = () => {
     }
   }, [activeTopic])
 
-  React.useEffect(() => {
-    console.log("this is privChatList" + privChatList)
-  }, [privChatList]) //this works but I need update. Not turning red.
-
   function openEmojisMenu() {
     setShowEmojis(!showEmojis)
   }
@@ -290,7 +419,15 @@ const Dashboard = () => {
       <h2>Eagle Chat</h2>
       <h5>{privChatActive !== null ? privChatActiveNoComma : activeTopic}</h5>
 
-      <div className={classes.flex}>
+      <div
+        className={
+          mobileChatP
+            ? noBigScreenChatStylesCSS
+            : mobileChatL
+            ? noBigScreenChatStylesCSS
+            : flexCSS
+        }
+      >
         <div className={classes.topicsWindow}>
           <List>
             {topics.map(topic => (
@@ -362,7 +499,20 @@ const Dashboard = () => {
                     setUserListSwitch(!userListSwitch)
                   }}
                 >
-                  Toggle UserList
+                  <span
+                    className={
+                      userListSwitch === true ? userListToggleStylesCSS : ""
+                    }
+                  >
+                    All Users
+                  </span>
+                  <span
+                    className={
+                      userListSwitch === false ? userListToggleStylesCSS : ""
+                    }
+                  >
+                    Room Users
+                  </span>
                 </button>
                 {userListSwitch ? (
                   <div className={classes.usersWindow}>
@@ -379,9 +529,7 @@ const Dashboard = () => {
                           }}
                         >
                           <ListItemText
-                            className={classes.multiline}
-                            primary={name[1][0]}
-                            secondary={name[1][1] + name[1][2]}
+                            primary={name[1][0] + name[1][1] + name[1][2]}
                           />
                         </ListItem>
                       ))}
@@ -422,6 +570,197 @@ const Dashboard = () => {
             </div>
           </>
         )}
+      </div>
+      <div
+        className={
+          mobileChatP
+            ? dashboardMobileCSSp
+            : mobileChatL
+            ? dashboardMobileCSSl
+            : noMobileChatStylesCSS
+        }
+      >
+        <div className={flexCSS}>
+          <div
+            className={
+              privChatActive !== null
+                ? topicsWindowPrivMobileCSS
+                : topicsWindowMobileCSS
+            }
+          >
+            <List>
+              {topics.map(topic => (
+                <ListItem
+                  onClick={e => {
+                    changeActiveTopic(e.target.innerText)
+                    setPrivChatActive(null)
+
+                    console.log("We clicked the topic we want 1st")
+                  }}
+                  key={topic}
+                  button
+                >
+                  <ListItemText primary={topic} />
+                </ListItem>
+              ))}
+            </List>
+            <Badge color="secondary" variant="dot" invisible={invisible}>
+              <p>Direct Messages</p>
+            </Badge>
+            <List className={classes.badgeStyles}>
+              {privTopicsEntries.map((privTopic, i) => (
+                <ListItem
+                  onClick={e => {
+                    changeActiveTopic(e.target.innerText)
+                    setPrivChatActive(e.target.innerText)
+                    setInvisible(true)
+
+                    console.log("Here it is! " + privTopicsEntries)
+                    console.log(privTopic)
+                  }}
+                  key={privTopic[0]}
+                  button
+                >
+                  <ListItemText primary={privTopic[0]} />
+                </ListItem>
+              ))}
+            </List>
+          </div>
+          <div>
+            {activeTopic ? (
+              privChatActive !== null ? (
+                ""
+              ) : (
+                <div>
+                  <button
+                    onClick={() => {
+                      setUserListSwitch(!userListSwitch)
+                    }}
+                  >
+                    <span
+                      className={
+                        userListSwitch === true ? userListToggleStylesCSS : ""
+                      }
+                    >
+                      All Users
+                    </span>
+                    <span
+                      className={
+                        userListSwitch === false ? userListToggleStylesCSS : ""
+                      }
+                    >
+                      Room Users
+                    </span>
+                  </button>
+                  {userListSwitch ? (
+                    <div
+                      className={
+                        mobileChatP
+                          ? usersWindowMobileCSSp
+                          : mobileChatL
+                          ? usersWindowMobileCSSl
+                          : ""
+                      }
+                    >
+                      <List>
+                        {allTheUserNames.map((name, i) => (
+                          <ListItem
+                            key={name[0]}
+                            button
+                            onClick={() => {
+                              setReceiver({ from: name[1], id: name[0] })
+                              setTimeout(function() {
+                                setPrivChatMount(Math.random())
+                              }, 500)
+                            }}
+                          >
+                            <ListItemText
+                              primary={name[1][0] + name[1][1] + name[1][2]}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </div>
+                  ) : (
+                    <div
+                      className={
+                        mobileChatP
+                          ? usersWindowMobileCSSp
+                          : mobileChatL
+                          ? usersWindowMobileCSSl
+                          : ""
+                      }
+                    >
+                      <List>
+                        {usersInTopic[activeTopic].map((topic, i) => (
+                          <ListItem
+                            key={topic.id}
+                            button
+                            onClick={() => {
+                              setReceiver(oldState => {
+                                return { ...oldState, ...topic }
+                              })
+                              setTimeout(function() {
+                                setPrivChatMount(Math.random())
+                              }, 500)
+                            }}
+                          >
+                            <ListItemText primary={topic.from} />
+                          </ListItem>
+                        ))}
+                      </List>
+                    </div>
+                  )}
+                </div>
+              )
+            ) : (
+              <div
+                className={
+                  mobileChatP
+                    ? usersWindowPreTopicMobileCSSp
+                    : mobileChatL
+                    ? usersWindowPreTopicMobileCSSl
+                    : ""
+                }
+              >
+                <UsersList allChats={allChats} />
+              </div>
+            )}
+          </div>
+        </div>
+        <div>
+          {activeTopic ? (
+            privChatActive !== null ? (
+              <>
+                <div className={classes.chatWindowMobile}>
+                  <ScrollableFeed>
+                    {privChatList[activeTopic].map((chat, i) => (
+                      <div className={classes.flex} key={i}>
+                        <Chip label={chat.from} className={classes.chip} />
+                        <h5>{ReactEmoji.emojify(chat.msg)}</h5>
+                      </div>
+                    ))}
+                  </ScrollableFeed>
+                </div>
+              </>
+            ) : (
+              <div className={classes.chatWindowMobile}>
+                <ScrollableFeed>
+                  {allChats[activeTopic].map((chat, i) => (
+                    <div className={classes.flex} key={i}>
+                      <Chip label={chat.from} className={classes.chip} />
+                      <h5>{ReactEmoji.emojify(chat.msg)}</h5>
+                    </div>
+                  ))}
+                </ScrollableFeed>
+              </div>
+            )
+          ) : (
+            <div className={classes.joinWindowMobile}>
+              <div>&uarr; Welcome! Choose a topic to start chatting.</div>
+            </div>
+          )}
+        </div>
       </div>
       {privChatActive !== null ? (
         <form
@@ -478,6 +817,7 @@ const Dashboard = () => {
             className={classes.button}
             variant="contained"
             color="primary"
+            disabled={!textValue}
             onClick={() => {
               sendChatAction({
                 from: "",
