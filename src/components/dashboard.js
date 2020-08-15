@@ -40,7 +40,6 @@ const useStyles = makeStyles(theme => ({
     width: "50%",
     height: "17.5rem",
     padding: "1.25rem",
-    //overflow: "auto",
     overflowWrap: "break-word",
     wordWrap: "break-word", //IE legacy
     hyphens: "auto",
@@ -57,7 +56,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: "left",
   },
   usersWindow: {
-    //width: "30%",
     height: "17rem",
     borderLeft: "0.0625rem solid grey",
     overflow: "auto",
@@ -69,7 +67,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: "left",
   },
   usersWindowPreTopic: {
-    //width: "30%",
     height: "18.75rem",
     borderLeft: "0.0625rem solid grey",
     overflow: "auto",
@@ -105,8 +102,6 @@ const useStyles = makeStyles(theme => ({
     height: "17.5rem",
     marginTop: "1rem",
     marginBottom: "1rem",
-    //padding: "1.25rem",
-    //overflow: "auto",
     overflowWrap: "break-word",
     wordWrap: "break-word", //IE legacy
     hyphens: "auto",
@@ -117,7 +112,6 @@ const useStyles = makeStyles(theme => ({
     height: "18.75rem",
     marginTop: "1rem",
     marginBottom: "1rem",
-    //padding: "1.25rem",
     overflow: "auto",
     overflowWrap: "break-word",
     wordWrap: "break-word", //IE legacy
@@ -207,10 +201,8 @@ const useStyles = makeStyles(theme => ({
   },
   emojiPicker: {
     position: "absolute",
-    bottom: 10,
-    right: 0,
-    cssFloat: "right",
-    marginLeft: "200px",
+    bottom: 130,
+    right: -22,
   },
   noBigScreenChatStyles: {
     display: "none",
@@ -446,7 +438,7 @@ const Dashboard = () => {
             ))}
           </List>
           <Badge color="secondary" variant="dot" invisible={invisible}>
-            <p>Direct Messages</p>
+            <p style={{ marginBottom: "0" }}>Direct Messages</p>
           </Badge>
           <List className={classes.badgeStyles}>
             {privTopicsEntries.map((privTopic, i) => (
@@ -605,7 +597,7 @@ const Dashboard = () => {
               ))}
             </List>
             <Badge color="secondary" variant="dot" invisible={invisible}>
-              <p>Direct Messages</p>
+              <p style={{ marginBottom: "0" }}>Direct Messages</p>
             </Badge>
             <List className={classes.badgeStyles}>
               {privTopicsEntries.map((privTopic, i) => (
@@ -831,7 +823,7 @@ const Dashboard = () => {
           </Button>
         </form>
       )}
-      <div>
+      <div style={{ position: "relative" }}>
         {activeTopic ? (
           showEmojis ? (
             <React.Fragment>

@@ -9,109 +9,54 @@ const useStyles = makeStyles(theme => ({
     margin: "2rem auto",
     width: "90%", //need to do some styling here and need media queries.
   },
-  buttonsRightLeft: {
+  buttons: {
     width: "50%",
     height: "100%",
-    borderRight: "0.0625rem solid grey",
-    borderLeft: "0.0625rem solid grey",
-  },
-  buttonsRight: {
-    width: "50%",
-    height: "100%",
-    borderRight: "0.0625rem solid grey",
+    //borderRight: "0.0625rem solid grey",
   },
   links: {
-    display: "flex",
-    height: "18.75rem",
-    justifyContent: "center",
-    alignItems: "center",
     fontSize: "2rem",
     [`${theme.breakpoints.down("sm")} and (orientation: portrait)`]: {
-      height: "10rem",
-      justifyContent: "center",
-      alignItems: "center",
       fontSize: "1rem",
     },
     [`${theme.breakpoints.down("md")} and (orientation: landscape)`]: {
-      height: "13rem",
-      justifyContent: "center",
-      alignItems: "center",
       fontSize: "1.5rem",
     },
   },
   galaxyFoldStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "6rem",
   },
   xxSmallScreensStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "7rem",
   },
   xSmallScreensStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "8rem",
   },
   smallScreensStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "9rem",
   },
   smallerTabletStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "9.5rem",
   },
   smallTabletStylesP: {
-    //margin: "2rem auto",
     width: "100%",
     height: "11.5rem",
   },
   xxSmallScreensStylesL: {
-    //margin: "2rem auto",
     width: "100%",
     height: "11rem",
     color: "red",
   },
   xSmallScreensStylesL: {
-    //margin: "2rem auto",
     width: "100%",
     height: "12.75rem",
     color: "red",
   },
-  // smallScreensStylesL: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "14rem",
-  //   color: "red",
-  // },
-  // mediumScreensStylesP: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "15rem",
-  // },
-  // mediumScreensStylesL: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "16rem",
-  // },
-  // mediumBiggerScreensStyles: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "20rem",
-  // },
-  // largeScreensStyles: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "30rem",
-  // },
-  // xLargeScreensUpStyles: {
-  //   //margin: "2rem auto",
-  //   width: "100%",
-  //   height: "35rem",
-  // },
 }))
 
 const FourGridButtons = () => {
@@ -141,28 +86,9 @@ const FourGridButtons = () => {
   const xSmallScreensL = useMediaQuery(
     `${theme.breakpoints.between("625", "701")} and (orientation: landscape)`
   )
-  // const mediumScreensP = useMediaQuery(
-  //   `${theme.breakpoints.between("749", "861")} and (orientation: portrait)`
-  // )
-  // const smallScreensL = useMediaQuery(
-  //   `${theme.breakpoints.between("702", "748")} and (orientation: landscape)`
-  // )
-  // const mediumScreensL = useMediaQuery(
-  //   `${theme.breakpoints.between("749", "861")} and (orientation: landscape)`
-  // )
-  // const mediumBiggerScreens = useMediaQuery(
-  //   theme.breakpoints.between("862", "1366")
-  // )
-  // const largeScreens = useMediaQuery(theme.breakpoints.between("1367", "1920"))
-  // const xLargeScreensUp = useMediaQuery(theme.breakpoints.up("1921"))
-  // console.log(xSmallScreensP)
-  // console.log(xSmallScreensL)
-  // console.log(smallScreensP)
-  // console.log(smallScreensL)
 
   const rootCSS = classes.root
-  const buttonsRightLeftCSS = classes.buttonsRightLeft
-  const buttonsRightCSS = classes.buttonsRight
+  const buttonsCSS = classes.buttons
   const linksCSS = classes.links
 
   const galaxyFoldCSSp = classes.galaxyFoldStylesP
@@ -173,12 +99,6 @@ const FourGridButtons = () => {
   const smallScreensCSSp = classes.smallScreensStylesP
   const smallerTabletCSSp = classes.smallerTabletStylesP
   const smallTabletCSSp = classes.smallTabletStylesP
-  // const smallScreensCSSl = classes.smallScreensStylesL
-  // const mediumScreensCSSp = classes.mediumScreensStylesP
-  // const mediumScreensCSSl = classes.mediumScreensStylesL
-  // const mediumBiggerScreensCSS = classes.mediumBiggerScreensStyles
-  // const largeScreensCSS = classes.largeScreensStyles
-  // const xLargeScreensUpCSS = classes.xLargeScreensUpStyles
 
   return (
     <div className={rootCSS}>
@@ -203,38 +123,20 @@ const FourGridButtons = () => {
             ? smallTabletCSSp
             : ""
         }
-        // className={
-        //   xxSmallScreensP
-        //     ? xxSmallScreensCSSp
-        //     : xSmallScreensP
-        //     ? xSmallScreensCSSp
-        //     : xxSmallScreensL
-        //     ? xxSmallScreensCSSl
-        //     : xSmallScreensL
-        //     ? xSmallScreensCSSl
-        //     : smallScreensP
-        //     ? smallScreensCSSp
-        //     : smallScreensL
-        //     ? smallScreensCSSl
-        //     : mediumScreensP
-        //     ? mediumScreensCSSp
-        //     : mediumScreensL
-        //     ? mediumScreensCSSl
-        //     : mediumBiggerScreens
-        //     ? mediumBiggerScreensCSS
-        //     : largeScreens
-        //     ? largeScreensCSS
-        //     : xLargeScreensUp
-        //     ? xLargeScreensUpCSS
-        //     : ""
-        // }
       >
         <Link to="/curriculum">
           <div style={{ display: "flex" }}>
-            <div className={buttonsRightLeftCSS}>
+            <div
+              className={buttonsCSS}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "17%",
+              }}
+            >
               <span className={linksCSS}>Curriculum</span>
             </div>
-            <div className={buttonsRightCSS}>
+            <div className={buttonsCSS}>
               <div style={{ maxWidth: `100%` }}>
                 <ImageReusable
                   alt="books and alphabet blocks"
@@ -266,35 +168,10 @@ const FourGridButtons = () => {
             ? smallTabletCSSp
             : ""
         }
-        // className={
-        //   xxSmallScreensP
-        //     ? xxSmallScreensCSSp
-        //     : xSmallScreensP
-        //     ? xSmallScreensCSSp
-        //     : xxSmallScreensL
-        //     ? xxSmallScreensCSSl
-        //     : xSmallScreensL
-        //     ? xSmallScreensCSSl
-        //     : smallScreensP
-        //     ? smallScreensCSSp
-        //     : smallScreensL
-        //     ? smallScreensCSSl
-        //     : mediumScreensP
-        //     ? mediumScreensCSSp
-        //     : mediumScreensL
-        //     ? mediumScreensCSSl
-        //     : mediumBiggerScreens
-        //     ? mediumBiggerScreensCSS
-        //     : largeScreens
-        //     ? largeScreensCSS
-        //     : xLargeScreensUp
-        //     ? xLargeScreensUpCSS
-        //     : ""
-        // }
       >
         <Link to="/events">
           <div style={{ display: "flex" }}>
-            <div className={buttonsRightLeftCSS}>
+            <div className={buttonsCSS}>
               <div style={{ maxWidth: `100%` }}>
                 <ImageReusable
                   alt="kids working on a project"
@@ -302,7 +179,14 @@ const FourGridButtons = () => {
                 />
               </div>
             </div>
-            <div className={buttonsRightCSS}>
+            <div
+              className={buttonsCSS}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "17%",
+              }}
+            >
               <span className={linksCSS}>Events</span>
             </div>
           </div>
@@ -329,38 +213,20 @@ const FourGridButtons = () => {
             ? smallTabletCSSp
             : ""
         }
-        // className={
-        //   xxSmallScreensP
-        //     ? xxSmallScreensCSSp
-        //     : xSmallScreensP
-        //     ? xSmallScreensCSSp
-        //     : xxSmallScreensL
-        //     ? xxSmallScreensCSSl
-        //     : xSmallScreensL
-        //     ? xSmallScreensCSSl
-        //     : smallScreensP
-        //     ? smallScreensCSSp
-        //     : smallScreensL
-        //     ? smallScreensCSSl
-        //     : mediumScreensP
-        //     ? mediumScreensCSSp
-        //     : mediumScreensL
-        //     ? mediumScreensCSSl
-        //     : mediumBiggerScreens
-        //     ? mediumBiggerScreensCSS
-        //     : largeScreens
-        //     ? largeScreensCSS
-        //     : xLargeScreensUp
-        //     ? xLargeScreensUpCSS
-        //     : ""
-        // }
       >
         <Link to="/principals-message">
           <div style={{ display: "flex" }}>
-            <div className={buttonsRightLeftCSS}>
+            <div
+              className={buttonsCSS}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "17%",
+              }}
+            >
               <span className={linksCSS}>Principal's Message</span>
             </div>
-            <div className={buttonsRightCSS}>
+            <div className={buttonsCSS}>
               <div style={{ maxWidth: `100%` }}>
                 <ImageReusable
                   alt="principal of the school"
