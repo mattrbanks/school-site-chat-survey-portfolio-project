@@ -177,7 +177,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     width: "15%",
-    height: "3.5rem",
+    height: "3.25rem",
   },
   badgeStyles: {
     display: "flex",

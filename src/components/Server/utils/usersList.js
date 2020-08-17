@@ -11,9 +11,9 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     padding: theme.spacing(3, 2),
   },
-  multiline: {
-    display: "flex",
-  },
+  // multiline: {
+  //   display: "flex",
+  // },
   button: {
     width: "15%",
     height: "3.5rem",
@@ -37,9 +37,9 @@ const UsersList = props => {
         {allTheUserNames.map((name, i) => (
           <ListItem key={name[0]}>
             <ListItemText
-              className={classes.multiline}
-              primary={name[1][0]}
-              secondary={name[1][1] + name[1][2]}
+              //className={classes.multiline}
+              primary={name[1][0] + name[1][1] + name[1][2]}
+              //secondary={name[1][1] + name[1][2]}
             />
           </ListItem>
         ))}

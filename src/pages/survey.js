@@ -74,7 +74,7 @@ const Survey = () => {
       <div style={{ margin: "1.5rem" }}>
         <h1>Eagle Elementary Satisfaction Survey</h1>
         <form onSubmit={submitHandler}>
-          <div>
+          <div style={{ marginBottom: "1rem" }}>
             <div>
               <label htmlFor="name">Name (required)</label>
             </div>
@@ -89,7 +89,7 @@ const Survey = () => {
               />
             </div>
           </div>
-          <div>
+          <div style={{ marginBottom: "1rem" }}>
             <div>
               <label htmlFor="email">Email (required)</label>
             </div>
@@ -97,34 +97,36 @@ const Survey = () => {
               <input
                 type="text"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="Email address"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
             </div>
           </div>
-          <div>
+          <div style={{ marginBottom: "1rem" }}>
             <div>
               <label htmlFor="number" id="number-label">
-                How satisfied are you with your child's education? Scale is 1 =
-                Not satisfied and 10 = Highly satisfied (required)
+                How satisfied are you with your child's education?
+                <br /> Scale is 1 = Not satisfied and 10 = Highly satisfied
+                <br /> (required)
               </label>
             </div>
             <div>
               <input
+                style={{ width: "15%" }}
                 type="number"
                 name="number"
                 id="number"
                 min="1"
                 max="10"
-                placeholder="Satisfaction level"
+                placeholder="Satisfaction"
                 value={satisfactionNumber}
                 onChange={e => setSatisfactionNumber(e.target.value)}
               />
             </div>
           </div>
-          <div id="dropdowndiv1">
+          <div style={{ marginBottom: "1rem" }} id="dropdowndiv1">
             <div>
               <label>What grade is your child in?</label>
             </div>
@@ -133,9 +135,10 @@ const Survey = () => {
                 id="dropdown"
                 name="schoolType"
                 onChange={e => setChildGrad(e.target.value)}
+                defaultValue=""
                 required
               >
-                <option value="" disabled selected hidden>
+                <option value="" disabled hidden>
                   Select One
                 </option>
                 <option value="Kindergarten">Kindergarten</option>
@@ -145,45 +148,55 @@ const Survey = () => {
               </select>
             </div>
           </div>
-          <div>
-            <label id="radio-label">
-              How many of your children attend Eagle Elementary?
-            </label>
-            <label id="radio-label1">
-              <input
-                id="married"
-                onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
-                value="One"
-                type="radio"
-                name="maritalAns"
-              />
-              One
-            </label>
+          <div style={{ display: "block", marginBottom: "1rem" }}>
+            <div>
+              <label style={{ marginBottom: "1rem" }} id="radio-label">
+                How many of your children attend Eagle Elementary?
+              </label>
+            </div>
+            <div style={{ display: "block" }}>
+              <div>
+                <label style={{ marginBottom: "0.5rem" }} id="radio-label1">
+                  <input
+                    id="one"
+                    onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
+                    value="One"
+                    type="radio"
+                    name="maritalAns"
+                  />
+                  One
+                </label>
+              </div>
 
-            <label id="radio-label2">
-              <input
-                id="divorced"
-                onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
-                value="Two"
-                type="radio"
-                name="maritalAns"
-              />
-              Two
-            </label>
+              <div>
+                <label style={{ marginBottom: "0.5rem" }} id="radio-label2">
+                  <input
+                    id="two"
+                    onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
+                    value="Two"
+                    type="radio"
+                    name="maritalAns"
+                  />
+                  Two
+                </label>
+              </div>
 
-            <label id="radio-label3">
-              <input
-                id="single"
-                onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
-                value="Three or more"
-                type="radio"
-                name="maritalAns"
-              />
-              Three or more
-            </label>
+              <div>
+                <label id="radio-label3">
+                  <input
+                    id="Three or more"
+                    onChange={e => setNumberOfKidsInEagleElem(e.target.value)}
+                    value="Three or more"
+                    type="radio"
+                    name="maritalAns"
+                  />
+                  Three or more
+                </label>
+              </div>
+            </div>
           </div>
           <div>
-            <div>
+            <div style={{ marginBottom: "1rem" }}>
               <label>
                 These are the things our school currently does to reach out to
                 the community. Please choose the ones you like the best. (You
@@ -307,7 +320,7 @@ const Survey = () => {
               </ul>
             </div>
           </div>
-          <div>
+          <div style={{ marginBottom: "1rem" }}>
             <div>
               <label>
                 What can our school do to increase your satisfaction?
