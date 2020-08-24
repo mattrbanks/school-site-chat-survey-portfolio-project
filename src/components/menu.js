@@ -10,6 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import MenuList from "@material-ui/core/MenuList"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTheme, useMediaQuery } from "@material-ui/core"
+import styled from "styled-components"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,30 +20,30 @@ const useStyles = makeStyles(theme => ({
   paper: {
     marginRight: theme.spacing(2),
   },
-  noBigScreenMenuStyles: {
-    display: "none",
-  },
-  noMobileMenuStyles: {
-    display: "none",
-  },
-  mobileMenuStylesP: {
-    background: "#f4f4f4",
-    padding: "0.5rem",
-    display: "flex",
-    justifyContent: "space-evenly",
-    fontSize: "1.25rem",
-    position: "relative",
-    zIndex: "10",
-  },
-  mobileMenuStylesL: {
-    background: "#f4f4f4",
-    padding: "0.5rem",
-    display: "flex",
-    justifyContent: "space-evenly",
-    fontSize: "1.25rem",
-    position: "relative",
-    zIndex: "10",
-  },
+  // noBigScreenMenuStyles: {
+  //   display: "none",
+  // },
+  // noMobileMenuStyles: {
+  //   display: "none",
+  // },
+  // mobileMenuStylesP: {
+  //   background: "#f4f4f4",
+  //   padding: "0.5rem",
+  //   display: "flex",
+  //   justifyContent: "space-evenly",
+  //   fontSize: "1.25rem",
+  //   position: "relative",
+  //   zIndex: "10",
+  // },
+  // mobileMenuStylesL: {
+  //   background: "#f4f4f4",
+  //   padding: "0.5rem",
+  //   display: "flex",
+  //   justifyContent: "space-evenly",
+  //   fontSize: "1.25rem",
+  //   position: "relative",
+  //   zIndex: "10",
+  // },
   mobileMenuIcon: {
     display: "inline-block",
     cursor: "pointer",
@@ -92,6 +93,12 @@ const useStyles = makeStyles(theme => ({
     transition: "0.4s",
     transform: "rotate(45deg) translate(-8px, -8px)",
   },
+  ulDesktop: {
+    listStyle: "none",
+    display: "flex",
+    justifyContent: "space-evenly",
+    fontSize: "1.25rem",
+  },
 }))
 
 const Menu = () => {
@@ -129,19 +136,19 @@ const Menu = () => {
     prevOpen.current = open
   }, [open])
 
-  const mobileMenuP = useMediaQuery(
-    `${theme.breakpoints.between("0", "500")} and (orientation: portrait)`
-  )
+  // const mobileMenuP = useMediaQuery(
+  //   `${theme.breakpoints.between("0", "500")} and (orientation: portrait)`
+  // )
 
-  const mobileMenuL = useMediaQuery(
-    `${theme.breakpoints.between("0", "900")} and (orientation: landscape)`
-  )
+  // const mobileMenuL = useMediaQuery(
+  //   `${theme.breakpoints.between("0", "900")} and (orientation: landscape)`
+  // )
 
   const root = classes.root
-  const mobileMenuStylesCSSp = classes.mobileMenuStylesP
-  const mobileMenuStylesCSSl = classes.mobileMenuStylesL
-  const noMobileMenuStylesCSS = classes.noMobileMenuStyles
-  const noBigScreenMenuStylesCSS = classes.noBigScreenMenuStyles
+  // const mobileMenuStylesCSSp = classes.mobileMenuStylesP
+  // const mobileMenuStylesCSSl = classes.mobileMenuStylesL
+  // const noMobileMenuStylesCSS = classes.noMobileMenuStyles
+  // const noBigScreenMenuStylesCSS = classes.noBigScreenMenuStyles
 
   const barTopCSS = classes.barTop
   const barMiddleCSS = classes.barMiddle
@@ -152,122 +159,144 @@ const Menu = () => {
 
   return (
     <React.Fragment>
-      <div
-        className={
-          mobileMenuP
-            ? noBigScreenMenuStylesCSS
-            : mobileMenuL
-            ? noBigScreenMenuStylesCSS
-            : root
-        }
-      >
-        <ul
-          style={{
-            listStyle: "none",
-            display: "flex",
-            justifyContent: "space-evenly",
-            fontSize: "1.25rem",
-          }}
-        >
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-          <li>
-            <Link to="/chat">Chat</Link>
-          </li>
-          <li>
-            <Link to="/survey">Survey</Link>
-          </li>
-        </ul>
-      </div>
-      <div
-        className={
-          mobileMenuP
-            ? mobileMenuStylesCSSp
-            : mobileMenuL
-            ? mobileMenuStylesCSSl
-            : noMobileMenuStylesCSS
-        }
-      >
-        <Button
-          ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-          <div className={classes.mobileMenuIcon}>
-            <div className={open === false ? barTopCSS : changeBarTopCSS}></div>
-            <div
-              className={open === false ? barMiddleCSS : changeBarMiddleCSS}
-            ></div>
-            <div
-              className={open === false ? barBottomCSS : changeBarBottomCSS}
-            ></div>
-          </div>
-        </Button>
-        <Popper
-          open={open}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          transition
-          disablePortal
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin:
-                  placement === "bottom" ? "center top" : "center bottom",
-              }}
-            >
-              <Paper className={classes.paper}>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
-                    autoFocusItem={open}
-                    id="menu-list-grow"
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <div style={{ display: "block", margin: "1rem" }}>
-                      <div>
-                        <MenuItem onClick={handleClose}>
-                          <Link to="/">Home</Link>
-                        </MenuItem>
+      <DesktopOnly>
+        <div className={root}>
+          <ul className={classes.ulDesktop}>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+            <li>
+              <Link to="/chat">Chat</Link>
+            </li>
+            <li>
+              <Link to="/survey">Survey</Link>
+            </li>
+          </ul>
+        </div>
+      </DesktopOnly>
+      <MobileOnly>
+        <div className={"mobile-menu-styles-p mobile-menu-styles-l"}>
+          <Button
+            ref={anchorRef}
+            aria-controls={open ? "menu-list-grow" : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}
+          >
+            <div className={classes.mobileMenuIcon}>
+              <div
+                className={open === false ? barTopCSS : changeBarTopCSS}
+              ></div>
+              <div
+                className={open === false ? barMiddleCSS : changeBarMiddleCSS}
+              ></div>
+              <div
+                className={open === false ? barBottomCSS : changeBarBottomCSS}
+              ></div>
+            </div>
+          </Button>
+          <Popper
+            open={open}
+            anchorEl={anchorRef.current}
+            role={undefined}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === "bottom" ? "center top" : "center bottom",
+                }}
+              >
+                <Paper className={classes.paper}>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList
+                      autoFocusItem={open}
+                      id="menu-list-grow"
+                      onKeyDown={handleListKeyDown}
+                    >
+                      <div style={{ display: "block", margin: "1rem" }}>
+                        <div>
+                          <MenuItem onClick={handleClose}>
+                            <Link to="/">Home</Link>
+                          </MenuItem>
+                        </div>
+                        <div>
+                          <MenuItem onClick={handleClose}>
+                            <Link to="/about">About</Link>
+                          </MenuItem>
+                        </div>
+                        <div>
+                          <MenuItem onClick={handleClose}>
+                            <Link to="/contact">Contact</Link>
+                          </MenuItem>
+                        </div>
+                        <div>
+                          <MenuItem onClick={handleClose}>
+                            <Link to="/chat">Chat</Link>
+                          </MenuItem>
+                        </div>
+                        <div>
+                          <MenuItem onClick={handleClose}>
+                            <Link to="/survey">Survey</Link>
+                          </MenuItem>
+                        </div>
                       </div>
-                      <div>
-                        <MenuItem onClick={handleClose}>
-                          <Link to="/about">About</Link>
-                        </MenuItem>
-                      </div>
-                      <div>
-                        <MenuItem onClick={handleClose}>
-                          <Link to="/contact">Contact</Link>
-                        </MenuItem>
-                      </div>
-                      <div>
-                        <MenuItem onClick={handleClose}>
-                          <Link to="/chat">Chat</Link>
-                        </MenuItem>
-                      </div>
-                      <div>
-                        <MenuItem onClick={handleClose}>
-                          <Link to="/survey">Survey</Link>
-                        </MenuItem>
-                      </div>
-                    </div>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </div>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+        </div>
+      </MobileOnly>
     </React.Fragment>
   )
 }
 export default Menu
+
+let DesktopOnly = styled.div`
+  @media (max-width: 500px) and (orientation: portrait) {
+    display: none;
+  }
+  @media (max-width: 900px) and (orientation: landscape) {
+    display: none;
+  }
+`
+let MobileOnly = styled.div`
+  @media (min-width: 500px) and (orientation: portrait) {
+    display: none;
+  }
+  @media (min-width: 900px) and (orientation: landscape) {
+    display: none;
+  }
+  @media (max-width: 500px) and (orientation: portrait) {
+    .mobile-menu-styles-p {
+      background: #f4f4f4;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 1.25rem;
+      position: relative;
+      z-index: 10;
+    }
+  }
+  @media (max-width: 900px) and (orientation: landscape) {
+    .mobile-menu-styles-l {
+      background: #f4f4f4;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 1.25rem;
+      position: relative;
+      z-index: 10;
+    }
+  }
+`
