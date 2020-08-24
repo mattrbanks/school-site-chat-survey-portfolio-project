@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
         }
       >
         <main>{children}</main>
-        <footer style={{ fontSize: "0.95rem" }}>
+        <footer style={{ fontSize: "0.8rem" }}>
           <div
             style={{
               display: "flex",
