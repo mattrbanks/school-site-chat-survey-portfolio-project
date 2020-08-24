@@ -48,15 +48,25 @@ const Layout = ({ children }) => {
           >
             <div style={{ marginTop: "1rem" }}>
               <h4 style={{ marginLeft: "1rem" }}>Eagle Elementary</h4>
-              <ul style={{ listStyle: "none", marginRight: "1rem" }}>
-                <li>This is a template school site.</li>
-                <li>This site is for a portfolio.</li>
-                <li>This site was developed by Matthew Banks.</li>
+              <ul style={{ listStyle: "none" }}>
+                <li>
+                  This is a template <br />
+                  school site.
+                </li>
+                <li>
+                  This site is for a <br />
+                  portfolio.
+                </li>
+                <li>
+                  This site was <br />
+                  developed by <br />
+                  Matthew Banks.
+                </li>
               </ul>
             </div>
             <div style={{ marginTop: "1rem" }}>
               <h4 style={{ marginLeft: "1rem" }}>Contact</h4>
-              <ul style={{ listStyle: "none", marginRight: "1rem" }}>
+              <ul style={{ listStyle: "none" }}>
                 <li>
                   <Link to="https://github.com/mattrbanks">Github</Link>
                 </li>
@@ -71,8 +81,8 @@ const Layout = ({ children }) => {
               </ul>
             </div>
             <div style={{ marginTop: "1rem" }}>
-              <h4 style={{ marginLeft: "1rem", marginRight: "1rem" }}>Links</h4>
-              <ul style={{ listStyle: "none", marginRight: "1rem" }}>
+              <h4 style={{ marginLeft: "1rem" }}>Links</h4>
+              <ul style={{ listStyle: "none" }}>
                 <li>
                   <Link to="/curriculum">Our curriculum</Link>
                 </li>
