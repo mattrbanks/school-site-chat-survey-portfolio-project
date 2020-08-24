@@ -7,7 +7,7 @@ import SEO from "../components/seo"
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: "2rem",
+    margin: "1rem",
     //width: "90%",
   },
   list: {

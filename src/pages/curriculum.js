@@ -8,7 +8,7 @@ const Curriculum = () => {
   return (
     <Layout>
       <SEO title="curriculum" />
-      <div style={{ margin: "3.5rem" }}>
+      <div style={{ margin: "1rem" }}>
         <h1>Our Modern Curriculum</h1>
         <div style={{ maxWidth: "700px", marginBottom: "1rem" }}>
           <ImageReusable

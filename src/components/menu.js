@@ -9,7 +9,7 @@ import Popper from "@material-ui/core/Popper"
 import MenuItem from "@material-ui/core/MenuItem"
 import MenuList from "@material-ui/core/MenuList"
 import { makeStyles } from "@material-ui/core/styles"
-import { useTheme, useMediaQuery } from "@material-ui/core"
+import { useTheme } from "@material-ui/core"
 import styled from "styled-components"
 
 const useStyles = makeStyles(theme => ({
@@ -20,30 +20,6 @@ const useStyles = makeStyles(theme => ({
   paper: {
     marginRight: theme.spacing(2),
   },
-  // noBigScreenMenuStyles: {
-  //   display: "none",
-  // },
-  // noMobileMenuStyles: {
-  //   display: "none",
-  // },
-  // mobileMenuStylesP: {
-  //   background: "#f4f4f4",
-  //   padding: "0.5rem",
-  //   display: "flex",
-  //   justifyContent: "space-evenly",
-  //   fontSize: "1.25rem",
-  //   position: "relative",
-  //   zIndex: "10",
-  // },
-  // mobileMenuStylesL: {
-  //   background: "#f4f4f4",
-  //   padding: "0.5rem",
-  //   display: "flex",
-  //   justifyContent: "space-evenly",
-  //   fontSize: "1.25rem",
-  //   position: "relative",
-  //   zIndex: "10",
-  // },
   mobileMenuIcon: {
     display: "inline-block",
     cursor: "pointer",
@@ -136,19 +112,7 @@ const Menu = () => {
     prevOpen.current = open
   }, [open])
 
-  // const mobileMenuP = useMediaQuery(
-  //   `${theme.breakpoints.between("0", "500")} and (orientation: portrait)`
-  // )
-
-  // const mobileMenuL = useMediaQuery(
-  //   `${theme.breakpoints.between("0", "900")} and (orientation: landscape)`
-  // )
-
   const root = classes.root
-  // const mobileMenuStylesCSSp = classes.mobileMenuStylesP
-  // const mobileMenuStylesCSSl = classes.mobileMenuStylesL
-  // const noMobileMenuStylesCSS = classes.noMobileMenuStyles
-  // const noBigScreenMenuStylesCSS = classes.noBigScreenMenuStyles
 
   const barTopCSS = classes.barTop
   const barMiddleCSS = classes.barMiddle
