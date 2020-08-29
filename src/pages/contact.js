@@ -12,7 +12,7 @@ const Contact = () => {
       <div style={{ margin: "1rem" }}>
         <div>
           <h4>
-            If you have any questions or concerns we would be happy to speak
+            If you have any questions or concerns, we would be happy to speak
             with you. Education is one of the most important parts of a child's
             life and we are here to facilitate your child's growth.
           </h4>

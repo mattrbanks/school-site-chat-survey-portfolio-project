@@ -24,7 +24,7 @@ const IndexPage = () => (
       <p>
         We have a real-time chat on our site where teachers and parents can
         connect, during pre-scheduled windows, throughout each day. We care and
-        we want to help even when you cant see us in person. Please have a look
+        we want to help even when you can't see us in person. Please have a look
         around and feel free to leave your feedback by using our online survey.
         Your feedback helps us do a better job to meet your family's needs.
       </p>
