@@ -1,6 +1,5 @@
 import React from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
-//import { useTheme, useMediaQuery } from "@material-ui/core"
 import Layout from "../components/layout"
 import { makeStyles } from "@material-ui/core/styles"
 import SEO from "../components/seo"
@@ -8,12 +7,10 @@ import SEO from "../components/seo"
 const useStyles = makeStyles(theme => ({
   root: {
     margin: "1rem",
-    //width: "90%",
   },
   list: {
     listStyleType: "none",
     margin: "2rem",
-    //width: "90%",
   },
   listItem: {
     margin: "1rem 0",
@@ -34,13 +31,12 @@ const useStyles = makeStyles(theme => ({
       fontSize: ".8rem",
       fontStyle: "italic",
     },
-    //width: "90%",
   },
 }))
 
 const Events = () => {
   const classes = useStyles()
-  //const isActive = useMediaQuery()
+
   const rootCSS = classes.root
   const listCSS = classes.list
   const listItemCSS = classes.listItem
@@ -60,8 +56,6 @@ const Events = () => {
       }
     }
   `)
-
-  console.log(data)
 
   //there is only one post a week for events so the key can be the date here.
 

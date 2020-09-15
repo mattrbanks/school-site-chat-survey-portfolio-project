@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     width: "50%",
     height: "100%",
-    //borderRight: "0.0625rem solid grey",
   },
   links: {
     fontSize: "2rem",

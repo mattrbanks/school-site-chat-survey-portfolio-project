@@ -9,7 +9,6 @@ import Popper from "@material-ui/core/Popper"
 import MenuItem from "@material-ui/core/MenuItem"
 import MenuList from "@material-ui/core/MenuList"
 import { makeStyles } from "@material-ui/core/styles"
-import { useTheme } from "@material-ui/core"
 import styled from "styled-components"
 
 const useStyles = makeStyles(theme => ({
@@ -79,7 +78,6 @@ const useStyles = makeStyles(theme => ({
 
 const Menu = () => {
   const classes = useStyles()
-  const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
 

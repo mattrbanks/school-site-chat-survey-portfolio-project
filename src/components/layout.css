@@ -627,3 +627,32 @@ footer {
   margin-top: 15rem;
   background-color: #f4f4f4;
 }
+
+.eagle-bubble {
+  position: relative;
+  font-family: sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  width: 300px;
+  background: #fff;
+  border-radius: 40px;
+  padding: 24px;
+  text-align: center;
+  color: #000;
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3),
+    0 0.0625rem 0.125rem rgba(0, 0, 0, 0.2);
+}
+
+.eagle-bubble-arrow:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 24px solid #fff;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #fff;
+  border-bottom: 20px solid transparent;
+  left: 132px;
+  bottom: -24px;
+  filter: drop-shadow(-0.1rem 0.4rem 0.0625rem rgba(0, 0, 0, 0.1));
+}

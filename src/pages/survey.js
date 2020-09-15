@@ -1,7 +1,6 @@
 import React from "react"
 import axios from "axios"
 import { navigate } from "@reach/router"
-//import { Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -14,7 +13,7 @@ const Survey = () => {
   const [numberOfKidsInEagleElem, setNumberOfKidsInEagleElem] = React.useState(
     ""
   )
-  const [afterSchoolEvents, setAfterSchoolEvents] = React.useState(false) //should be initially object or array right?
+  const [afterSchoolEvents, setAfterSchoolEvents] = React.useState(false)
   const [beforeSchoolEvents, setBeforeSchoolEvents] = React.useState(false)
   const [concepts, setConcepts] = React.useState(false)
   const [plays, setPlays] = React.useState(false)
@@ -49,8 +48,7 @@ const Survey = () => {
   }
 
   const submitHandler = e => {
-    e.preventDefault() //disable this when survey is done to show submission by refresh.
-    console.log(survey)
+    e.preventDefault()
     axios
       .post("https://school-site-chat-survey-form.herokuapp.com/survey", survey)
       .then(response => {
@@ -60,12 +58,6 @@ const Survey = () => {
         console.log(error)
       })
     navigate("/thank-you-page")
-    //Do I need these here if I am just going to require them?
-    // setEmail("")
-    // setName("")
-    // setSatisfactionNumber("")
-    //setSchoolType("") //this state will stay set upon submission unless prevent default is disables and allows the screen to refresh.
-    //setMaritalStatus("")
   }
 
   return (
@@ -210,7 +202,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setAfterSchoolEvents(!afterSchoolEvents)}
-                      //value="After school events"
                       type="checkbox"
                     />
                     After school events
@@ -221,7 +212,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setBeforeSchoolEvents(!beforeSchoolEvents)}
-                      //value="Before school events"
                       type="checkbox"
                     />
                     Before school events
@@ -232,7 +222,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setConcepts(!concepts)}
-                      //value="Concepts"
                       type="checkbox"
                     />
                     Concepts
@@ -257,7 +246,6 @@ const Survey = () => {
                           !academicWorkshopsForParents
                         )
                       }
-                      //value="Academic workshops for parents"
                       type="checkbox"
                     />
                     Academic workshops for parents
@@ -268,7 +256,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setCommunityEvents(!communityEvents)}
-                      //value="Community events"
                       type="checkbox"
                     />
                     Community events
@@ -279,7 +266,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setNewsletters(!newsletters)}
-                      //value="Weekly or monthly newsletters"
                       type="checkbox"
                     />
                     Weekly or monthly newsletters
@@ -300,7 +286,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setPtoMeetings(!ptoMeetings)}
-                      //value="Weekly or monthly PTO meetings"
                       type="checkbox"
                     />
                     Weekly or monthly PTO meetings
@@ -311,7 +296,6 @@ const Survey = () => {
                     <input
                       name="schoolCommR"
                       onChange={e => setFundraising(!fundraising)}
-                      //value="Fundraising events"
                       type="checkbox"
                     />
                     Fundraising events

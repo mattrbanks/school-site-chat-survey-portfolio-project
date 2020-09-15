@@ -30,8 +30,6 @@ webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey)
 
 // Subscribe Route
 app.post("/subscribe", (req, res) => {
-  console.log("we are in")
-
   // Get pushSubscription object
   const subscription = req.body
 
@@ -62,9 +60,6 @@ app.post("/activeTopic", function(req, res) {
 })
 
 io.on("connection", function(socket) {
-  console.log("a user connected")
-  console.log(socket.id)
-
   socket.on("new-user", name => {
     users[socket.id] = name
     users[socket.id].push("-" + socket.id.substr(0, 5))
@@ -84,45 +79,31 @@ io.on("connection", function(socket) {
 
   socket.on("send chat message", msg => {
     msg.from = usersMsg[socket.id]
-    console.log(usersMsg)
-    console.log("message: " + JSON.stringify(msg))
 
     io.emit("chat message", msg)
   })
 
   socket.on("send private chat message", msg => {
     msg.from = usersMsg[socket.id]
-    console.log(usersMsg)
-    console.log("message: " + JSON.stringify(msg))
 
     let receiverSocket
     let tempRecNameArr = msg.topic.split(",")
-    console.log(tempRecNameArr)
     let userOne = tempRecNameArr.slice(0, 3)
-    console.log(userOne)
     let userTwo = tempRecNameArr.slice(4)
-    console.log(userTwo)
-    console.log(socket.id)
     const entries = Object.entries(usersMsg)
-    console.log(entries)
     for (const [id, name] of entries) {
-      //console.log(`${name} has an id of ${id}`)
       if (
         JSON.stringify(name) === JSON.stringify(userOne) &&
         id !== socket.id
       ) {
-        console.log(`${name} has an id of ${id}`)
         receiverSocket = id
       } else if (
         JSON.stringify(name) === JSON.stringify(userTwo) &&
         id !== socket.id
       ) {
-        console.log(`${name} has an id of ${id}`)
         receiverSocket = id
       }
     }
-
-    console.log(receiverSocket)
 
     socket.to(receiverSocket).emit("private chat message", msg)
     socket.emit("private chat message", msg)
@@ -130,8 +111,6 @@ io.on("connection", function(socket) {
   })
 
   socket.on("private message", receiver => {
-    console.log("receiver: " + JSON.stringify(receiver))
-    console.log("receiver id: " + JSON.stringify(receiver.id))
     const createChat = ({
       senderId = "",
       name = "",
@@ -157,7 +136,6 @@ io.on("connection", function(socket) {
   })
 
   socket.on("disconnect", () => {
-    console.log("a user disconnected: " + JSON.stringify(users[socket.id]))
     socket.broadcast.emit("user-disconnected", topicsAll[socket.id])
     delete users[
       socket.id
@@ -165,7 +143,6 @@ io.on("connection", function(socket) {
     delete usersMsg[socket.id]
     delete topicsAll[socket.id] //we will send this out instead of users[socket.id], which is just name
     io.emit("active-topic-socket", Object.values(topicsAll))
-    console.log(Object.values(topicsAll))
     io.emit("new-user", Object.entries(users))
   })
 })

@@ -1,5 +1,4 @@
 import React from "react"
-//import { Link } from "gatsby"
 import ImageReusable from "../components/imageReusable"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -27,7 +26,6 @@ const About = () => (
           style={{
             width: `100%`,
             margin: "0.5rem 1rem 0.5rem 0rem",
-            //margin: `1.7rem 0.5rem auto`,
             maxWidth: `750px`,
           }}
         >
@@ -40,7 +38,6 @@ const About = () => (
           style={{
             width: `100%`,
             margin: "0.5rem 0.5rem 0.5rem 0rem",
-            //margin: `1.7rem 0.5rem auto`,
             maxWidth: `750px`,
           }}
         >

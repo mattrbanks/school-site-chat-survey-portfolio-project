@@ -1,10 +1,10 @@
 import React from "react"
-//import { Link } from "gatsby"
 import FourGridButtons from "../components/fourGridButtons"
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 import Slider from "../components/slider"
+import "../components/layout.css"
 
 const IndexPage = () => (
   <Layout>
@@ -30,10 +30,17 @@ const IndexPage = () => (
       </p>
     </div>
     <FourGridButtons />
-    <div style={{ maxWidth: "300px", marginBottom: "1.45rem" }}>
+    <div
+      style={{ maxWidth: "300px", marginBottom: "1.45rem", marginLeft: "1rem" }}
+    >
+      <div
+        className="eagle-bubble eagle-bubble-arrow"
+        style={{ marginBottom: "1.45rem", marginLeft: "4rem" }}
+      >
+        Have a great school year!
+      </div>
       <Image />
     </div>
-    {/* <Link to="/page-2/">Go to page 2</Link> */}
   </Layout>
 )
 

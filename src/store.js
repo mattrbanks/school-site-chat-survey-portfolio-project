@@ -69,29 +69,22 @@ let topicHolder = []
 
 function sendActiveTopicSocket(value) {
   let tempValue = value
-  console.log(value)
-  console.log(tempValue)
   topicHolder.length = 0
   topicHolder.push(tempValue)
   socket.emit("active-topic-socket", value) //we send activeTopic object up to server
-  console.log(topicHolder)
 }
 
 const Store = props => {
   const [allChats, dispatch] = React.useReducer(reducer, initState)
-  console.log(allChats)
 
   const [privChatList, dispatchPrivChat] = React.useReducer(
     reducerPriv,
     privInitState
   )
-  console.log(privChatList)
 
   const privChatListCopy = React.useRef(privInitState)
-  console.log(privChatListCopy)
 
   const [updateChat, setUpdateChat] = React.useState(0)
-  console.log(updateChat)
 
   React.useEffect(() => {
     privChatListCopy.current = privChatList
@@ -100,18 +93,15 @@ const Store = props => {
   // this is where socket changes before we even call the function above, when the socket is created.
   if (!socket) {
     socket = io("https://school-site-chat-survey-server.herokuapp.com/") //created client connection that connects when the client starts if no sockets are started. Added a heroku server. Used to be :3001.
-    //socket = io(":3001") //just used for push notification tests
 
     const name = [userName.toString(), "-" + userType.toString()]
     socket.emit("new-user", name) //kick name to server
 
     socket.on("chat message", msg => {
-      console.log(msg)
       dispatch({ type: "RECEIVE_MESSAGE", payload: msg })
     })
 
     socket.on("private chat message", msg => {
-      console.log(msg)
       dispatchPrivChat({
         type: "RECEIVE_PRIVATE_MESSAGE",
         payload: msg,
@@ -119,11 +109,6 @@ const Store = props => {
     })
 
     socket.on("private web push notification", msg => {
-      console.log(msg)
-      console.log(topicHolder)
-      console.log(typeof topicHolder[0].topic)
-      console.log(typeof msg.topic)
-
       fetch(
         "https://school-site-chat-survey-server.herokuapp.com/activeTopic",
         {
@@ -148,17 +133,14 @@ const Store = props => {
       // Register SW, Register Push, Send Push
       async function send() {
         // Register Service Worker
-        console.log("Registering service worker...")
         const register = await navigator.serviceWorker.register(
           "../service-worker.js",
           {
             scope: "/",
           }
         )
-        console.log("Service Worker Registered...")
 
         // Register Push
-        console.log("Registering Push...")
         const subscription = await navigator.serviceWorker.ready.then(
           register =>
             register.pushManager.subscribe({
@@ -166,10 +148,8 @@ const Store = props => {
               applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
             })
         )
-        console.log("Push Registered...")
 
         // Send Push Notification
-        console.log("Sending Push...")
         topicHolder[0].topic === msg.topic
           ? console.log("Push Not Sent While Receiver Is In Room...")
           : await fetch(
@@ -182,7 +162,6 @@ const Store = props => {
                 },
               }
             )
-        console.log("Push Sent...") //disregard if receiver is in room
       }
 
       function urlBase64ToUint8Array(base64String) {
@@ -217,10 +196,6 @@ const Store = props => {
 
       let privKeys = Object.keys(privChatListCopy.current)
 
-      for (const key of privKeys) {
-        console.log(key)
-      }
-
       if (privKeys.length === 0) {
         dispatchPrivChat({
           type: "SET_PRIVATE_MESSAGE_STATE",
@@ -249,11 +224,8 @@ const Store = props => {
     Second: [],
     Third: [],
   }
-  console.log(usersTopicsListC)
 
   socket.on("new-user", users => {
-    console.log(users)
-
     usersListC.length = 0
     for (let i = 0; i < users.length; i++) {
       usersListC.push(users[i])
@@ -261,8 +233,6 @@ const Store = props => {
   })
 
   socket.on("active-topic-socket", topic => {
-    console.log(topic)
-
     usersTopicsListC.Kindergarten.length = 0
     usersTopicsListC.First.length = 0
     usersTopicsListC.Second.length = 0
@@ -282,7 +252,6 @@ const Store = props => {
 
   socket.on("user-disconnected", nameAndTopic => {
     //try putting this in the same scope as "chat message" to see if the duplicates go away.
-    console.log(nameAndTopic)
     if (nameAndTopic.topic.length === 0) {
       return
     } else {

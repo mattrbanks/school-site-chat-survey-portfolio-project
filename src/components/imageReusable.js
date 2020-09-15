@@ -31,7 +31,6 @@ const ImageReusable = props => (
         return null
       }
 
-      //const imageSizes = image.node.childImageSharp.sizes; sizes={imageSizes}
       return <Img alt={props.alt} fluid={image.node.childImageSharp.fluid} />
     }}
   />

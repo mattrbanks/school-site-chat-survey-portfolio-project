@@ -1,99 +1,63 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
+<p align="center"><img alt="Eagle mascot" src="https://raw.githubusercontent.com/mattrbanks/school-site-chat-survey-portfolio-project/master/src/images/cuteEagleCartoonSchool2.webp" /></p>
+
 <h1 align="center">
-  Gatsby's default starter
+  Eagle Elementary School
 </h1>
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+This is a template elementary school site I created which targets progressive school environments becoming more socially distanced. It has a real-time chat for parents and teachers with private messaging and push notifications. The events page blog is connected to a content management system for school faculty to easily use without the help of a programmer. The survey is connected to a mongodb atlas database that collects responses from parents. The curriculum section is based on real curriculum standards.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
+## Technologies Used
 
-## 🚀 Quick start
+- **Gatsby**
 
-1.  **Create a Gatsby site.**
+- **Javascript**
 
-    Use the Gatsby CLI to create a new site, specifying the default starter.
+- **React**
 
-    ```shell
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
+- **Material Ui**
 
-1.  **Start developing.**
+- **Styled components**
 
-    Navigate into your new site’s directory and start it up.
+- **Contentful**
 
-    ```shell
-    cd my-default-starter/
-    gatsby develop
-    ```
+- **Socket.io**
 
-1.  **Open the source code and start editing!**
+- **GraphQL**
 
-    Your site is now running at `http://localhost:8000`!
+- **Mongodb**
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+- **Express**
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+- **Node**
 
-## 🧐 What's inside?
+## The Chat
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+Eagle Chat is a realtime chat application that uses socket.io and express on the backend server. On the frontend client, it uses react and socket.io. This setup enables realtime bi-directional communication between a client that runs in the browser and a node server. This application is an important part of the Eagle Elementary school site because it allows parents and teachers to stay in constant communication throughout the week and it all happens in one chat space. The plan for a school with a chat like this would be to have assigned rotating time slots for each teacher during the work week so parents can check up on how their child's eduction is going and to bring up any concerns or questions. Parents may need direct help with home education and have questions about in school education. Currently, parents are dealing with both home and school education for their child. This provides an easy platform for Eagle Elementary parents and teachers to stay current with each other to ensure a stable learning environment.
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+Chat features:
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+- Group chat rooms for grades K-3
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+- Emoji button with many emojis to choose from
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+- Private messaging
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+- Push notifications (Only for private messages)
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+- A unique 5 character user id after signing in to the chat
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.org/docs/gatsby-config/) for more detail).
+## How The Chat Works
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+In the left panel, you have a number of topic rooms you can click on to enter. Just click your child's grade to enter a group discussion involving parents and teachers. Once you click a topic, you will see the messages for that topic in the middle (bottom for mobile) panel. On the right panel, you will see all logged in users before you choose a topic. Once you are in a topic room, the right panel will show who is also in that room or all the users who are logged in. You just need to click the button over the list to toggle the two lists. You can click a user's name to create a private chat. This chat can be found below the main topic room list under "Direct Messages". Just click the newly created chat room that contains your user name and the user you clicked on to enter a private chat space for the two of you to talk. If you are in another private chat or in a group chat then you will get a private message notification.
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+## The Events Page (Blog)
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+The events page is actually a gatsby blog that uses graphql to query data from a content management system called Contentful. School faculty could potentially use the user interface on the Contentful website (with an account) to post the upcoming monthly school events without the help of the site developer.
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+## The Survey Page
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+The survey page gives parents the power to give feedback on how well their child's education is going and what their level of satisfaction is. This survey submits data to a mongodb atlas database (via a node express server) that collects all survey responses. The database analytics could then be used to find trends and make improvements to the school, based on the feedback received from the parents.
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+## The School Images
 
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
-
-## 💫 Deploy
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
-
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/import/project?template=https://github.com/gatsbyjs/gatsby-starter-default)
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+The images used on this site are all from Pixabay, Pexels, and Unsplash. These sites are all free image databases with no copyright restrictions on a Creative Commons license. The only image exception is the eagle mascot, of the school, which was purchased on istockphoto.com. The purchased eagle image came with a royalty-free license.

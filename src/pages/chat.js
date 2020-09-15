@@ -15,12 +15,8 @@ const Chat = props => {
 
   const nameHandler = e => {
     e.preventDefault()
-    console.log(name)
     userName.push(name)
-    console.log(userName)
-    console.log(type)
     userType.push(type)
-    console.log(userType)
     setName("")
     setLoginBoolean(true)
     setType("")

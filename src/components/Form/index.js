@@ -25,8 +25,6 @@ connection.once("open", () => {
 let Feedback = require("./models/feedback.model")
 
 app.post("/survey", function(req, res) {
-  console.log("we are in")
-  console.log(req.body)
   const newFeedback = new Feedback({
     Name: req.body.name,
     Email: req.body.email,

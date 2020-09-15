@@ -12,17 +12,10 @@ function Banner(props) {
   const totalItems = 1
   const mediaLength = totalItems
 
-  console.log(mediaLength)
-
   let items = []
-
-  console.log(items)
-  console.log(props)
 
   for (let i = 0; i < mediaLength; i++) {
     const item = props.item.Item[i]
-
-    console.log(item)
 
     const media = (
       <Grid item xs={12 / totalItems} key={item.Name}>
@@ -34,8 +27,6 @@ function Banner(props) {
 
     items.push(media)
   }
-
-  console.log(items)
 
   return (
     <Card raised className="Banner">
@@ -72,8 +63,6 @@ const items = [
     ],
   },
 ]
-
-console.log(items)
 
 class Slider extends React.Component {
   constructor(props) {

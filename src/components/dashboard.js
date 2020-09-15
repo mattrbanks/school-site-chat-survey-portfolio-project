@@ -246,35 +246,22 @@ const Dashboard = () => {
     usersTopicsListC,
     usersListC,
   } = React.useContext(context)
-  console.log(usersTopicsListC)
-  console.log(usersListC)
-  console.log(allChats)
-  console.log(updateChat)
-  console.log(privChatList)
 
   const topics = Object.keys(allChats)
-  console.log(topics)
-
-  const privTopics = Object.keys(privChatList)
-  console.log(privTopics)
 
   let privTopicsEntries = Object.entries(privChatList)
-  console.log(privTopicsEntries)
 
   // local state
   const [activeTopic, changeActiveTopic] = React.useState("")
   const [textValue, changeTextValue] = React.useState("")
-  console.log(activeTopic)
 
   const [showEmojis, setShowEmojis] = React.useState(false)
 
   const initialTopic = usersTopicsListC
   const [usersInTopic, setNewTopic] = React.useState(initialTopic)
-  console.log(usersInTopic)
 
   const initialUsers = usersListC
   const [allTheUserNames, setUserNames] = React.useState(initialUsers)
-  console.log(allTheUserNames)
 
   const [dashIsMounted, setDashboardBoolean] = React.useState(false)
   const [didMount, setDidMount] = React.useState(false)
@@ -285,9 +272,6 @@ const Dashboard = () => {
   const [privChatActiveNoComma, setPrivChatActiveNoComma] = React.useState(null)
   const [privNotifyOn, setPrivNotifyOn] = React.useState(false)
   const [userListSwitch, setUserListSwitch] = React.useState(false)
-  console.log(userListSwitch)
-  console.log(privChatActive)
-  console.log(typeof privChatActive)
 
   const [receiver, setReceiver] = React.useState("")
 
@@ -325,7 +309,6 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     const abortController = new AbortController()
-    console.log(activeTopic)
     sendActiveTopicSocket({
       from: "",
       topic: activeTopic,
@@ -338,7 +321,6 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     const abortController = new AbortController()
-    console.log(activeTopic)
     if (didMount) {
       if (privChatActive === null) {
         sendChatAction({
@@ -374,7 +356,6 @@ const Dashboard = () => {
   }, [updateChat])
 
   React.useEffect(() => {
-    console.log(receiver)
     const abortController = new AbortController()
     if (receiverMount) {
       sendPrivateMessage(receiver)
@@ -397,8 +378,6 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (privChatActive === activeTopic) {
       setPrivChatActiveNoComma(privChatActive.replace(/,/g, ""))
-      console.log(privChatList[activeTopic].length)
-      console.log(privChatActive.replace(/,/g, ""))
     }
   }, [activeTopic])
 
@@ -427,8 +406,6 @@ const Dashboard = () => {
                 onClick={e => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(null)
-
-                  console.log("We clicked the topic we want 1st")
                 }}
                 key={topic}
                 button
@@ -447,9 +424,6 @@ const Dashboard = () => {
                   changeActiveTopic(e.target.innerText)
                   setPrivChatActive(e.target.innerText)
                   setInvisible(true)
-
-                  console.log("Here it is! " + privTopicsEntries)
-                  console.log(privTopic)
                 }}
                 key={privTopic[0]}
                 button
@@ -586,8 +560,6 @@ const Dashboard = () => {
                   onClick={e => {
                     changeActiveTopic(e.target.innerText)
                     setPrivChatActive(null)
-
-                    console.log("We clicked the topic we want 1st")
                   }}
                   key={topic}
                   button
@@ -606,9 +578,6 @@ const Dashboard = () => {
                     changeActiveTopic(e.target.innerText)
                     setPrivChatActive(e.target.innerText)
                     setInvisible(true)
-
-                    console.log("Here it is! " + privTopicsEntries)
-                    console.log(privTopic)
                   }}
                   key={privTopic[0]}
                   button
@@ -833,7 +802,6 @@ const Dashboard = () => {
               >
                 <Picker
                   onSelect={emoji => {
-                    console.log(emoji)
                     changeTextValue(textValue + emoji.native)
                   }}
                   emojiTooltip={true}
