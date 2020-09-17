@@ -4,8 +4,8 @@ require("dotenv").config({
 module.exports = {
   siteMetadata: {
     title: `Eagle Elementary School`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    description: `This is a template elementary school site I created which targets progressive school environments becoming more socially distanced.`,
+    author: `Matthew R Banks`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

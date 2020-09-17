@@ -61,3 +61,7 @@ The survey page gives parents the power to give feedback on how well their child
 ## The School Images
 
 The images used on this site are all from Pixabay, Pexels, and Unsplash. These sites are all free image databases with no copyright restrictions on a Creative Commons license. The only image exception is the eagle mascot, of the school, which was purchased on istockphoto.com. The purchased eagle image came with a royalty-free license.
+
+## Visit the website:
+
+[eagle-elementary-school.netlify.app](https://eagle-elementary-school.netlify.app/)
