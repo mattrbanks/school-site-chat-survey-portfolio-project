@@ -6,6 +6,7 @@ module.exports = {
     title: `Eagle Elementary School`,
     description: `This is a template elementary school site I created which targets progressive school environments becoming more socially distanced.`,
     author: `Matthew R Banks`,
+    image: `https://raw.githubusercontent.com/mattrbanks/school-site-chat-survey-portfolio-project/master/src/images/EagleElementarySchool.PNG`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
