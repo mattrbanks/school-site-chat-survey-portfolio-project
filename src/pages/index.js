@@ -8,7 +8,7 @@ import "../components/layout.css"
 
 const IndexPage = () => (
   <Layout>
-    <SEO title="Home" />
+    <SEO title="Eagle Elementary School" />
     <Slider />
     <div style={{ margin: "1rem" }}>
       <h1>Welcome to the home of Eagle Elementary School.</h1>
