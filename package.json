@@ -42,7 +42,7 @@
     "react-helmet": "^5.2.1",
     "react-material-ui-carousel": "^1.8.2",
     "react-scrollable-feed": "^1.1.2",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "socket.io": "^2.3.0",
     "styled-components": "^5.1.1",
     "use-force-update": "^1.0.7",
