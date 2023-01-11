@@ -29,7 +29,7 @@
     "gatsby-source-contentful": "^2.3.37",
     "gatsby-source-filesystem": "^2.3.24",
     "gatsby-source-mongodb": "^2.3.10",
-    "gatsby-transformer-remark": "^2.8.28",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.5.13",
     "mongodb": "^3.6.0",
     "morgan": "^1.10.0",
